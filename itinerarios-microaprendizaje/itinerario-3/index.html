@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerari 3. Comunicació responsable i representació de la vulnerabilitat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            500: '#10b981', // Emerald
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
+        .smooth-transition { transition: all 0.3s ease; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quiz-option { cursor: pointer; }
+        .quiz-option input:checked + div {
+            border-color: #0ea5e9;
+            background-color: #f0f9ff;
+        }
+
+        .screen-content { display: none; }
+        .screen-content.active { display: block; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header Superior con Menú de Idiomas y Logo Ampliado -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- Logo -->
+            <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" 
+                 alt="Logos Afronta Grafo UAB" 
+                 class="h-16 md:h-20 object-contain">
+            
+            <div class="flex flex-wrap items-center gap-4">
+                <!-- Duración estimada -->
+                <div class="flex items-center gap-2 text-sm font-medium text-slate-600 bg-slate-100 px-4 py-2 rounded-full shadow-inner" aria-label="Duració estimada del mòdul">
+                    <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="text-duration">Durada: 45 minuts</span>
+                </div>
+
+                <!-- Menú de Idiomas -->
+                <div class="flex items-center bg-slate-100 p-1 rounded-full border border-slate-200">
+                    <button onclick="setLanguage('ca')" id="lang-btn-ca" class="px-3 py-1 rounded-full text-xs font-bold smooth-transition bg-primary-600 text-white shadow-sm">CA</button>
+                    <button onclick="setLanguage('es')" id="lang-btn-es" class="px-3 py-1 rounded-full text-xs font-bold smooth-transition text-slate-600 hover:text-slate-900">ES</button>
+                    <button onclick="setLanguage('en')" id="lang-btn-en" class="px-3 py-1 rounded-full text-xs font-bold smooth-transition text-slate-600 hover:text-slate-900">EN</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal con Menú Lateral de Navegación por Cápsulas -->
+    <div class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow flex flex-col md:flex-row gap-6">
+        
+        <!-- Menú de Navegación por Cápsulas (Lateral Izquierdo) -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm sticky top-28">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-3" id="nav-menu-title">Navegació del mòdul</h3>
+                <nav class="space-y-1" id="nav-menu">
+                    <button onclick="showScreen(0)" id="nav-btn-0" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-primary-50 text-primary-700 border border-primary-200">
+                        <span class="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold">i</span>
+                        <span id="nav-txt-0">Inici i Objectius</span>
+                    </button>
+                    <button onclick="showScreen(1)" id="nav-btn-1" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">1</span>
+                        <span id="nav-txt-1">Càpsula 1</span>
+                    </button>
+                    <button onclick="showScreen(2)" id="nav-btn-2" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">2</span>
+                        <span id="nav-txt-2">Càpsula 2</span>
+                    </button>
+                    <button onclick="showScreen(3)" id="nav-btn-3" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">3</span>
+                        <span id="nav-txt-3">Càpsula 3</span>
+                    </button>
+                    <button onclick="showScreen(4)" id="nav-btn-4" class="nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+                        <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">4</span>
+                        <span id="nav-txt-4">Càpsula 4</span>
+                    </button>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Áreas de Contenido por Pantalla -->
+        <main class="flex-1 w-full max-w-4xl min-w-0">
+            
+            <!-- PANTALLA 0: Hero & Objetivos -->
+            <section id="screen-0" class="screen-content active fade-in space-y-8">
+                <!-- Hero Section -->
+                <div class="bg-primary-900 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-primary-700 rounded-full opacity-50 blur-3xl"></div>
+                    <div class="relative z-10">
+                        <span id="hero-badge" class="inline-block px-3 py-1 bg-primary-700/50 rounded-full text-sm font-semibold tracking-wide text-primary-100 mb-4">Itinerari 3</span>
+                        <h1 id="hero-title" class="text-3xl md:text-5xl font-bold leading-tight mb-4">Comunicació responsable i representació de la vulnerabilitat</h1>
+                        <p id="hero-subtitle" class="text-lg md:text-xl text-primary-100 max-w-2xl">Com influeixen les paraules, les imatges i els relats en la manera com entenem la vulnerabilitat?</p>
+                    </div>
+                </div>
+
+                <!-- Objectives -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                    <h2 id="obj-title" class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        <svg class="w-7 h-7 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Objectius de l'itinerari
+                    </h2>
+                    <p id="obj-intro" class="text-slate-600 mb-4">En acabar l'itinerari, seràs capaç de:</p>
+                    <ul class="grid sm:grid-cols-2 gap-4">
+                        <li class="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-primary-500 shrink-0"></div>
+                            <span id="obj-1" class="text-slate-700">Comprendre que el llenguatge mai no és completament neutral.</span>
+                        </li>
+                        <li class="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-primary-500 shrink-0"></div>
+                            <span id="obj-2" class="text-slate-700">Reconèixer com determinades expressions poden reforçar estereotips o afavorir una comunicació respectuosa.</span>
+                        </li>
+                        <li class="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-primary-500 shrink-0"></div>
+                            <span id="obj-3" class="text-slate-700">Identificar principis bàsics de comunicació inclusiva.</span>
+                        </li>
+                        <li class="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-primary-500 shrink-0"></div>
+                            <span id="obj-4" class="text-slate-700">Aplicar criteris senzills per millorar la comunicació sobre persones i situacions de vulnerabilitat.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <div class="flex justify-end pt-4">
+                    <button onclick="showScreen(1)" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-sm smooth-transition flex items-center gap-2">
+                        <span class="btn-next-txt">Començar Càpsula 1</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PANTALLA 1: Cápsula 1 -->
+            <section id="screen-1" class="screen-content fade-in space-y-8">
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-6 flex flex-wrap items-center justify-between gap-4">
+                        <h2 id="c1-title" class="text-xl md:text-2xl font-bold text-slate-800">Càpsula 1. Les paraules construeixen realitats</h2>
+                        <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            10 min
+                        </span>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 space-y-8">
+                        <!-- Recurso -->
+                        <div>
+                            <h3 id="c1-resource-title" class="text-lg font-semibold mb-4 text-slate-700">Recurs: Construint realitats</h3>
+                            <div class="relative group cursor-pointer rounded-xl overflow-hidden shadow-md border border-slate-200 inline-block max-w-sm w-full focus:outline-none focus:ring-2 focus:ring-primary-500" 
+                                 role="button" tabindex="0" 
+                                 aria-label="Ampliar infografia El Poder Estratègic del Llenguatge"
+                                 onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia_El_Poder_Estrategico_del_Lenguaje-OK-1.png')"
+                                 onkeydown="if(event.key==='Enter'||event.key===' ') openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia_El_Poder_Estrategico_del_Lenguaje-OK-1.png')">
+                                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia_El_Poder_Estrategico_del_Lenguaje-OK-1.png" 
+                                     alt="Infografia descriptiva sobre el poder estratègic del llenguatge en la comunicació" 
+                                     loading="lazy" 
+                                     class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 smooth-transition" 
+                                     onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=Infografia+No+Disponible'">
+                                <div class="absolute inset-0 bg-primary-900/40 opacity-0 group-hover:opacity-100 smooth-transition flex items-center justify-center">
+                                    <div class="bg-white p-3 rounded-full text-primary-600 shadow-lg transform scale-90 group-hover:scale-100 smooth-transition">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="c1-resource-click" class="text-sm text-slate-500 mt-2">Fes clic a la imatge per ampliar</p>
+                        </div>
+
+                        <!-- Actividad 1 -->
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                            <h3 id="act1-title" class="text-lg font-bold text-slate-800 mb-4">Activitat 1</h3>
+                            <p id="act1-prompt" class="mb-4 text-slate-700">Observa la infografia i respon: <strong>Quina d'aquestes afirmacions resumeix millor la idea principal?</strong></p>
+                            
+                            <div class="space-y-3" id="q1-options">
+                                <label class="quiz-option flex relative">
+                                    <input type="radio" name="q1" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                    <div class="w-full p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                        <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:border-primary-500 peer-checked:bg-primary-500 flex items-center justify-center"></div>
+                                        <span id="q1-opt-0" class="text-slate-700">El llenguatge únicament descriu la realitat.</span>
+                                    </div>
+                                </label>
+                                <label class="quiz-option flex relative">
+                                    <input type="radio" name="q1" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                    <div class="w-full p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                        <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:border-primary-500 peer-checked:bg-primary-500 flex items-center justify-center"></div>
+                                        <span id="q1-opt-1" class="text-slate-700">La comunicació és una eina purament tècnica.</span>
+                                    </div>
+                                </label>
+                                <label class="quiz-option flex relative">
+                                    <input type="radio" name="q1" value="1" class="peer absolute opacity-0 w-0 h-0">
+                                    <div class="w-full p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                        <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:border-primary-500 peer-checked:bg-primary-500 flex items-center justify-center"></div>
+                                        <span id="q1-opt-2" class="text-slate-700">Les paraules influeixen en com comprenem les persones i els problemes socials.</span>
+                                    </div>
+                                </label>
+                                <label class="quiz-option flex relative">
+                                    <input type="radio" name="q1" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                    <div class="w-full p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                        <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:border-primary-500 peer-checked:bg-primary-500 flex items-center justify-center"></div>
+                                        <span id="q1-opt-3" class="text-slate-700">El llenguatge només és important per a periodistes.</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <button onclick="checkQ1()" id="btn-check-q1" class="mt-6 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm smooth-transition">Comprovar resposta</button>
+                            
+                            <div id="q1-feedback" class="mt-4 p-4 rounded-lg hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <div class="flex justify-between items-center pt-4">
+                    <button onclick="showScreen(0)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 px-6 rounded-xl smooth-transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span class="btn-prev-txt">Anterior</span>
+                    </button>
+                    <button onclick="showScreen(2)" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-sm smooth-transition flex items-center gap-2">
+                        <span class="btn-next-txt">Següent</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PANTALLA 2: Cápsula 2 -->
+            <section id="screen-2" class="screen-content fade-in space-y-8">
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-6 flex flex-wrap items-center justify-between gap-4">
+                        <h2 id="c2-title" class="text-xl md:text-2xl font-bold text-slate-800">Càpsula 2. Anomenar bé també és incloure</h2>
+                        <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            15 min
+                        </span>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 space-y-8">
+                        <!-- Recurso -->
+                        <div>
+                            <h3 id="c2-resource-title" class="text-lg font-semibold mb-4 text-slate-700">Recurs: El poder estratègic del llenguatge inclusiu</h3>
+                            <div class="relative group cursor-pointer rounded-xl overflow-hidden shadow-md border border-slate-200 inline-block max-w-sm w-full focus:outline-none focus:ring-2 focus:ring-primary-500" 
+                                 role="button" tabindex="0"
+                                 aria-label="Ampliar infografia El poder estratègic del llenguatge inclusiu"
+                                 onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-El-poder-estrategico-del-lenguaje-inclusivo-1.png')"
+                                 onkeydown="if(event.key==='Enter'||event.key===' ') openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-El-poder-estrategico-del-lenguaje-inclusivo-1.png')">
+                                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-El-poder-estrategico-del-lenguaje-inclusivo-1.png" 
+                                     alt="Infografia descriptiva sobre el llenguatge inclusiu i el seu valor estratègic" 
+                                     loading="lazy" 
+                                     class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 smooth-transition" 
+                                     onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=Infografia+No+Disponible'">
+                                <div class="absolute inset-0 bg-primary-900/40 opacity-0 group-hover:opacity-100 smooth-transition flex items-center justify-center">
+                                    <div class="bg-white p-3 rounded-full text-primary-600 shadow-lg transform scale-90 group-hover:scale-100 smooth-transition">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="c2-resource-click" class="text-sm text-slate-500 mt-2">Fes clic a la imatge per ampliar</p>
+                        </div>
+
+                        <!-- Actividad 2 -->
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                            <h3 id="act2-title" class="text-lg font-bold text-slate-800 mb-2">Activitat 2</h3>
+                            <p id="act2-prompt" class="mb-6 text-slate-700">Quina expressió triaries en cadascun d'aquests exemples? Fes clic a l'opció més adequada i inclusiva.</p>
+                            
+                            <div class="space-y-6">
+                                <!-- Caso 1 -->
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <h4 class="case-label text-sm font-bold text-slate-500 uppercase tracking-wider mb-3" data-case="1">Cas 1</h4>
+                                    <div class="grid sm:grid-cols-2 gap-4">
+                                        <button onclick="checkComparison(this, false, 'c1', 'c1-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 text-left smooth-transition">
+                                            <span id="c1-opt-a">"Menors immigrants"</span>
+                                        </button>
+                                        <button onclick="checkComparison(this, true, 'c1', 'c1-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 text-left smooth-transition">
+                                            <span id="c1-opt-b">"Nens i nenes en situació de mobilitat"</span>
+                                        </button>
+                                    </div>
+                                    <div id="c1-feedback" class="mt-3 text-sm hidden"></div>
+                                </div>
+
+                                <!-- Caso 2 -->
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <h4 class="case-label text-sm font-bold text-slate-500 uppercase tracking-wider mb-3" data-case="2">Cas 2</h4>
+                                    <div class="grid sm:grid-cols-2 gap-4">
+                                        <button onclick="checkComparison(this, false, 'c2', 'c2-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 text-left smooth-transition">
+                                            <span id="c2-opt-a">"Els vulnerables"</span>
+                                        </button>
+                                        <button onclick="checkComparison(this, true, 'c2', 'c2-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 text-left smooth-transition">
+                                            <span id="c2-opt-b">"Persones en situació de vulnerabilitat"</span>
+                                        </button>
+                                    </div>
+                                    <div id="c2-feedback" class="mt-3 text-sm hidden"></div>
+                                </div>
+
+                                <!-- Caso 3 -->
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <h4 class="case-label text-sm font-bold text-slate-500 uppercase tracking-wider mb-3" data-case="3">Cas 3</h4>
+                                    <div class="grid sm:grid-cols-2 gap-4">
+                                        <button onclick="checkComparison(this, false, 'c3', 'c3-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 text-left smooth-transition">
+                                            <span id="c3-opt-a">"Immigrant il·legal"</span>
+                                        </button>
+                                        <button onclick="checkComparison(this, true, 'c3', 'c3-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 text-left smooth-transition">
+                                            <span id="c3-opt-b">"Persona en situació administrativa irregular"</span>
+                                        </button>
+                                    </div>
+                                    <div id="c3-feedback" class="mt-3 text-sm hidden"></div>
+                                </div>
+
+                                <!-- Caso 4 -->
+                                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                    <h4 class="case-label text-sm font-bold text-slate-500 uppercase tracking-wider mb-3" data-case="4">Cas 4</h4>
+                                    <div class="grid sm:grid-cols-2 gap-4">
+                                        <button onclick="checkComparison(this, false, 'c4', 'c4-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-slate-300 hover:bg-slate-50 text-left smooth-transition">
+                                            <span id="c4-opt-a">"Discapacitat"</span>
+                                        </button>
+                                        <button onclick="checkComparison(this, true, 'c4', 'c4-feedback')" class="p-4 border-2 border-slate-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 text-left smooth-transition">
+                                            <span id="c4-opt-b">"Persona amb discapacitat"</span>
+                                        </button>
+                                    </div>
+                                    <div id="c4-feedback" class="mt-3 text-sm hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <div class="flex justify-between items-center pt-4">
+                    <button onclick="showScreen(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 px-6 rounded-xl smooth-transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span class="btn-prev-txt">Anterior</span>
+                    </button>
+                    <button onclick="showScreen(3)" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-sm smooth-transition flex items-center gap-2">
+                        <span class="btn-next-txt">Següent</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PANTALLA 3: Cápsula 3 -->
+            <section id="screen-3" class="screen-content fade-in space-y-8">
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-6 flex flex-wrap items-center justify-between gap-4">
+                        <h2 id="c3-title" class="text-xl md:text-2xl font-bold text-slate-800">Càpsula 3. Analitzar un missatge</h2>
+                        <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            10 min
+                        </span>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 space-y-8">
+                        <!-- Recurso -->
+                        <div>
+                            <h3 id="c3-resource-title" class="text-lg font-semibold mb-4 text-slate-700">Recurs: Vulnerabilitat sociocultural i representació audiovisual</h3>
+                            <div class="relative group cursor-pointer rounded-xl overflow-hidden shadow-md border border-slate-200 inline-block max-w-sm w-full focus:outline-none focus:ring-2 focus:ring-primary-500" 
+                                 role="button" tabindex="0"
+                                 aria-label="Ampliar infografia Vulnerabilitat sociocultural i representació audiovisual inclusiva"
+                                 onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Vulnerabilidad-sociocultural-y-representacion-audiovisual-inclusiva-OK-1.png')"
+                                 onkeydown="if(event.key==='Enter'||event.key===' ') openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Vulnerabilidad-sociocultural-y-representacion-audiovisual-inclusiva-OK-1.png')">
+                                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Vulnerabilidad-sociocultural-y-representacion-audiovisual-inclusiva-OK-1.png" 
+                                     alt="Infografia sobre vulnerabilitat sociocultural i criteris de representació audiovisual inclusiva" 
+                                     loading="lazy" 
+                                     class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 smooth-transition" 
+                                     onerror="this.src='https://placehold.co/600x400/e2e8f0/475569?text=Infografia+No+Disponible'">
+                                <div class="absolute inset-0 bg-primary-900/40 opacity-0 group-hover:opacity-100 smooth-transition flex items-center justify-center">
+                                    <div class="bg-white p-3 rounded-full text-primary-600 shadow-lg transform scale-90 group-hover:scale-100 smooth-transition">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="c3-resource-click" class="text-sm text-slate-500 mt-2">Fes clic a la imatge per ampliar</p>
+                        </div>
+
+                        <!-- Actividad 3 -->
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                            <h3 id="act3-title" class="text-lg font-bold text-slate-800 mb-2">Activitat 3</h3>
+                            <p id="act3-prompt" class="mb-6 text-slate-700">Quins aspectes d'un missatge hauríem d'analitzar a més del text? Completa la llista de comprovació interactiva.</p>
+                            
+                            <!-- Pregunta 3.1 -->
+                            <div class="mb-8 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <p id="q3-1-title" class="font-semibold text-slate-800 mb-4">Pregunta 1: Quan analitzem un missatge inclusiu ens hem de fixar en...</p>
+                                <div class="grid sm:grid-cols-2 gap-3 mb-4" id="q3-1-options">
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="0" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-0">Només en les paraules.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-1">Les imatges.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-2">El llenguatge utilitzat.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-3">Qui apareix representat.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-4">Qui no apareix.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-1-opt-5">El context.</span>
+                                    </label>
+                                </div>
+                                <button onclick="checkCheckboxes('q3-1-options', 'fb-3-1', 'q3-1')" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-5 rounded-lg text-sm smooth-transition btn-check-txt">Comprovar resposta</button>
+                                <div id="fb-3-1" class="mt-3 hidden p-4 bg-primary-50 text-primary-900 border-l-4 border-primary-500 rounded-r-lg"></div>
+                            </div>
+
+                            <!-- Pregunta 3.2 -->
+                            <div class="mb-8 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <p id="q3-2-title" class="font-semibold text-slate-800 mb-4">Pregunta 2: Quina d'aquestes opcions és clau per a l'aplicació d'una metodologia multimodal? (Pots marcar més d'una opció)</p>
+                                <div class="grid sm:grid-cols-2 gap-3 mb-4" id="q3-2-options">
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="0" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-2-opt-0">Nombre de seguidors.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-2-opt-1">Narrativa visual.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-2-opt-2">Tractament sonor.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="1" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-2-opt-3">Creativitat.</span>
+                                    </label>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-slate-50">
+                                        <input type="checkbox" value="0" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                        <span id="q3-2-opt-4">Durada del vídeo.</span>
+                                    </label>
+                                </div>
+                                <button onclick="checkCheckboxes('q3-2-options', 'fb-3-2', 'q3-2')" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-5 rounded-lg text-sm smooth-transition btn-check-txt">Comprovar resposta</button>
+                                <div id="fb-3-2" class="mt-3 hidden p-4 bg-primary-50 text-primary-900 border-l-4 border-primary-500 rounded-r-lg"></div>
+                            </div>
+
+                            <!-- Pregunta 3.3 -->
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                                <p id="q3-3-title" class="font-semibold text-slate-800 mb-2">Pregunta 3</p>
+                                <p id="q3-3-desc" class="text-sm text-slate-600 mb-6">A continuació, trobaràs dues situacions inspirades en escenaris reals de comunicació. Selecciona l'enfocament més inclusiu en cada cas.</p>
+                                
+                                <!-- 3.3.A -->
+                                <div class="mb-6">
+                                    <p id="q3-3a-title" class="font-medium text-slate-800 mb-3 bg-slate-100 p-3 rounded border-l-4 border-slate-400">Una notícia informa sobre persones que viuen en situació de pobresa. Quin enfocament és més adequat?</p>
+                                    <div class="space-y-3" id="q3-3a-options">
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3a" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3a-opt-0" class="text-sm">Mostrar únicament imatges que transmetin patiment per generar impacte.</span>
+                                            </div>
+                                        </label>
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3a" value="1" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3a-opt-1" class="text-sm font-medium">Explicar les circumstàncies socials que contribueixen a aquesta situació i utilitzar un llenguatge respectuós.</span>
+                                            </div>
+                                        </label>
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3a" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3a-opt-2" class="text-sm">Centrar el relat en les decisions individuals de les persones afectades.</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <button onclick="checkRadioSimple('q3-3a', 'fb-3-3a', 'q3-3a')" class="mt-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-1.5 px-4 rounded-lg text-sm smooth-transition btn-check-txt">Comprovar resposta</button>
+                                    <div id="fb-3-3a" class="mt-3 hidden p-3 text-sm bg-emerald-50 text-emerald-900 border-l-4 border-emerald-500 rounded-r-lg"></div>
+                                </div>
+
+                                <!-- 3.3.B -->
+                                <div>
+                                    <p id="q3-3b-title" class="font-medium text-slate-800 mb-3 bg-slate-100 p-3 rounded border-l-4 border-slate-400">Una campanya institucional vol sensibilitzar sobre la vulnerabilitat. Quina d'aquestes opcions s'ajusta millor a un enfocament inclusiu?</p>
+                                    <div class="space-y-3" id="q3-3b-options">
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3b" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3b-opt-0" class="text-sm">Presentar les persones únicament com a receptores passives d'ajuda.</span>
+                                            </div>
+                                        </label>
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3b" value="1" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3b-opt-1" class="text-sm font-medium">Mostrar la diversitat de situacions i destacar també les capacitats, la participació i les xarxes de suport.</span>
+                                            </div>
+                                        </label>
+                                        <label class="quiz-option flex relative">
+                                            <input type="radio" name="q3-3b" value="0" class="peer absolute opacity-0 w-0 h-0">
+                                            <div class="w-full p-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 smooth-transition flex items-center gap-3">
+                                                <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:bg-primary-500"></div>
+                                                <span id="q3-3b-opt-2" class="text-sm">Utilitzar imatges molt impactants encara que reforcin estereotips.</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <button onclick="checkRadioSimple('q3-3b', 'fb-3-3b', 'q3-3b')" class="mt-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-1.5 px-4 rounded-lg text-sm smooth-transition btn-check-txt">Comprovar resposta</button>
+                                    <div id="fb-3-3b" class="mt-3 hidden p-3 text-sm bg-emerald-50 text-emerald-900 border-l-4 border-emerald-500 rounded-r-lg"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Ideas Clave -->
+                        <div class="bg-primary-50 border border-primary-100 rounded-2xl p-6 md:p-8 relative overflow-hidden">
+                            <div class="absolute -right-4 -bottom-4 text-primary-200 opacity-20 pointer-events-none">
+                                <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
+                            </div>
+                            <h3 id="key-ideas-title" class="text-xl font-bold text-primary-900 mb-4 flex items-center gap-2 relative z-10">
+                                <svg class="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                Idees clau
+                            </h3>
+                            <ul class="space-y-4 text-primary-800 relative z-10">
+                                <li class="flex gap-3">
+                                    <span class="text-accent-600 mt-1">●</span>
+                                    <p id="key-idea-1">Cada decisió comunicativa —les paraules, les imatges, el context o l'enfocament triat— contribueix a construir la manera com comprenem la realitat social.</p>
+                                </li>
+                                <li class="flex gap-3">
+                                    <span class="text-accent-600 mt-1">●</span>
+                                    <p id="key-idea-2">La comunicació no es construeix només amb paraules. També comuniquen les imatges, les persones que hi apareixen (o que no hi apareixen), el so, el context i les decisions creatives. Analitzar tots aquests elements ajuda a produir missatges més rigorosos, inclusius i respectuosos.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <div class="flex justify-between items-center pt-4">
+                    <button onclick="showScreen(2)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 px-6 rounded-xl smooth-transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span class="btn-prev-txt">Anterior</span>
+                    </button>
+                    <button onclick="showScreen(4)" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-sm smooth-transition flex items-center gap-2">
+                        <span class="btn-next-txt">Següent</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- PANTALLA 4: Cápsula 4 -->
+            <section id="screen-4" class="screen-content fade-in space-y-8">
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 p-6 flex flex-wrap items-center justify-between gap-4">
+                        <h2 id="c4-title" class="text-xl md:text-2xl font-bold text-slate-800">Càpsula 4. Comunicar per incloure: què faries tu?</h2>
+                        <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            10 min
+                        </span>
+                    </div>
+                    
+                    <div class="p-6 md:p-8 space-y-10">
+                        
+                        <!-- Actividad 4 -->
+                        <div>
+                            <h3 id="act4-title" class="text-lg font-bold text-slate-800 mb-2">Activitat 4</h3>
+                            <p id="act4-prompt" class="mb-6 text-slate-700">Tria l'opció que consideris més adequada per a una comunicació inclusiva en cadascuna de les situacions següents:</p>
+                            
+                            <div class="space-y-6">
+                                <!-- Situación 1 -->
+                                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                    <h4 id="sit1-title" class="font-bold text-slate-800 mb-3">Situació 1: Publicaràs una notícia sobre persones afectades per un desnonament. Quin titular triaries?</h4>
+                                    <div class="space-y-3">
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit1-fb-1', 'sit1-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit1-opt-0" class="text-slate-700">Els vulnerables tornen a necessitar ajuda.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, true, 'sit1-fb-2', 'sit1-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-primary-400 smooth-transition flex justify-between items-center">
+                                            <span id="sit1-opt-1" class="text-slate-700 font-medium">Famílies afectades per un desnonament reclamen solucions habitacionals.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit1-fb-3', 'sit1-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit1-opt-2" class="text-slate-700">Drama social en un barri de la ciutat.</span>
+                                        </button>
+                                    </div>
+                                    <div id="sit1-fb" class="mt-3 p-3 text-sm rounded-lg hidden"></div>
+                                </div>
+
+                                <!-- Situación 2 -->
+                                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                    <h4 id="sit2-title" class="font-bold text-slate-800 mb-3">Situació 2: Estàs dissenyant un cartell institucional. Quina imatge triaries?</h4>
+                                    <div class="space-y-3">
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit2-fb-1', 'sit2-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit2-opt-0" class="text-slate-700">Persones plorant en primer pla.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, true, 'sit2-fb-2', 'sit2-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-primary-400 smooth-transition flex justify-between items-center">
+                                            <span id="sit2-opt-1" class="text-slate-700 font-medium">Una escena quotidiana que meostri diversitat i participació.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit2-fb-3', 'sit2-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit2-opt-2" class="text-slate-700">Una fotografia molt impactant encara que no representi la realitat.</span>
+                                        </button>
+                                    </div>
+                                    <div id="sit2-fb" class="mt-3 p-3 text-sm rounded-lg hidden"></div>
+                                </div>
+
+                                <!-- Situación 3 -->
+                                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                    <h4 id="sit3-title" class="font-bold text-slate-800 mb-3">Situació 3: Prepares una campanya sobre accés a la salut. Quin enfocament utilitzaries?</h4>
+                                    <div class="space-y-3">
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit3-fb-1', 'sit3-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit3-opt-0" class="text-slate-700">Centrar el missatge únicament en les dificultats personals.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, true, 'sit3-fb-2', 'sit3-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-primary-400 smooth-transition flex justify-between items-center">
+                                            <span id="sit3-opt-1" class="text-slate-700 font-medium">Explicar també les barreres que dificulten l'accés al sistema sanitari.</span>
+                                        </button>
+                                        <button onclick="markSimpleWithFeedback(this, false, 'sit3-fb-3', 'sit3-fb')" class="w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 smooth-transition flex justify-between items-center">
+                                            <span id="sit3-opt-2" class="text-slate-700">Presentar únicament dades estadístiques.</span>
+                                        </button>
+                                    </div>
+                                    <div id="sit3-fb" class="mt-3 p-3 text-sm rounded-lg hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actividad 5 -->
+                        <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                            <h3 id="act5-title" class="text-lg font-bold text-slate-800 mb-2">Activitat 5: Compromís Personal</h3>
+                            <p id="act5-prompt" class="mb-4 text-slate-700">Selecciona els <strong>dos compromisos</strong> que vulguis incorporar prioritàriament a la teva pràctica professional o personal.</p>
+                            
+                            <div class="space-y-3" id="compromisos-options">
+                                <label class="flex items-center space-x-3 p-3 border border-slate-200 bg-white rounded-lg cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" onchange="checkCompromisos()" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                    <span id="comp-opt-0" class="text-slate-700">Pensaré primer en les persones, no en les etiquetes.</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 border border-slate-200 bg-white rounded-lg cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" onchange="checkCompromisos()" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                    <span id="comp-opt-1" class="text-slate-700">Revisaré el context abans de comunicar una situació.</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 border border-slate-200 bg-white rounded-lg cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" onchange="checkCompromisos()" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                    <span id="comp-opt-2" class="text-slate-700">Evitaré imatges estereotipades.</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 border border-slate-200 bg-white rounded-lg cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" onchange="checkCompromisos()" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                    <span id="comp-opt-3" class="text-slate-700">Cercaré informació fiable abans de compartir continguts.</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 border border-slate-200 bg-white rounded-lg cursor-pointer hover:bg-slate-50">
+                                    <input type="checkbox" onchange="checkCompromisos()" class="form-checkbox h-5 w-5 text-primary-600 rounded">
+                                    <span id="comp-opt-4" class="text-slate-700">Revisaré l'impacte que poden tenir les meves paraules.</span>
+                                </label>
+                            </div>
+
+                            <p id="comp-counter" class="text-sm font-semibold text-primary-600 mt-4">Heu seleccionat 0 de 2 compromisos necessaris.</p>
+
+                            <!-- Feedback Compromisos -->
+                            <div id="fb-compromisos" class="mt-6 hidden bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center animate-fade-in">
+                                <h4 id="comp-fb-title" class="text-xl font-bold text-emerald-800 mb-2">Bon començament!</h4>
+                                <p id="comp-fb-text" class="text-emerald-700 mb-6">Qualsevol d'aquests compromisos suposa un bon punt de partida. Intenta incorporar-los progressivament en la teva pràctica personal o professional.</p>
+                                <button onclick="finishModule()" id="btn-finish" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl shadow-md smooth-transition transform hover:scale-105">
+                                    Finalitzar itinerari
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Navegación -->
+                <div class="flex justify-between items-center pt-4">
+                    <button onclick="showScreen(3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2.5 px-6 rounded-xl smooth-transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span class="btn-prev-txt">Anterior</span>
+                    </button>
+                    <div></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <span id="footer-text">Projecte AFRONTA — Universitat Autònoma de Barcelona (UAB)</span>
+            <div class="flex items-center gap-2">
+                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/CC_BY-NC-ND.svg?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original" alt="CC BY-NC-ND 4.0" class="h-6">
+                </a>
+                <span>4.0</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para Ampliar Imágenes -->
+    <div id="image-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" id="modal-close-btn" class="absolute -top-12 right-0 text-white hover:text-slate-300 font-bold text-lg bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-600 transition" aria-label="Tancar finestra emergent d'imatge">
+                ✕ Tancar
+            </button>
+            <img id="modal-img" src="" alt="Infografia ampliada" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl bg-white">
+        </div>
+    </div>
+
+    <!-- Modal Final de Cierre -->
+    <div id="final-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl border border-slate-100 text-center space-y-6 animate-fade-in" onclick="event.stopPropagation()">
+            <div class="w-16 h-16 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                ✨
+            </div>
+            <h3 id="final-modal-title" class="text-2xl font-bold text-slate-800">Idea clau final</h3>
+            <p id="final-modal-body" class="text-slate-600 leading-relaxed text-base">
+                Cada missatge és una oportunitat per construir una societat més inclusiva. Comunicar amb responsabilitat significa informar amb rigor, respectar la dignitat de les persones i contribuir a una millor comprensió de la realitat.
+            </p>
+            <button onclick="closeFinalModal()" id="final-modal-btn" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-xl shadow-md smooth-transition">
+                Tancar itinerari
+            </button>
+        </div>
+    </div>
+
+    <!-- Script de Funcionalidad e Idiomas -->
+    <script>
+        let currentLang = 'ca';
+        let currentScreen = 0;
+
+        const translations = {
+            ca: {
+                docTitle: "Itinerari 3. Comunicació responsable i representació de la vulnerabilitat",
+                duration: "Durada: 45 minuts",
+                navTitle: "Navegació del mòdul",
+                nav: ["Inici i Objectius", "Càpsula 1", "Càpsula 2", "Càpsula 3", "Càpsula 4"],
+                btnPrev: "Anterior",
+                btnNext: "Següent",
+                btnStartC1: "Començar Càpsula 1",
+                btnCheck: "Comprovar resposta",
+                
+                heroBadge: "Itinerari 3",
+                heroTitle: "Comunicació responsable i representació de la vulnerabilitat",
+                heroSubtitle: "Com influeixen les paraules, les imatges i els relats en la manera com entenem la vulnerabilitat?",
+                
+                objTitle: "Objectius de l'itinerari",
+                objIntro: "En acabar l'itinerari, seràs capaç de:",
+                obj1: "Comprendre que el llenguatge mai no és completament neutral.",
+                obj2: "Reconèixer com determinades expressions poden reforçar estereotips o afavorir una comunicació respectuosa.",
+                obj3: "Identificar principis bàsics de comunicació inclusiva.",
+                obj4: "Aplicar criteris senzills per millorar la comunicació sobre persones i situacions de vulnerabilitat.",
+
+                c1Title: "Càpsula 1. Les paraules construeixen realitats",
+                c1ResTitle: "Recurs: Construint realitats",
+                c1ResClick: "Fes clic a la imatge per ampliar",
+                act1Title: "Activitat 1",
+                act1Prompt: "Observa la infografia i respon: <strong>Quina d'aquestes afirmacions resumeix millor la idea principal?</strong>",
+                q1Opts: [
+                    "El llenguatge únicament descriu la realitat.",
+                    "La comunicació és una eina purament tècnica.",
+                    "Les paraules influeixen en com comprenem les persones i els problemes socials.",
+                    "El llenguatge només és important per a periodistes."
+                ],
+                q1FbCorrect: "<strong>Correcte!</strong> El llenguatge no és neutre; configura la nostra manera de percebre el medi social i d'interaccionar-hi.",
+                q1FbIncorrect: "<strong>Resposta incorrecta.</strong> Revisa de nou la infografia. El llenguatge exerceix un paper determinant en la representació social.",
+                q1FbEmpty: "Si us plau, selecciona una resposta abans de comprovar.",
+
+                c2Title: "Càpsula 2. Anomenar bé també és incloure",
+                c2ResTitle: "Recurs: El poder estratègic del llenguatge inclusiu",
+                c2ResClick: "Fes clic a la imatge per ampliar",
+                act2Title: "Activitat 2",
+                act2Prompt: "Quina expressió triaries en cadascun d'aquests exemples? Fes clic a l'opció més adequada i inclusiva.",
+                caseTxt: "Cas ",
+                c1OptA: '"Menors immigrants"',
+                c1OptB: '"Nens i nenes en situació de mobilitat"',
+                c1FbA: "L'ús d'etiquetes estigmatitzadores deshumanitza. És millor posar la persona al centre.",
+                c1FbB: "Correcte! Es posa la infància al centre i es descriu la seva situació sense etiquetar.",
+                c2OptA: '"Els vulnerables"',
+                c2OptB: '"Persones en situació de vulnerabilitat"',
+                c2FbA: "Substantivar adjectius redueix la identitat de la persona a una sola característica temporal.",
+                c2FbB: "Correcte! La vulnerabilitat és una circumstància en què es troba la persona, no la seva identitat.",
+                c3OptA: '"Immigrant il·legal"',
+                c3OptB: '"Persona en situació administrativa irregular"',
+                c3FbA: "Cap persona no és il·legal. La irregularitat és una situació administrativa.",
+                c3FbB: "Correcte! Descriu de manera precisa i respectuosa un estat administratiu transitori.",
+                c4OptA: '"Discapacitat"',
+                c4OptB: '"Persona amb discapacitat"',
+                c4FbA: "El terme agrupa i redueix la persona a la seva discapacitat.",
+                c4FbB: "Correcte! Aquest és el terme consensuat internacionalment perquè prioritza la condició de persona.",
+
+                c3Title: "Càpsula 3. Analitzar un missatge",
+                c3ResTitle: "Recurs: Vulnerabilitat sociocultural i representació audiovisual",
+                c3ResClick: "Fes clic a la imatge per ampliar",
+                act3Title: "Activitat 3",
+                act3Prompt: "Quins aspectes d'un missatge hauríem d'analitzar a més del text? Completa la llista de comprovació interactiva.",
+                q3_1Title: "Pregunta 1: Quan analitzem un missatge inclusiu ens hem de fixar en...",
+                q3_1Opts: ["Només en les paraules.", "Les imatges.", "El llenguatge utilitzat.", "Qui apareix representat.", "Qui no apareix.", "El context."],
+                q3_1Fb: "Un missatge comunica mitjançant múltiples elements: imatges, so, llenguatge, protagonistes, context i narrativa.",
+                q3_2Title: "Pregunta 2: Quina d'aquestes opcions és clau per a l'aplicació d'una metodologia multimodal? (Pots marcar més d'una opció)",
+                q3_2Opts: ["Nombre de seguidors.", "Narrativa visual.", "Tractament sonor.", "Creativitat.", "Durada del vídeo."],
+                q3_2Fb: "L'anàlisi multimodal considera la producció, l'emissió i la recepció del missatge, així com la narrativa visual, el tractament sonor i les decisions creatives.",
+                q3_3Title: "Pregunta 3",
+                q3_3Desc: "A continuació, trobaràs dues situacions inspirades en escenaris reals de comunicació. Selecciona l'enfocament més inclusiu en cada cas.",
+                q3_3aTitle: "Una notícia informa sobre persones que viuen en situació de pobresa. Quin enfocament és més adequat?",
+                q3_3aOpts: [
+                    "Mostrar únicament imatges que transmetin patiment per generar impacte.",
+                    "Explicar les circumstàncies socials que contribueixen a aquesta situació i utilitzar un llenguatge respectuós.",
+                    "Centrar el relat en les decisions individuals de les persones afectades."
+                ],
+                q3_3aFb: "Una comunicació responsable contextualitza els problemes, evita simplificacions i representa les persones amb dignitat.",
+                q3_3bTitle: "Una campanya institutional vol sensibilitzar sobre la vulnerabilitat. Quina d'aquestes opcions s'ajusta millor a un enfocament inclusiu?",
+                q3_3bOpts: [
+                    "Presentar les persones únicament com a receptores passives d'ajuda.",
+                    "Mostrar la diversitat de situacions i destacar també les capacitats, la participació i les xarxes de suport.",
+                    "Utilitzar imatges molt impactants encara que reforcin estereotips."
+                ],
+                q3_3bFb: "La representació de la vulnerabilitat no ha de reduir les persones a les seves dificultats. També pot visibilitzar les seves capacitats, drets i possibilitats de participació.",
+                keyIdeasTitle: "Idees clau",
+                keyIdea1: "Cada decisió comunicativa —les paraules, les imatges, el context o l'enfocament triat— contribueix a construir la manera com comprenem la realitat social.",
+                keyIdea2: "La comunicació no es construeix només amb paraules. També comuniquen les imatges, les persones que hi apareixen (o que no hi apareixen), el so, el context i les decisions creatives. Analitzar tots aquests elements ajuda a produir missatges més rigorosos, inclusius i respectuosos.",
+
+                c4Title: "Càpsula 4. Comunicar per incloure: què faries tu?",
+                act4Title: "Activitat 4",
+                act4Prompt: "Tria l'opció que consideris més adequada per a una comunicació inclusiva en cadascuna de les situacions següents:",
+                sit1Title: "Situació 1: Publicaràs una notícia sobre persones afectades per un desnonament. Quin titular triaries?",
+                sit1Opts: [
+                    "Els vulnerables tornen a necessitar ajuda.",
+                    "Famílies afectades per un desnonament reclamen solucions habitacionals.",
+                    "Drama social en un barri de la ciutat."
+                ],
+                sit1Fbs: [
+                    "Substantivar adjectius ('els vulnerables') redueix la identitat de les persones a una etiqueta.",
+                    "Excel·lent! Posa el focus en l'acció i els drets de les persones sense estigmatitzar.",
+                    "Utilitzar termes sensacionalistes com 'drama' no explica les causes ni visibilitza els subjectes."
+                ],
+                sit2Title: "Situació 2: Estàs dissenyant un cartell institucional. Quina imatge triaries?",
+                sit2Opts: [
+                    "Persones plorant en primer pla.",
+                    "Una escena quotidiana que meostri diversitat i participació.",
+                    "Una fotografia molt impactant encara que no representi la realitat."
+                ],
+                sit2Fbs: [
+                    "Imatges hiperdramàtiques poden revictimitzar o generar compassió en lloc d'empatia i inclusió.",
+                    "Correcte! Mostra les persones en la seva vida quotidiana amb dignitat, agència i comunitat.",
+                    "Imatges allunyades de la realitat resten rigor i integritat a la comunicació."
+                ],
+                sit3Title: "Situació 3: Prepares una campanya sobre accés a la salut. Quin enfocament utilitzaries?",
+                sit3Opts: [
+                    "Centrar el missatge únicament en les dificultats personals.",
+                    "Explicar també les barreres que dificulten l'accés al sistema sanitari.",
+                    "Presentar únicament dades estadístiques."
+                ],
+                sit3Fbs: [
+                    "Focalitzar únicament en les errades individuals invisibilitza els determinants socials.",
+                    "Correcte! Analitza i identifica les barreres del sistema facilitant un enfocament estructural.",
+                    "Les dades estadístiques aïllades poden deshumanitzar el problema si no s'acompanyen de context."
+                ],
+
+                act5Title: "Activitat 5: Compromís Personal",
+                act5Prompt: "Selecciona els <strong>dos compromisos</strong> que vulguis incorporar prioritàriament a la teva pràctica professional o personal.",
+                compOpts: [
+                    "Pensaré primer en les persones, no en les etiquetes.",
+                    "Revisaré el context abans de comunicar una situació.",
+                    "Evitaré imatges estereotipades.",
+                    "Cercaré informació fiable abans de compartir continguts.",
+                    "Revisaré l'impacte que poden tenir les meves paraules."
+                ],
+                compCounter: "Heu seleccionat {N} de 2 compromisos necessaris.",
+                compFbTitle: "Bon començament!",
+                compFbText: "Qualsevol d'aquests compromisos suposa un bon punt de partida. Intenta incorporar-los progressivament en la teva pràctica personal o professional.",
+                btnFinish: "Finalitzar itinerari",
+                footerText: "Projecte AFRONTA — Universitat Autònoma de Barcelona (UAB)",
+                modalClose: "✕ Tancar",
+                finalModalTitle: "Idea clau final",
+                finalModalBody: "Cada missatge és una oportunitat per construir una societat més inclusiva. Comunicar amb responsabilitat significa informar amb rigor, respectar la dignitat de les persones i contribuir a una millor comprensió de la realitat.",
+                finalModalBtn: "Tancar itinerari"
+            },
+            es: {
+                docTitle: "Itinerario 3. Comunicación responsable y representación de la vulnerabilidad",
+                duration: "Duración: 45 minutos",
+                navTitle: "Navegación del módulo",
+                nav: ["Inicio y Objetivos", "Cápsula 1", "Cápsula 2", "Cápsula 3", "Cápsula 4"],
+                btnPrev: "Anterior",
+                btnNext: "Siguiente",
+                btnStartC1: "Comenzar Cápsula 1",
+                btnCheck: "Comprobar respuesta",
+
+                heroBadge: "Itinerario 3",
+                heroTitle: "Comunicación responsable y representación de la vulnerabilidad",
+                heroSubtitle: "¿Cómo influyen las palabras, las imágenes y los relatos en la forma en que entendemos la vulnerabilidad?",
+
+                objTitle: "Objetivos del itinerario",
+                objIntro: "Al finalizar el itinerario, serás capaz de:",
+                obj1: "Comprender que el lenguaje nunca es completamente neutral.",
+                obj2: "Reconocer cómo determinadas expresiones pueden reforzar estereotipos o favorecer una comunicación respetuosa.",
+                obj3: "Identificar principios básicos de comunicación inclusiva.",
+                obj4: "Aplicar criterios sencillos para mejorar la comunicación sobre personas y situaciones de vulnerabilidad.",
+
+                c1Title: "Cápsula 1. Las palabras construyen realidades",
+                c1ResTitle: "Recurso: Construyendo realidades",
+                c1ResClick: "Haz clic en la imagen para ampliar",
+                act1Title: "Actividad 1",
+                act1Prompt: "Observa la infografía y responde: <strong>¿Cuál de estas afirmaciones resume mejor la idea principal?</strong>",
+                q1Opts: [
+                    "El lenguaje únicamente describe la realidad.",
+                    "La comunicación es una herramienta puramente técnica.",
+                    "Las palabras influyen en cómo comprendemos a las personas y los problemas sociales.",
+                    "El lenguaje solo es importante para periodistas."
+                ],
+                q1FbCorrect: "<strong>¡Correcto!</strong> El lenguaje no es neutro; configura nuestra manera de percibir e interactuar con el entorno social.",
+                q1FbIncorrect: "<strong>Respuesta incorrecta.</strong> Revisa de nuevo la infografía. El lenguaje ejerce un papel determinante en la representación social.",
+                q1FbEmpty: "Por favor, selecciona una respuesta antes de comprobar.",
+
+                c2Title: "Cápsula 2. Nombrar bien también es incluir",
+                c2ResTitle: "Recurso: El poder estratégico del lenguaje inclusivo",
+                c2ResClick: "Haz clic en la imagen para ampliar",
+                act2Title: "Actividad 2",
+                act2Prompt: "¿Qué expresión elegirías en cada uno de estos ejemplos? Haz clic en la opción más adecuada e inclusiva.",
+                caseTxt: "Caso ",
+                c1OptA: '"Menores inmigrantes"',
+                c1OptB: '"Niños y niñas en situación de movilidad"',
+                c1FbA: "El uso de etiquetas estigmatizantes deshumaniza. Es mejor poner a la persona en el centro.",
+                c1FbB: "¡Correcto! Se pone a la infancia en el centro y se describe su situación sin etiquetar.",
+                c2OptA: '"Los vulnerables"',
+                c2OptB: '"Personas en situación de vulnerabilidad"',
+                c2FbA: "Sustantivar adjetivos reduce la identidad de la persona a una sola característica temporal.",
+                c2FbB: "¡Correcto! La vulnerabilidad es una circunstancia en la que se encuentra la persona, no su identidad.",
+                c3OptA: '"Inmigrante ilegal"',
+                c3OptB: '"Persona en situación administrativa irregular"',
+                c3FbA: "Ninguna persona es ilegal. La irregularidad es una situación administrativa.",
+                c3FbB: "¡Correcto! Describe de forma precisa y respetuosa un estado administrativo transitorio.",
+                c4OptA: '"Discapacitado"',
+                c4OptB: '"Persona con discapacidad"',
+                c4FbA: "El término agrupa y reduce a la persona a su discapacidad.",
+                c4FbB: "¡Correcto! Este es el término consensuado internacionalmente porque prioriza la condición de persona.",
+
+                c3Title: "Cápsula 3. Analizar un mensaje",
+                c3ResTitle: "Recurso: Vulnerabilidad sociocultural y representación audiovisual",
+                c3ResClick: "Haz clic en la imagen para ampliar",
+                act3Title: "Actividad 3",
+                act3Prompt: "¿Qué aspectos de un mensaje deberíamos analizar además del texto? Completa la lista de comprobación interactiva.",
+                q3_1Title: "Pregunta 1: Cuando analizamos un mensaje inclusivo debemos fijarnos en...",
+                q3_1Opts: ["Solo en las palabras.", "Las imágenes.", "El lenguaje utilizado.", "Quién aparece representado.", "Quién no aparece.", "El contexto."],
+                q3_1Fb: "Un mensaje comunica mediante múltiples elementos: imágenes, sonido, lenguaje, protagonistas, contexto y narrativa.",
+                q3_2Title: "Pregunta 2: ¿Cuál de estos elementos es clave para la aplicación de una metodología multimodal? (Puedes marcar más de una opción)",
+                q3_2Opts: ["Número de seguidores.", "Narrativa visual.", "Tratamiento sonoro.", "Creatividad.", "Duración del vídeo."],
+                q3_2Fb: "El análisis multimodal considera la producción, la emisión y la recepción del mensaje, así como la narrativa visual, el tratamiento sonoro y las decisiones creativas.",
+                q3_3Title: "Pregunta 3",
+                q3_3Desc: "A continuación, encontrarás dos situaciones inspiradas en escenarios reales de comunicación. Selecciona el enfoque más inclusivo en cada caso.",
+                q3_3aTitle: "Una noticia informa sobre personas que viven en situación de pobreza. ¿Qué enfoque es más adecuado?",
+                q3_3aOpts: [
+                    "Mostrar únicamente imágenes que transmitan sufrimiento para generar impacto.",
+                    "Explicar las circunstancias sociales que contribuyen a esa situación y utilizar un lenguaje respetuoso.",
+                    "Centrar el relato en las decisiones individuales de las personas afectadas."
+                ],
+                q3_3aFb: "Una comunicación responsable contextualiza los problemas, evita simplificaciones y representa a las personas con dignidad.",
+                q3_3bTitle: "Una campaña institucional quiere sensibilizar sobre la vulnerabilidad. ¿Cuál de estas opciones se ajusta mejor a un enfoque inclusivo?",
+                q3_3bOpts: [
+                    "Presentar a las personas únicamente como receptoras pasivas de ayuda.",
+                    "Mostrar la diversidad de situaciones y destacar también las capacidades, la participación y las redes de apoyo.",
+                    "Utilizar imágenes muy impactantes aunque refuercen estereotipos."
+                ],
+                q3_3bFb: "La representación de la vulnerabilidad no debe reducir a las personas a sus dificultades. También puede visibilizar sus capacidades, derechos y posibilidades de participación.",
+                keyIdeasTitle: "Ideas clave",
+                keyIdea1: "Cada decisión comunicativa —las palabras, las imágenes, el contexto o el enfoque elegido— contribuye a construir la forma en que comprendemos la realidad social.",
+                keyIdea2: "La comunicación no se construye solo con palabras. También comunican las imágenes, las personas que aparecen (o no aparecen), el sonido, el contexto y las decisiones creativas. Analizar todos estos elementos ayuda a producir mensajes más rigurosos, inclusivos y respetuosos.",
+
+                c4Title: "Cápsula 4. Comunicar para incluir: ¿qué harías tú?",
+                act4Title: "Actividad 4",
+                act4Prompt: "Escoge la opción que consideres más adecuada para una comunicación inclusiva en cada una de las situaciones siguientes:",
+                sit1Title: "Situación 1: Vas a publicar una noticia sobre personas afectadas por un desahucio. ¿Qué titular elegirías?",
+                sit1Opts: [
+                    "Los vulnerables vuelven a necesitar ayuda.",
+                    "Familias afectadas por un desahucio reclaman soluciones habitacionales.",
+                    "Drama social en un barrio de la ciudad."
+                ],
+                sit1Fbs: [
+                    "Sustantivar adjetivos ('los vulnerables') reduce la identidad de las personas a una etiqueta.",
+                    "¡Excelente! Pone el foco en la acción y los derechos de las personas sin estigmatizar.",
+                    "Utilizar términos sensacionalistas como 'drama' no explica las causas ni visibiliza a los sujetos."
+                ],
+                sit2Title: "Situación 2: Estás diseñando un cartel institucional. ¿Qué imagen escogerías?",
+                sit2Opts: [
+                    "Personas llorando en primer plano.",
+                    "Una escena cotidiana que muestre diversidad y participación.",
+                    "Una fotografía muy impactante aunque no represente la realidad."
+                ],
+                sit2Fbs: [
+                    "Imágenes hiper-dramáticas pueden revictimizar o generar compasión en lugar de empatía e inclusión.",
+                    "¡Correcto! Muestra a las personas en su vida cotidiana con dignidad, agencia y comunidad.",
+                    "Imágenes alejadas de la realidad restan rigor e integridad a la comunicación."
+                ],
+                sit3Title: "Situación 3: Preparas una campaña sobre acceso a la salud. ¿Qué enfoque utilizarías?",
+                sit3Opts: [
+                    "Centrar el mensaje únicamente en las dificultades personales.",
+                    "Explicar también las barreras que dificultan el acceso al sistema sanitario.",
+                    "Presentar únicamente datos estadísticos."
+                ],
+                sit3Fbs: [
+                    "Focalizar únicamente en los fallos individuales invisibiliza los determinantes sociales.",
+                    "¡Correcto! Analiza e identifica las barreras del sistema facilitando un enfoque estructural.",
+                    "Los datos estadísticos aislados pueden deshumanizar el problema si no se acompañan de contexto."
+                ],
+
+                act5Title: "Actividad 5: Compromiso Personal",
+                act5Prompt: "Selecciona los <strong>dos compromisos</strong> que quisieras incorporar prioritariamente a tu práctica profesional o personal.",
+                compOpts: [
+                    "Pensaré primero en las personas, no en las etiquetas.",
+                    "Revisaré el contexto antes de comunicar una situación.",
+                    "Evitaré imágenes estereotipadas.",
+                    "Buscaré información fiable antes de compartir contenidos.",
+                    "Revisaré el impacto que pueden tener mis palabras."
+                ],
+                compCounter: "Has seleccionado {N} de 2 compromisos necesarios.",
+                compFbTitle: "¡Buen comienzo!",
+                compFbText: "Cualquiera de estos compromisos supone un buen punto de partida. Trata de incorporarlos progresivamente en tu práctica personal o profesional.",
+                btnFinish: "Finalizar itinerario",
+                footerText: "Proyecto AFRONTA — Universitat Autònoma de Barcelona (UAB)",
+                modalClose: "✕ Cerrar",
+                finalModalTitle: "Idea clave final",
+                finalModalBody: "Cada mensaje es una oportunidad para construir una sociedad más inclusiva. Comunicar con responsabilidad significa informar con rigor, respetar la dignidad de las personas y contribuir a una mejor comprensión de la realidad.",
+                finalModalBtn: "Cerrar itinerario"
+            },
+            en: {
+                docTitle: "Pathway 3. Responsible communication and representation of vulnerability",
+                duration: "Duration: 45 minutes",
+                navTitle: "Module Navigation",
+                nav: ["Home & Objectives", "Capsule 1", "Capsule 2", "Capsule 3", "Capsule 4"],
+                btnPrev: "Previous",
+                btnNext: "Next",
+                btnStartC1: "Start Capsule 1",
+                btnCheck: "Check answer",
+
+                heroBadge: "Pathway 3",
+                heroTitle: "Responsible communication and representation of vulnerability",
+                heroSubtitle: "How do words, images, and narratives influence the way we understand vulnerability?",
+
+                objTitle: "Pathway objectives",
+                objIntro: "Upon completing this pathway, you will be able to:",
+                obj1: "Understand that language is never completely neutral.",
+                obj2: "Recognize how certain expressions can reinforce stereotypes or foster respectful communication.",
+                obj3: "Identify basic principles of inclusive communication.",
+                obj4: "Apply simple criteria to improve communication about people and situations of vulnerability.",
+
+                c1Title: "Capsule 1. Words construct realities",
+                c1ResTitle: "Resource: Constructing realities",
+                c1ResClick: "Click on image to enlarge",
+                act1Title: "Activity 1",
+                act1Prompt: "Look at the infographic and answer: <strong>Which of these statements best summarizes the main idea?</strong>",
+                q1Opts: [
+                    "Language only describes reality.",
+                    "Communication is a purely technical tool.",
+                    "Words influence how we understand people and social issues.",
+                    "Language is only important for journalists."
+                ],
+                q1FbCorrect: "<strong>Correct!</strong> Language is not neutral; it shapes how we perceive and interact with the social environment.",
+                q1FbIncorrect: "<strong>Incorrect answer.</strong> Review the infographic again. Language plays a decisive role in social representation.",
+                q1FbEmpty: "Please select an answer before checking.",
+
+                c2Title: "Capsule 2. Naming well is also including",
+                c2ResTitle: "Resource: The strategic power of inclusive language",
+                c2ResClick: "Click on image to enlarge",
+                act2Title: "Activity 2",
+                act2Prompt: "Which expression would you choose in each of these examples? Click on the most appropriate and inclusive option.",
+                caseTxt: "Case ",
+                c1OptA: '"Immigrant minors"',
+                c1OptB: '"Children in mobility situations"',
+                c1FbA: "The use of stigmatizing labels dehumanizes. It is better to put the person at the center.",
+                c1FbB: "Correct! Children are put at the center and their situation is described without labeling.",
+                c2OptA: '"The vulnerable"',
+                c2OptB: '"People in situations of vulnerability"',
+                c2FbA: "Turning adjectives into nouns reduces a person's identity to a single temporary characteristic.",
+                c2FbB: "Correct! Vulnerability is a circumstance in which the person finds themselves, not their identity.",
+                c3OptA: '"Illegal immigrant"',
+                c3OptB: '"Person in an irregular administrative situation"',
+                c3FbA: "No human being is illegal. Irregularity is an administrative status.",
+                c3FbB: "Correct! Accurately and respectfully describes a temporary administrative status.",
+                c4OptA: '"Disabled"',
+                c4OptB: '"Person with a disability"',
+                c4FbA: "The term groups and reduces the person to their disability.",
+                c4FbB: "Correct! This is the internationally agreed term because it prioritizes personhood.",
+
+                c3Title: "Capsule 3. Analyzing a message",
+                c3ResTitle: "Resource: Sociocultural vulnerability and audiovisual representation",
+                c3ResClick: "Click on image to enlarge",
+                act3Title: "Activity 3",
+                act3Prompt: "What aspects of a message should we analyze in addition to text? Complete the interactive checklist.",
+                q3_1Title: "Question 1: When analyzing an inclusive message we must pay attention to...",
+                q3_1Opts: ["Only the words.", "The images.", "The language used.", "Who is represented.", "Who is omitted.", "The context."],
+                q3_1Fb: "A message communicates through multiple elements: images, sound, language, protagonists, context, and narrative.",
+                q3_2Title: "Question 2: Which of these elements is key to applying a multimodal methodology? (You can check more than one option)",
+                q3_2Opts: ["Number of followers.", "Visual narrative.", "Sound design.", "Creativity.", "Video duration."],
+                q3_2Fb: "Multimodal analysis considers message production, transmission, and reception, as well as visual narrative, sound design, and creative decisions.",
+                q3_3Title: "Question 3",
+                q3_3Desc: "Below, you will find two situations inspired by real communication scenarios. Select the most inclusive approach in each case.",
+                q3_3aTitle: "A news story reports on people living in poverty. Which approach is most appropriate?",
+                q3_3aOpts: [
+                    "Show only images depicting suffering to create impact.",
+                    "Explain the social circumstances contributing to that situation and use respectful language.",
+                    "Focus the narrative on the individual decisions of affected individuals."
+                ],
+                q3_3aFb: "Responsible communication contextualizes issues, avoids oversimplifications, and represents people with dignity.",
+                q3_3bTitle: "An institutional campaign wants to raise awareness about vulnerability. Which of these options best fits an inclusive approach?",
+                q3_3bOpts: [
+                    "Present people solely as passive recipients of help.",
+                    "Show the diversity of situations and also highlight capabilities, participation, and support networks.",
+                    "Use highly shocking images even if they reinforce stereotypes."
+                ],
+                q3_3bFb: "Representing vulnerability should not reduce people to their difficulties. It can also make visible their capabilities, rights, and opportunities for participation.",
+                keyIdeasTitle: "Key takeaways",
+                keyIdea1: "Every communicative decision—words, images, context, or chosen approach—helps construct how we understand social reality.",
+                keyIdea2: "Communication is not built with words alone. Images, the people featured (or omitted), sound, context, and creative decisions also communicate. Analyzing all these elements helps produce more rigorous, inclusive, and respectful messages.",
+
+                c4Title: "Capsule 4. Communicating to include: what would you do?",
+                act4Title: "Activity 4",
+                act4Prompt: "Choose the option you consider most appropriate for inclusive communication in each of the following situations:",
+                sit1Title: "Situation 1: You are going to publish a news story about people affected by an eviction. Which headline would you choose?",
+                sit1Opts: [
+                    "The vulnerable need help once again.",
+                    "Families affected by an eviction demand housing solutions.",
+                    "Social drama in a city neighborhood."
+                ],
+                sit1Fbs: [
+                    "Nounifying adjectives ('the vulnerable') reduces people's identity to a label.",
+                    "Excellent! Focuses on agency and rights without stigmatizing.",
+                    "Using sensationalist terms like 'drama' does not explain root causes or highlight affected individuals."
+                ],
+                sit2Title: "Situation 2: You are designing an institutional poster. Which image would you choose?",
+                sit2Opts: [
+                    "People crying in close-up.",
+                    "An everyday scene showing diversity and participation.",
+                    "A highly shocking photograph even if it does not represent reality."
+                ],
+                sit2Fbs: [
+                    "Overly dramatic images can revictimize or evoke pity rather than empathy and inclusion.",
+                    "Correct! Shows people in daily life with dignity, agency, and community.",
+                    "Images detached from reality detract from accuracy and communication integrity."
+                ],
+                sit3Title: "Situation 3: You are preparing a campaign on healthcare access. What approach would you use?",
+                sit3Opts: [
+                    "Focus the message solely on personal difficulties.",
+                    "Also explain system barriers hindering healthcare access.",
+                    "Present statistical data alone."
+                ],
+                sit3Fbs: [
+                    "Focusing solely on individual hardship renders social determinants invisible.",
+                    "Correct! Analyzes and identifies system barriers, providing a structural approach.",
+                    "Isolated statistical data can dehumanize the issue if unaccompanied by context."
+                ],
+
+                act5Title: "Activity 5: Personal Commitment",
+                act5Prompt: "Select the <strong>two commitments</strong> you would like to prioritize in your personal or professional practice.",
+                compOpts: [
+                    "I will think first of people, not labels.",
+                    "I will check the context before communicating a situation.",
+                    "I will avoid stereotyped images.",
+                    "I will look for reliable information before sharing content.",
+                    "I will review the potential impact of my words."
+                ],
+                compCounter: "You have selected {N} of 2 required commitments.",
+                compFbTitle: "Great start!",
+                compFbText: "Any of these commitments is a great starting point. Try to incorporate them gradually into your personal or professional practice.",
+                btnFinish: "Finish pathway",
+                footerText: "AFRONTA Project — Universitat Autònoma de Barcelona (UAB)",
+                modalClose: "✕ Close",
+                finalModalTitle: "Final key takeaway",
+                finalModalBody: "Every message is an opportunity to build a more inclusive society. Communicating responsibly means informing with rigor, respecting people's dignity, and contributing to a better understanding of reality.",
+                finalModalBtn: "Close pathway"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+
+            ['ca', 'es', 'en'].forEach(l => {
+                const btn = document.getElementById(`lang-btn-${l}`);
+                if (l === lang) {
+                    btn.className = "px-3 py-1 rounded-full text-xs font-bold smooth-transition bg-primary-600 text-white shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1 rounded-full text-xs font-bold smooth-transition text-slate-600 hover:text-slate-900";
+                }
+            });
+
+            document.title = t.docTitle;
+            document.getElementById('text-duration').innerText = t.duration;
+            document.getElementById('nav-menu-title').innerText = t.navTitle;
+            for(let i=0; i<5; i++) {
+                document.getElementById(`nav-txt-${i}`).innerText = t.nav[i];
+            }
+
+            document.querySelectorAll('.btn-prev-txt').forEach(el => el.innerText = t.btnPrev);
+            document.querySelectorAll('.btn-next-txt').forEach(el => el.innerText = t.btnNext);
+            document.querySelectorAll('.btn-check-txt').forEach(el => el.innerText = t.btnCheck);
+
+            document.getElementById('hero-badge').innerText = t.heroBadge;
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('obj-title').innerHTML = `<svg class="w-7 h-7 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${t.objTitle}`;
+            document.getElementById('obj-intro').innerText = t.objIntro;
+            document.getElementById('obj-1').innerText = t.obj1;
+            document.getElementById('obj-2').innerText = t.obj2;
+            document.getElementById('obj-3').innerText = t.obj3;
+            document.getElementById('obj-4').innerText = t.obj4;
+
+            document.getElementById('c1-title').innerText = t.c1Title;
+            document.getElementById('c1-resource-title').innerText = t.c1ResTitle;
+            document.getElementById('c1-resource-click').innerText = t.c1ResClick;
+            document.getElementById('act1-title').innerText = t.act1Title;
+            document.getElementById('act1-prompt').innerHTML = t.act1Prompt;
+            for(let i=0; i<4; i++) {
+                document.getElementById(`q1-opt-${i}`).innerText = t.q1Opts[i];
+            }
+            document.getElementById('btn-check-q1').innerText = t.btnCheck;
+
+            document.getElementById('c2-title').innerText = t.c2Title;
+            document.getElementById('c2-resource-title').innerText = t.c2ResTitle;
+            document.getElementById('c2-resource-click').innerText = t.c2ResClick;
+            document.getElementById('act2-title').innerText = t.act2Title;
+            document.getElementById('act2-prompt').innerText = t.act2Prompt;
+            document.querySelectorAll('.case-label').forEach(el => {
+                const num = el.getAttribute('data-case');
+                el.innerText = `${t.caseTxt}${num}`;
+            });
+            document.getElementById('c1-opt-a').innerText = t.c1OptA;
+            document.getElementById('c1-opt-b').innerText = t.c1OptB;
+            document.getElementById('c2-opt-a').innerText = t.c2OptA;
+            document.getElementById('c2-opt-b').innerText = t.c2OptB;
+            document.getElementById('c3-opt-a').innerText = t.c3OptA;
+            document.getElementById('c3-opt-b').innerText = t.c3OptB;
+            document.getElementById('c4-opt-a').innerText = t.c4OptA;
+            document.getElementById('c4-opt-b').innerText = t.c4OptB;
+
+            document.getElementById('c3-title').innerText = t.c3Title;
+            document.getElementById('c3-resource-title').innerText = t.c3ResTitle;
+            document.getElementById('c3-resource-click').innerText = t.c3ResClick;
+            document.getElementById('act3-title').innerText = t.act3Title;
+            document.getElementById('act3-prompt').innerText = t.act3Prompt;
+
+            document.getElementById('q3-1-title').innerText = t.q3_1Title;
+            for(let i=0; i<6; i++) document.getElementById(`q3-1-opt-${i}`).innerText = t.q3_1Opts[i];
+
+            document.getElementById('q3-2-title').innerText = t.q3_2Title;
+            for(let i=0; i<5; i++) document.getElementById(`q3-2-opt-${i}`).innerText = t.q3_2Opts[i];
+
+            document.getElementById('q3-3-title').innerText = t.q3_3Title;
+            document.getElementById('q3-3-desc').innerText = t.q3_3Desc;
+
+            document.getElementById('q3-3a-title').innerText = t.q3_3aTitle;
+            for(let i=0; i<3; i++) document.getElementById(`q3-3a-opt-${i}`).innerText = t.q3_3aOpts[i];
+
+            document.getElementById('q3-3b-title').innerText = t.q3_3bTitle;
+            for(let i=0; i<3; i++) document.getElementById(`q3-3b-opt-${i}`).innerText = t.q3_3bOpts[i];
+
+            document.getElementById('key-ideas-title').innerHTML = `<svg class="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> ${t.keyIdeasTitle}`;
+            document.getElementById('key-idea-1').innerText = t.keyIdea1;
+            document.getElementById('key-idea-2').innerText = t.keyIdea2;
+
+            document.getElementById('c4-title').innerText = t.c4Title;
+            document.getElementById('act4-title').innerText = t.act4Title;
+            document.getElementById('act4-prompt').innerText = t.act4Prompt;
+
+            document.getElementById('sit1-title').innerText = t.sit1Title;
+            for(let i=0; i<3; i++) document.getElementById(`sit1-opt-${i}`).innerText = t.sit1Opts[i];
+
+            document.getElementById('sit2-title').innerText = t.sit2Title;
+            for(let i=0; i<3; i++) document.getElementById(`sit2-opt-${i}`).innerText = t.sit2Opts[i];
+
+            document.getElementById('sit3-title').innerText = t.sit3Title;
+            for(let i=0; i<3; i++) document.getElementById(`sit3-opt-${i}`).innerText = t.sit3Opts[i];
+
+            document.getElementById('act5-title').innerText = t.act5Title;
+            document.getElementById('act5-prompt').innerHTML = t.act5Prompt;
+            for(let i=0; i<5; i++) document.getElementById(`comp-opt-${i}`).innerText = t.compOpts[i];
+
+            checkCompromisos();
+
+            document.getElementById('comp-fb-title').innerText = t.compFbTitle;
+            document.getElementById('comp-fb-text').innerText = t.compFbText;
+            document.getElementById('btn-finish').innerText = t.btnFinish;
+
+            document.getElementById('footer-text').innerText = t.footerText;
+            document.getElementById('modal-close-btn').innerText = t.modalClose;
+            document.getElementById('final-modal-title').innerText = t.finalModalTitle;
+            document.getElementById('final-modal-body').innerText = t.finalModalBody;
+            document.getElementById('final-modal-btn').innerText = t.finalModalBtn;
+        }
+
+        function showScreen(idx) {
+            currentScreen = idx;
+            document.querySelectorAll('.screen-content').forEach((s, i) => {
+                if (i === idx) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+
+            document.querySelectorAll('.nav-item').forEach((btn, i) => {
+                const badge = btn.querySelector('span:first-child');
+                if (i === idx) {
+                    btn.className = "nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-3 bg-primary-50 text-primary-700 border border-primary-200 smooth-transition";
+                    badge.className = "w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold";
+                } else {
+                    btn.className = "nav-item w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900 smooth-transition";
+                    badge.className = "w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold";
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function checkQ1() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            const fb = document.getElementById('q1-feedback');
+            const t = translations[currentLang];
+            
+            fb.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-900', 'border-emerald-500', 'bg-rose-50', 'text-rose-900', 'border-rose-500', 'bg-amber-50', 'text-amber-900', 'border-amber-500');
+            
+            if (!selected) {
+                fb.className = 'mt-4 p-4 rounded-lg bg-amber-50 text-amber-900 border-l-4 border-amber-500 text-sm';
+                fb.innerHTML = t.q1FbEmpty;
+                return;
+            }
+
+            if (selected.value === "1") {
+                fb.className = 'mt-4 p-4 rounded-lg bg-emerald-50 text-emerald-900 border-l-4 border-emerald-500 text-sm';
+                fb.innerHTML = t.q1FbCorrect;
+            } else {
+                fb.className = 'mt-4 p-4 rounded-lg bg-rose-50 text-rose-900 border-l-4 border-rose-500 text-sm';
+                fb.innerHTML = t.q1FbIncorrect;
+            }
+        }
+
+        function checkComparison(btn, isCorrect, key, fbId) {
+            const fb = document.getElementById(fbId);
+            const parent = btn.parentElement;
+            const t = translations[currentLang];
+
+            Array.from(parent.children).forEach(b => {
+                b.classList.remove('border-emerald-500', 'bg-emerald-50', 'border-rose-500', 'bg-rose-50');
+            });
+
+            fb.classList.remove('hidden', 'text-emerald-700', 'text-rose-700', 'bg-emerald-50', 'bg-rose-50', 'p-3', 'rounded-lg');
+            fb.classList.add('p-3', 'rounded-lg');
+
+            if (isCorrect) {
+                btn.classList.add('border-emerald-500', 'bg-emerald-50');
+                fb.classList.add('text-emerald-700', 'bg-emerald-50');
+                fb.innerText = t[`${key}FbB`];
+            } else {
+                btn.classList.add('border-rose-500', 'bg-rose-50');
+                fb.classList.add('text-rose-700', 'bg-rose-50');
+                fb.innerText = t[`${key}FbA`];
+            }
+        }
+
+        function checkCheckboxes(containerId, fbId, qKey) {
+            const fb = document.getElementById(fbId);
+            const t = translations[currentLang];
+            const transKey = qKey.replace('-', '_') + 'Fb';
+            fb.classList.remove('hidden');
+            fb.innerHTML = t[transKey];
+        }
+
+        function checkRadioSimple(name, fbId, qKey) {
+            const fb = document.getElementById(fbId);
+            const t = translations[currentLang];
+            const transKey = qKey.replace('-', '_') + 'Fb';
+            if (!fb) return;
+            fb.classList.remove('hidden');
+            fb.innerHTML = t[transKey];
+        }
+
+        function markSimpleWithFeedback(btn, isCorrect, fbItemKey, fbContainerId) {
+            const container = document.getElementById(fbContainerId);
+            const t = translations[currentLang];
+            const parent = btn.parentElement;
+            
+            Array.from(parent.children).forEach(b => {
+                b.classList.remove('border-primary-400', 'border-emerald-500', 'bg-emerald-50', 'border-rose-500', 'bg-rose-50');
+            });
+
+            container.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-900', 'border-emerald-500', 'bg-rose-50', 'text-rose-900', 'border-rose-500');
+
+            const parts = fbItemKey.split('-');
+            const sitKey = parts[0] + 'Fbs';
+            const idx = parseInt(parts[2], 10) - 1;
+
+            if (isCorrect) {
+                btn.classList.add('border-emerald-500', 'bg-emerald-50');
+                container.classList.add('bg-emerald-50', 'text-emerald-900', 'border-l-4', 'border-emerald-500');
+            } else {
+                btn.classList.add('border-rose-500', 'bg-rose-50');
+                container.classList.add('bg-rose-50', 'text-rose-900', 'border-l-4', 'border-rose-500');
+            }
+            container.innerText = t[sitKey][idx];
+        }
+
+        function checkCompromisos() {
+            const checkboxes = document.querySelectorAll('#compromisos-options input[type="checkbox"]:checked');
+            const counter = document.getElementById('comp-counter');
+            const fb = document.getElementById('fb-compromisos');
+            const t = translations[currentLang];
+            const count = checkboxes.length;
+
+            counter.innerText = t.compCounter.replace('{N}', count);
+
+            if (count >= 2) {
+                fb.classList.remove('hidden');
+            } else {
+                fb.classList.add('hidden');
+            }
+        }
+
+        function finishModule() {
+            document.getElementById('final-modal').classList.remove('hidden');
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('modal-img');
+            img.src = src;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
+
+        function closeFinalModal() {
+            document.getElementById('final-modal').classList.add('hidden');
+        }
+
+        setLanguage('ca');
+    </script>
+</body>
+</html>

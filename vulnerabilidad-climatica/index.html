@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="htmlTitle">Banco interactivo de fuentes y bases de datos sobre vulnerabilidad climática y ambiental</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        afronta: {
+                            50: '#f0f7f7',
+                            100: '#e0efef',
+                            600: '#0d7a70',
+                            700: '#0a625a',
+                            800: '#084f49',
+                            900: '#053934',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #053934 0%, #0a625a 50%, #1e293b 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER / CABECERA -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between py-4 gap-4">
+                <!-- Logotipo AFRONTA -->
+                <div class="flex items-center">
+                    <a href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener noreferrer" class="block transition hover:opacity-90">
+                        <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" 
+                             alt="Logo Proyecto AFRONTA - UAB" 
+                             class="h-14 sm:h-16 w-auto object-contain">
+                    </a>
+                </div>
+                <!-- Links de Navegación y Selector de Idioma -->
+                <div class="flex flex-wrap items-center gap-3 text-sm font-medium">
+                    <a href="#graficos" id="navG" class="text-slate-600 hover:text-afronta-600 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-chart-line mr-1.5 text-afronta-600"></i> Gráficos
+                    </a>
+                    <a href="#catalogo" id="navF" class="text-slate-600 hover:text-afronta-600 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-database mr-1.5 text-afronta-600"></i> Fuentes y Datos
+                    </a>
+                    <a href="#matriz" id="navM" class="text-slate-600 hover:text-afronta-600 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-layer-group mr-1.5 text-afronta-600"></i> Matriz de Riesgo
+                    </a>
+                    <a href="https://webs.uab.cat/afronta/recursos/vulnerabilidad-climatica-y-ambiental/" target="_blank" rel="noopener noreferrer" 
+                       id="navA" class="bg-afronta-600 text-white px-3.5 py-1.5 rounded-lg hover:bg-afronta-700 transition shadow-sm flex items-center gap-1.5 text-xs font-semibold">
+                        <span>Web AFRONTA</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+
+                    <!-- SELECTOR DE IDIOMA EN LA CABECERA SUPERIOR -->
+                    <div class="ml-2 pl-3 border-l border-slate-200 flex items-center gap-1">
+                        <i class="fa-solid fa-globe text-afronta-600 text-base mr-1"></i>
+                        <button onclick="setLanguage('es')" id="langBtn-es" class="lang-btn px-2.5 py-1 rounded-md text-xs font-bold transition bg-afronta-600 text-white">ES</button>
+                        <button onclick="setLanguage('ca')" id="langBtn-ca" class="lang-btn px-2.5 py-1 rounded-md text-xs font-bold transition text-slate-600 hover:bg-slate-100">CA</button>
+                        <button onclick="setLanguage('en')" id="langBtn-en" class="lang-btn px-2.5 py-1 rounded-md text-xs font-bold transition text-slate-600 hover:bg-slate-100">EN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION CON TÍTULO OFICIAL -->
+    <section class="gradient-header text-white py-12 px-4 sm:px-6 lg:px-8 shadow-inner">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-emerald-200 text-xs font-semibold tracking-wide uppercase mb-4 border border-white/10" id="heroBadge">
+                    <i class="fa-solid fa-seedling"></i> Proyecto de Investigación AFRONTA (PID2022-139502OB-I00)
+                </div>
+                <h1 id="heroTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4 leading-tight">
+                    Banco interactivo de fuentes y bases de datos sobre vulnerabilidad climática y ambiental
+                </h1>
+                <p id="heroP" class="text-slate-200 text-base sm:text-lg leading-relaxed mb-6">
+                    Compilatorio estructurado de plataformas cartográficas, visores de escenarios, índices municipales de riesgo e informes científicos de referencia para la resiliencia socioambiental y la adaptación climática.
+                </p>
+                
+                <!-- NOTA DE ATRIBUCIÓN SOLICITADA -->
+                <div class="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm text-slate-100 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-emerald-300 text-lg mt-0.5 flex-shrink-0"></i>
+                    <div>
+                        <span id="attrTitle" class="font-bold text-white uppercase tracking-wider block mb-0.5">Nota de atribución</span>
+                        <p id="attrText" class="leading-relaxed text-slate-200">
+                            Todas las fuentes de datos, modelos cartográficos e informes científicos recopilados en este portal son propiedad de las respectivas instituciones de origen y de sus autores/autoras, quienes conservan todos los derechos de propiedad intelectual sobre dichos contenidos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- METRICAS / KPIS CLAVE -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="glass-card rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                <div class="p-3.5 bg-emerald-100 text-emerald-800 rounded-xl">
+                    <i class="fa-solid fa-database text-2xl"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-slate-900" id="kpiVal0">27</div>
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500" id="kpiLbl0">Fuentes Catalogadas</div>
+                    <div class="text-xs text-slate-400" id="kpiSub0">Internacionales, Nacionales y Locales</div>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                <div class="p-3.5 bg-rose-100 text-rose-800 rounded-xl">
+                    <i class="fa-solid fa-city text-2xl"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-slate-900" id="kpiVal1">854</div>
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500" id="kpiLbl1">Ciudades Europeas</div>
+                    <div class="text-xs text-slate-400" id="kpiSub1">Estudio Mortalidad Térmica (Nature Med. 2025)</div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                <div class="p-3.5 bg-sky-100 text-sky-800 rounded-xl">
+                    <i class="fa-solid fa-chart-pie text-2xl"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-slate-900" id="kpiVal2">10</div>
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500" id="kpiLbl2">Ámbitos Sectoriales</div>
+                    <div class="text-xs text-slate-400" id="kpiSub2">Evaluados en España (MITECO/BC3)</div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                <div class="p-3.5 bg-amber-100 text-amber-800 rounded-xl">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-slate-900" id="kpiVal3">4</div>
+                    <div class="text-xs font-semibold uppercase tracking-wider text-slate-500" id="kpiLbl3">Indicadores de Riesgo</div>
+                    <div class="text-xs text-slate-400" id="kpiSub3">Sequía, Calor, Inundación, Subida del Mar</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE GRÁFICOS INTERACTIVOS -->
+    <section id="graficos" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 pb-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2" id="chartSecTitle">
+                    <i class="fa-solid fa-chart-simple text-afronta-600"></i> Visualizaciones de Evidencia Científica
+                </h2>
+                <p class="text-sm text-slate-500 mt-1" id="chartSecSub">Gráficos interactivos elaborados a partir de los datos publicados en las fuentes compiladas.</p>
+            </div>
+            <span class="text-xs text-slate-400 italic" id="chartSecHint">Pasa el cursor o pulsa en los gráficos para ver datos detallados</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Gráfico 1 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-800" id="c1_tag">Nature Medicine (2025)</span>
+                        <span class="text-xs text-slate-400" id="c1_subTag">854 Ciudades de Europa</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1" id="c1_title">Impacto Proyectado en Mortalidad Atribuible a Temperatura</h3>
+                    <p class="text-xs text-slate-600 mb-4 leading-relaxed" id="c1_desc">
+                        Proyección de cambio neto en muertes por calor vs. frío bajo escenario RCP 4.5 / SSP2 (2050 sin adaptación sustancial).
+                    </p>
+                    <div class="h-64 relative">
+                        <canvas id="chartNatureMortality"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <span><strong id="c1_srcLabel">Fuente:</strong> <span id="c1_srcVal">Masselot et al. (2025) Nature Medicine</span></span>
+                        <a href="#card-6" onclick="goToSource(6); return false;" class="text-afronta-600 font-semibold hover:underline" id="c1_link">Ficha Fuente <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    </div>
+                    <p class="text-[10px] text-slate-400 italic leading-tight" id="c1_note">* Indexación relativa a partir de la evaluación cualitativa de la fuente</p>
+                </div>
+            </div>
+
+            <!-- Gráfico 2 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800" id="c2_tag">MITECO / BC3 (2021)</span>
+                        <span class="text-xs text-slate-400" id="c2_subTag">España - Evaluaciones Prioritarias</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1" id="c2_title">Nivel de Riesgo Relativo por Ámbitos Prioritarios en España</h3>
+                    <p class="text-xs text-slate-600 mb-4 leading-relaxed" id="c2_desc">
+                        Valoración del grado de urgencia y severidad de impactos del cambio climático reportados en el informe nacional.
+                    </p>
+                    <div class="h-64 relative">
+                        <canvas id="chartMitecoSectores"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                        <span><strong id="c2_srcLabel">Fuente:</strong> <span id="c2_srcVal">MITECO & Basque Centre for Climate Change</span></span>
+                        <a href="#card-11" onclick="goToSource(11); return false;" class="text-afronta-600 font-semibold hover:underline" id="c2_link">Ficha Fuente <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                    </div>
+                    <p class="text-[10px] text-slate-400 italic leading-tight" id="c2_note">* Indexación relativa a partir de la evaluación cualitativa de la fuente</p>
+                </div>
+            </div>
+
+            <!-- Gráfico 3 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800" id="c3_tag">MedECC MAR1 Report</span>
+                        <span class="text-xs text-slate-400" id="c3_subTag">Cuenca Mediterránea vs. Global</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1" id="c3_title">Anomalía de Temperatura Media (°C respecto a era preindustrial)</h3>
+                    <p class="text-xs text-slate-600 mb-4 leading-relaxed" id="c3_desc">
+                        La región mediterránea se calienta un 20% más rápido que la media del planeta (+1.5°C alcanzados aceleradamente).
+                    </p>
+                    <div class="h-64 relative">
+                        <canvas id="chartMedECC"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
+                    <span><strong id="c3_srcLabel">Fuente:</strong> <span id="c3_srcVal">Red MedECC (First Assessment Report)</span></span>
+                    <a href="#card-8" onclick="goToSource(8); return false;" class="text-afronta-600 font-semibold hover:underline" id="c3_link">Ficha Fuente <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                </div>
+            </div>
+
+            <!-- Gráfico 4 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800" id="c4_tag">AMB / Pla Clima 2030</span>
+                        <span class="text-xs text-slate-400" id="c4_subTag">Área Metropolitana de Barcelona</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1" id="c4_title">Proyección de Días y Noches CÁLIDAS / TÓRRIDAS al año</h3>
+                    <p class="text-xs text-slate-600 mb-4 leading-relaxed" id="c4_desc">
+                        Evolución observada vs. escenarios proyectados en la trama urbana metropolitana (PNACC 2050).
+                    </p>
+                    <div class="h-64 relative">
+                        <canvas id="chartAMBProyecciones"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
+                    <span><strong id="c4_srcLabel">Fuente:</strong> <span id="c4_srcVal">Visor d'escenaris climàtics futurs AMB</span></span>
+                    <a href="#card-19" onclick="goToSource(19); return false;" class="text-afronta-600 font-semibold hover:underline" id="c4_link">Ficha Fuente <i class="fa-solid fa-chevron-right text-[10px]"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATÁLOGO INTERACTIVO DE FUENTES -->
+    <section id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-2 flex items-center gap-3" id="catTitle">
+                        <i class="fa-solid fa-boxes-stacked text-emerald-400"></i> Catálogo de Fuentes Recopiladas
+                    </h2>
+                    <p class="text-slate-300 text-sm max-w-2xl" id="catSub">
+                        Explora y filtra las 27 fuentes documentales, visores interactivos y bases de datos sobre vulnerabilidad y cambio climático compiladas.
+                    </p>
+                </div>
+                <!-- Buscador rápido -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterCatalog()" 
+                           placeholder="Buscar por palabra clave..." 
+                           class="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+            </div>
+
+            <!-- Filtros por Categoría y Ámbito -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800 text-xs sm:text-sm">
+                <!-- Ámbito Territorial -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-slate-400 font-medium" id="catGeoLabel">Ámbito:</span>
+                    <button onclick="setGeoFilter('all')" id="geo-all" class="geo-btn active bg-emerald-600 text-white px-3 py-1.5 rounded-lg transition font-medium">Todos</button>
+                    <button onclick="setGeoFilter('Europa')" id="geo-Europa" class="geo-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">Europa / Global</button>
+                    <button onclick="setGeoFilter('Espana')" id="geo-Espana" class="geo-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">España (Nacional)</button>
+                    <button onclick="setGeoFilter('Cataluna')" id="geo-Cataluna" class="geo-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">Cataluña / Local</button>
+                </div>
+
+                <!-- Tipo de Recurso -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-slate-400 font-medium" id="catTypeLabel">Tipo:</span>
+                    <button onclick="setTypeFilter('all')" id="type-all" class="type-btn active bg-emerald-600 text-white px-3 py-1.5 rounded-lg transition font-medium">Todos</button>
+                    <button onclick="setTypeFilter('visor')" id="type-visor" class="type-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">Visores e Indicadores</button>
+                    <button onclick="setTypeFilter('informe')" id="type-informe" class="type-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">Informes Científicos</button>
+                    <button onclick="setTypeFilter('salud')" id="type-salud" class="type-btn bg-slate-800 text-slate-300 hover:bg-slate-700 px-3 py-1.5 rounded-lg transition">Salud y Pobreza</button>
+                </div>
+            </div>
+
+            <!-- CONTADOR DINÁMICO DE RESULTADOS Y BOTÓN DE RESTABLECER FILTROS -->
+            <div class="flex items-center justify-between pt-4 mt-4 border-t border-slate-800/80 text-xs">
+                <div id="catCounter" class="text-slate-400 font-medium flex items-center gap-1.5">
+                    <!-- Rellenado dinámicamente -->
+                </div>
+                <button id="resetFiltersBtn" onclick="resetFilters()" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1.5 transition hidden">
+                    <i class="fa-solid fa-rotate-left text-[11px]"></i> <span>Restablecer filtros</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- REJILLA DE TARJETAS CON FUENTES -->
+        <div id="sourcesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- MATRIZ INTERACTIVA DE INDICADORES DE VULNERABILIDAD -->
+    <section id="matriz" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="mb-6">
+                <span class="text-xs font-bold text-afronta-600 uppercase tracking-widest" id="matrixBadge">Herramientas Operativas de Diagnóstico</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1" id="matrixTitle">Matriz de Indicadores y Riesgos Clave Frente al Cambio Climático</h2>
+                <p class="text-slate-600 text-sm mt-1" id="matrixSub">
+                    Evaluación cualitativa de las 4 metodologías de análisis del riesgo territorial y urbano en España (<a href="https://www.adaptecca.es/" target="_blank" class="text-afronta-600 font-semibold hover:underline">AdapteCCa</a> / <a href="https://www.miteco.gob.es/" target="_blank" class="text-afronta-600 font-semibold hover:underline">MITECO</a> / <a href="https://www.amb.cat/" target="_blank" class="text-afronta-600 font-semibold hover:underline">AMB</a> / <a href="https://www.ign.es/web/ign/portal/rse-riesgos-naturales" target="_blank" class="text-afronta-600 font-semibold hover:underline">IGN</a>).
+                </p>
+            </div>
+
+            <!-- Tabs de navegación de riesgos -->
+            <div class="flex border-b border-slate-200 mb-6 overflow-x-auto custom-scrollbar">
+                <button onclick="switchTab('calor')" id="tab-calor" class="tab-btn font-bold border-b-2 border-afronta-600 text-afronta-600 py-3 px-5 text-sm whitespace-nowrap transition flex items-center gap-2">
+                    <i class="fa-solid fa-temperature-high text-rose-500"></i> <span id="tabTitle0">Olas de Calor y Salud</span>
+                </button>
+                <button onclick="switchTab('sequia')" id="tab-sequia" class="tab-btn text-slate-500 border-b-2 border-transparent hover:text-slate-800 py-3 px-5 text-sm whitespace-nowrap transition flex items-center gap-2">
+                    <i class="fa-solid fa-faucet-drip text-amber-500"></i> <span id="tabTitle1">Sequía y Recursos Hídricos</span>
+                </button>
+                <button onclick="switchTab('inundacion')" id="tab-inundacion" class="tab-btn text-slate-500 border-b-2 border-transparent hover:text-slate-800 py-3 px-5 text-sm whitespace-nowrap transition flex items-center gap-2">
+                    <i class="fa-solid fa-water text-sky-500"></i> <span id="tabTitle2">Inundación Urbana y Nivel del Mar</span>
+                </button>
+                <button onclick="switchTab('pobreza')" id="tab-pobreza" class="tab-btn text-slate-500 border-b-2 border-transparent hover:text-slate-800 py-3 px-5 text-sm whitespace-nowrap transition flex items-center gap-2">
+                    <i class="fa-solid fa-people-roof text-emerald-600"></i> <span id="tabTitle3">Vulnerabilidad Socioeconómica</span>
+                </button>
+            </div>
+
+            <!-- Contenido de los Tabs -->
+            <div id="tab-content" class="bg-slate-50 p-6 rounded-2xl border border-slate-200"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER / PIE DE PÁGINA -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-slate-800 text-sm">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" 
+                             alt="AFRONTA" class="h-10 w-auto bg-white p-1 rounded">
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed" id="footerDesc">
+                        AFRONTA (PID2022-139502OB-I00) es un proyecto de investigación con sede en el Departamento de Antropología Social y Cultural de la Universitat Autònoma de Barcelona (UAB).
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm" id="footerContactTitle">Contacto e Institución</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed" id="footerContact">
+                        Edificio B, Facultad de Filosofía y Letras<br>Universitat Autònoma de Barcelona (UAB)<br>08193 Bellaterra (Cerdanyola del Vallès), España<br><strong>Email:</strong> proyectoafronta@gmail.com
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm" id="footerLegalTitle">Aviso Legal y Derechos</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed" id="footerLegal">
+                        Este portal interactivo recopila y sintetiza material preexistente elaborado por organismos públicos e instituciones científicas de reconocido prestigio. No se atribuye la autoría original de dichos conjuntos de datos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Universitat Autònoma de Barcelona (UAB). <span id="footerCopy">Compilación para el Proyecto AFRONTA.</span></p>
+                <div class="flex items-center gap-4">
+                    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer" title="Licencia Creative Commons Atribución-NoComercial-SinDerivadas 4.0 Internacional" class="hover:opacity-90 transition">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Cc_by-nc-nd_icon.svg" alt="Licencia Creative Commons CC BY-NC-ND" class="h-7 w-auto bg-white/10 p-1 rounded">
+                    </a>
+                    <a href="https://webs.uab.cat/afronta" target="_blank" class="hover:text-emerald-400 transition">Web Official AFRONTA</a>
+                    <a href="https://www.uab.cat" target="_blank" class="hover:text-emerald-400 transition">Portal UAB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DETALLE -->
+    <div id="sourceModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT MULTILINGÜE Y LOGICA DE NAVEGACIÓN -->
+    <script>
+        const i18n = {"es": {"pageTitle": "Banco interactivo de fuentes y bases de datos sobre vulnerabilidad climática y ambiental", "nav": ["Gráficos", "Fuentes y Datos", "Matriz de Riesgo", "Web AFRONTA"], "heroBadge": "Proyecto de Investigación AFRONTA (PID2022-139502OB-I00)", "heroP": "Compilatorio estructurado de plataformas cartográficas, visores de escenarios, índices municipales de riesgo e informes científicos de referencia para la resiliencia socioambiental y la adaptación climática.", "attrTitle": "Nota de atribución", "attrText": "Todas las fuentes de datos, modelos cartográficos e informes científicos recopilados en este portal son propiedad de las respectivas instituciones de origen y de sus autores/autoras, quienes conservan todos los derechos de propiedad intelectual sobre dichos contenidos.", "kpis": [{"val": "27", "lbl": "Fuentes Catalogadas", "sub": "Internacionales, Nacionales y Locales"}, {"val": "854", "lbl": "Ciudades Europeas", "sub": "Estudio Mortalidad Térmica (Nature Med. 2025)"}, {"val": "10", "lbl": "Ámbitos Sectoriales", "sub": "Evaluados en España (MITECO/BC3)"}, {"val": "4", "lbl": "Indicadores de Riesgo", "sub": "Sequía, Calor, Inundación, Subida del Mar"}], "chartSecTitle": "Visualizaciones de Evidencia Científica", "chartSecSub": "Gráficos interactivos elaborados a partir de los datos publicados en las fuentes compiladas.", "chartSecHint": "Pasa el cursor o pulsa en los gráficos para ver datos detallados", "charts": [{"tag": "Nature Medicine (2025)", "subTag": "854 Ciudades de Europa", "title": "Impacto Proyectado en Mortalidad Atribuible a Temperatura", "desc": "Proyección de cambio neto en muertes por calor vs. frío bajo escenario RCP 4.5 / SSP2 (2050 sin adaptación sustancial).", "srcLabel": "Fuente", "srcVal": "Masselot et al. (2025) Nature Medicine", "linkText": "Ficha Fuente", "note": "* Indexación relativa a partir de la evaluación cualitativa de la fuente"}, {"tag": "MITECO / BC3 (2021)", "subTag": "España - Evaluaciones Prioritarias", "title": "Nivel de Riesgo Relativo por Ámbitos Prioritarios en España", "desc": "Valoración del grado de urgencia y severidad de impactos del cambio climático reportados en el informe nacional.", "srcLabel": "Fuente", "srcVal": "MITECO & Basque Centre for Climate Change", "linkText": "Ficha Fuente", "note": "* Indexación relativa a partir de la evaluación cualitativa de la fuente"}, {"tag": "MedECC MAR1 Report", "subTag": "Cuenca Mediterránea vs. Global", "title": "Anomalía de Temperatura Media (°C respecto a era preindustrial)", "desc": "La región mediterránea se calienta un 20% más rápido que la media del planeta (+1.5°C alcanzados aceleradamente).", "srcLabel": "Fuente", "srcVal": "Red MedECC (First Assessment Report)", "linkText": "Ficha Fuente"}, {"tag": "AMB / Pla Clima 2030", "subTag": "Área Metropolitana de Barcelona", "title": "Proyección de Días y Noches CÁLIDAS / TÓRRIDAS al año", "desc": "Evolución observada vs. escenarios proyectados en la trama urbana metropolitana (PNACC 2050).", "srcLabel": "Fuente", "srcVal": "Visor d'escenaris climàtics futurs AMB", "linkText": "Ficha Fuente"}], "catTitle": "Catálogo de Fuentes Recopiladas", "catSub": "Explora y filtra las 27 fuentes documentales, visores interactivos y bases de datos sobre vulnerabilidad y cambio climático compiladas.", "catSearchPlaceholder": "Buscar por palabra clave...", "catGeoLabel": "Ámbito", "catGeoOpts": ["Todos", "Europa / Global", "España (Nacional)", "Cataluña / Local"], "catTypeLabel": "Tipo", "catTypeOpts": ["Todos", "Visores e Indicadores", "Informes Científicos", "Salud y Pobreza"], "catResultsCount": "Mostrando {count} de {total} fuentes", "resetFiltersBtn": "Restablecer filtros", "matrixBadge": "Herramientas Operativas de Diagnóstico", "matrixTitle": "Matriz de Indicadores y Riesgos Clave Frente al Cambio Climático", "matrixSub": "Evaluación cualitativa de las 4 metodologías de análisis del riesgo territorial y urbano en España (<a href='https://www.adaptecca.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AdapteCCa</a> / <a href='https://www.miteco.gob.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>MITECO</a> / <a href='https://www.amb.cat/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AMB</a> / <a href='https://www.ign.es/web/ign/portal/rse-riesgos-naturales' target='_blank' class='text-afronta-600 font-semibold hover:underline'>IGN</a>).", "matrixTabs": ["Olas de Calor y Salud", "Sequía y Recursos Hídricos", "Inundación Urbana y Nivel del Mar", "Vulnerabilidad Socioeconómica"], "footerDesc": "AFRONTA (PID2022-139502OB-I00) es un proyecto de investigación con sede en el Departamento de Antropología Social y Cultural de la Universitat Autònoma de Barcelona (UAB).", "footerContactTitle": "Contacto e Institución", "footerContact": "Edificio B, Facultad de Filosofía y Letras<br>Universitat Autònoma de Barcelona (UAB)<br>08193 Bellaterra (Cerdanyola del Vallès), España<br><strong>Email:</strong> proyectoafronta@gmail.com", "footerLegalTitle": "Aviso Legal y Derechos", "footerLegal": "Este portal interactivo recopila y sintetiza material preexistente elaborado por organismos públicos e instituciones científicas de reconocido prestigio. No se atribuye la autoría original de dichos conjuntos de datos.", "footerCopy": "Compilación para el Proyecto AFRONTA.", "modal": {"authorLabel": "Institución / Autores", "descLabel": "Descripción del Recurso", "quoteLabel": "Cita textual catalogada", "btnAccess": "Acceder a la Fuente Original", "btnInfo": "Información y Ficha"}, "chartLabels": {"c1_labels": ["Sur de Europa", "Europa Occidental", "Europa Oriental", "Europa del Norte"], "c1_ds1": "Aumento muertes por Calor (%)", "c1_ds2": "Reducción muertes por Frío (%)", "c1_y": "Variación % neta", "c2_labels": ["Recursos Hídricos", "Salud Pública", "Zonas Costeras", "Agricultura", "Ecosistemas", "Áreas Urbanas"], "c2_ds1": "Nivel de Riesgo Relativo (0-100)", "c3_ds1": "Anomalía Cuenca Mediterránea (°C)", "c3_ds2": "Promedio Global (°C)", "c3_y": "Incremento °C", "c4_labels": ["Histórico (1971-2000)", "Actual (2011-2023)", "Proyección 2030", "Proyección 2050"], "c4_ds1": "Noches Tropicales (>20°C)", "c4_ds2": "Días Tórridos (>35°C)", "c4_y": "Días / Noches al año"}, "tabData": {"calor": {"title": "Olas de Calor y Estrés Térmico Urbano", "indicators": ["Días Tórridos (>35°C)", "Noches Tropicales (>20°C)", "Mortalidad Atribuible a Temperatura", "Índice IVAC"], "desc": "Los visores como AdapteCCa y el Atlas de Vulnerabilidad del Calor analizan cómo la densidad urbana y las superficies asfaltadas incrementan el efecto 'isla de calor', multiplicando la morbimortalidad en personas mayores y colectivos desfavorecidos.", "toolsLabel": "Herramientas y Fuentes Clave (Haz clic para acceder)", "toolsList": [{"name": "Atlas del Calor (MITECO)", "url": "https://www.miteco.gob.es/"}, {"name": "Visor d'Escenaris Climàtics (AMB)", "url": "https://geoportal.amb.cat/canviclimatic/visor/"}, {"name": "Nature Medicine (Masselot et al. 2025)", "url": "https://doi.org/10.1038/s41591-024-03452-2"}, {"name": "Plataforma AdapteCCa", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadores Monitorizados"}, "sequia": {"title": "Sequía y Gestión de Recursos Hídricos", "indicators": ["Escorrentía Media Anual", "Reducción de Aportaciones en Cabecera", "Índice de Sequía Agrícola", "CAMREC"], "desc": "La aplicación CAMREC del CEDEX simula reducciones de hasta un 24% en recursos hídricos disponibles para la segunda mitad de siglo en las cuencas del sur e interior peninsular.", "toolsLabel": "Herramientas y Fuentes Clave (Haz clic para acceder)", "toolsList": [{"name": "Aplicación CAMREC (CEDEX / OECC)", "url": "https://ceh.cedex.es/camrec/"}, {"name": "Plataforma AdapteCCa (Recursos Hídricos)", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadores Monitorizados"}, "inundacion": {"title": "Inundación Fluvial Urbana y Subida del Nivel del Mar", "indicators": ["Lámina de Agua T=100 años", "Exposición de Infraestructuras", "Erosión Costera", "IGN Riesgos"], "desc": "El Instituto Geográfico Nacional y los indicadores municipales de AdapteCCa mapean la vulnerabilidad de asentamientos urbanos ante episodios DANA e inundaciones repentinas costeras.", "toolsLabel": "Herramientas y Fuentes Clave (Haz clic para acceder)", "toolsList": [{"name": "Visor Riesgos Naturales y Ambientales (IGN)", "url": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales"}, {"name": "Informe de Impactos y Riesgos Costeros (MITECO)", "url": "https://www.miteco.gob.es/es/cambio-climatico/temas/impactos-vulnerabilidad-y-adaptacion/plan-nacional-adaptacion-cambio-climatico/informe-impactos-riesgos.html"}], "indLabel": "Indicadores Monitorizados"}, "pobreza": {"title": "Vulnerabilidad Socioeconómica y Brecha Social", "indicators": ["Pobreza Energética (Verano/Invierno)", "Calidad de Edificación", "Monoparentalidad / Población >65 años"], "desc": "Los diagnósticos de Cruz Roja y estudios de vulnerabilidad señalan que la falta de climatización adecuada en viviendas de bajos ingresos revierte los avances en desarrollo y empeora la salud comunitaria.", "toolsLabel": "Herramientas y Fuentes Clave (Haz clic para acceder)", "toolsList": [{"name": "Informe Cruz Roja 'Actívate' y Vulnerabilidad", "url": "https://www.cruzroja.es/"}, {"name": "Indicadores Municipales de Vulnerabilidad (AdapteCCa)", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadores Monitorizados"}}, "sources": [{"id": 1, "title": "European Environment Agency (EEA)", "geo": "Europa", "type": "visor", "tag": "Agencia Europea", "desc": "Página web oficial de la Agencia Europea del Medio Ambiente, con acceso a datos, indicadores y recursos sobre medio ambiente y sostenibilidad en Europa.", "quote": "Acceso centralizado a datos medioambientales armonizados de los Estados miembros de la UE.", "urlEs": "https://www.eea.europa.eu/es", "urlEn": "https://www.eea.europa.eu/en", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 2, "title": "Climate Change Policy & Resilience Framework", "geo": "Europa", "type": "informe", "tag": "Estrategia UE", "desc": "Marco estratégico de la Unión Europea para convertirse en una sociedad resiliente al cambio climático para el año 2050.", "quote": "«Through EU policy, legislation and strategies the EU has set itself the goal of becoming a climate-resilient society by 2050, fully adapted to the unavoidable impacts of climate change»", "urlEn": "https://climate.ec.europa.eu/", "authors": "European Commission", "year": "2024"}, {"id": 3, "title": "Climate change: what the EU is doing", "geo": "Europa", "type": "informe", "tag": "Consejo Europeo", "desc": "Página web del Consejo Europeo con información sobre actuaciones legislativas, financiamiento y mitigación de efectos climáticos sobre la población.", "quote": "Panorama de decisiones del Consejo de la Unión Europea sobre acción climática.", "urlEs": "https://www.consilium.europa.eu/es/policies/climate-change/", "authors": "Consejo Europeo", "year": "2024"}, {"id": 4, "title": "European Climate Data Explorer", "geo": "Europa", "type": "visor", "tag": "Climate-ADAPT", "desc": "Servicios clave, características temáticas y herramientas de Climate-ADAPT con el fin de proporcionar conocimientos para la adaptación resiliente en Europa.", "quote": "«Servicios clave, las características temáticas y las herramientas de Climate-ADAPT con la intención de conocimientos de adaptación para una Europa resilient»", "urlEs": "https://climate-adapt.eea.europa.eu/en/knowledge/european-climate-data-explorer", "authors": "EEA & Copernicus Climate Change Service", "year": "2024"}, {"id": 5, "title": "European State of the Climate 2023", "geo": "Europa", "type": "informe", "tag": "Copernicus / WMO", "desc": "Informe anual elaborado por el Servicio de Cambio Climático de Copernicus (C3S) y la Organización Meteorológica Mundial (OMM).", "quote": "«Compiled by the Copernicus Climate Change Service (C3S) and the World Meteorological Organization (WMO). C3S is implemented by ECMWF on behalf of the European Commission».", "urlEn": "https://climate.copernicus.eu/esotc/2023", "authors": "C3S & WMO (ECMWF)", "year": "2024"}, {"id": 6, "title": "Heat-related and cold-related mortality in 854 European cities", "geo": "Europa", "type": "salud", "tag": "Nature Medicine", "desc": "Estudio científico de alto impacto que proyecta la mortalidad por frío y calor bajo diversos escenarios climáticos, demográficos y de adaptación en 854 ciudades europeas.", "quote": "«Showed that, with no adaptation to heat, the increase in heat-related deaths consistently exceeds any decrease in cold-related deaths across all considered scenarios...»", "urlEn": "https://doi.org/10.1038/s41591-024-03452-2", "authors": "Masselot, P., Mistry, M.N., Rao, S. et al.", "year": "2025"}, {"id": 7, "title": "Urban Adaptation Map Viewer", "geo": "Europa", "type": "visor", "tag": "Visor Urbano EEA", "desc": "Visor interactivo que proporciona una panorámica de los riesgos de salud actuales y futuros en ciudades europeas (temperaturas elevadas, inundaciones, escasez de agua, incendios y enfermedades vectoriales).", "quote": "«The aim of this map viewer is to provide an overview of the current and future climate-related health risks facing the European cities...»", "urlEn": "https://climate-adapt.eea.europa.eu/en/observatory/evidence/tools/urban-adaptation-map-viewer", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 8, "title": "Climate and Environmental Change in the Mediterranean Basin (MAR1)", "geo": "Europa", "type": "informe", "tag": "MedECC", "desc": "Primer Informe de Evaluación Mediterráneo preparado por la red independiente de expertos MedECC, sintetizando datos de casi 190 científicos de 25 países.", "quote": "«The report assesses the best available scientific knowledge on climate and environmental change and associated risks in the Mediterranean Basin in order to render it accessible to policymakers...»", "urlEn": "https://www.medecc.org/first-mediterranean-assessment-report-mar1/", "authors": "MedECC Network", "year": "2020"}, {"id": 9, "title": "Aplicación CAMREC - Cambio climático y recursos hídricos en España", "geo": "Espana", "type": "visor", "tag": "CEDEX / OECC", "desc": "Aplicación informática para consultar los mapas del estudio 'Evaluación del Impacto del Cambio Climático en los Recursos Hídricos y Sequías en España'.", "quote": "«Facilitar la consulta y análisis de los mapas que resumen los resultados del estudio realizado por CEDEX para la OECC».", "urlEs": "https://ceh.cedex.es/camrec/", "authors": "CEDEX & Oficina Española de Cambio Climático", "year": "2023"}, {"id": 10, "title": "AdapteCCa - Plataforma sobre Adaptación al Cambio Climático", "geo": "Espana", "type": "visor", "tag": "MITECO / Fund. Biodiversidad", "desc": "Plataforma de consulta e intercambio de información en materia de impactos, vulnerabilidad y adaptación al cambio climático en España.", "quote": "«Iniciativa conjunta de la Oficina Española de Cambio Climático y la Fundación Biodiversidad para centralizar el conocimiento sobre adaptación».", "urlEs": "https://www.adaptecca.es/", "authors": "OECC & Fundación Biodiversidad (MITECO)", "year": "2024"}, {"id": 11, "title": "Impactos y riesgos derivados del cambio climático en España", "geo": "Espana", "type": "informe", "tag": "MITECO / BC3", "desc": "Informe que expone los principales impactos en 10 sectores productivos y sistemas naturales prioritarios (agua, agricultura, costas, salud, turismo, etc.).", "quote": "«Sintetiza la información sobre impactos del cambio climático para cada ámbito de trabajo y profundiza en la interrelación de los riesgos en España».", "urlEs": "https://www.miteco.gob.es/es/ceneam/recursos/pag-web/impactos-cambio-climatico-espana.html", "authors": "MITECO & BC3 (Basque Centre for Climate Change)", "year": "2021"}, {"id": 12, "title": "Índices de vulnerabilidad y riesgo municipal frente al cambio climático", "geo": "Espana", "type": "visor", "tag": "Indicadores Municipales", "desc": "Indicadores para 4 impactos clave a escala municipal: Sequía agrícola, olas de calor (salud), inundación fluvial urbana e inundación costera.", "quote": "«Diseño y elaboración de indicadores de vulnerabilidad y riesgo frente al cambio climático para 4 impactos clave a nivel municipal».", "urlEs": "https://www.adaptecca.es/", "authors": "AdapteCCa / MITECO", "year": "2023"}, {"id": 13, "title": "Medidas para el afrontamiento y la recuperación. Informe diagnóstico", "geo": "Espana", "type": "salud", "tag": "Vulnerabilidad Social", "desc": "Investigación aplicada sobre el impacto directo del cambio climático en las poblaciones en situación de pobreza y exclusión social.", "quote": "«Estudio enfocado en cómo los factores de desigualdad social multiplican la vulnerabilidad ante crisis climáticas».", "urlEs": "https://www.cruzroja.es/", "authors": "Cruz Roja & Organismos Sociales", "year": "2023"}, {"id": 14, "title": "Riesgos Ambientales - Instituto Geográfico Nacional (IGN)", "geo": "Espana", "type": "visor", "tag": "IGN España", "desc": "Recurso geográfico para comprender la frecuencia y magnitud de eventos naturales extremos combinados con la ocupación y población del territorio.", "quote": "«La combinación de parámetros de peligrosidad y vulnerabilidad territorial resulta esencial para la planificación del territorio».", "urlEs": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales", "authors": "Instituto Geográfico Nacional", "year": "2024"}, {"id": 15, "title": "Visor de Escenarios de Cambio Climático (PNACC)", "geo": "Espana", "type": "visor", "tag": "AEMET / OECC", "desc": "Proyecciones regionalizadas de cambio climático para España basadas en el V Informe de Evaluación del IPCC (Escenarios PNACC 2017).", "quote": "«Herramienta oficial para visualizar cambios proyectados en temperatura y precipitación en cuadrículas regionales de España».", "urlEs": "http://escenarios.adaptecca.es/", "authors": "AEMET, OECC & Fundación Biodiversidad", "year": "2023"}, {"id": 16, "title": "Atlas de Vulnerabilidad del Calor", "geo": "Espana", "type": "salud", "tag": "Atlas Urbano", "desc": "Herramienta que visibiliza la diversidad de situaciones de riesgo por calor a las que se enfrentan los municipios españoles y la configuración urbana.", "quote": "«Pretende señalar las carencias de las tramas urbanas sobre las que resulta necesario actuar ante temperaturas extremas».", "urlEs": "https://www.miteco.gob.es/", "authors": "MITECO / Observatorios de Salud", "year": "2023"}, {"id": 17, "title": "Actívate contra el cambio climático y la pobreza", "geo": "Espana", "type": "salud", "tag": "Sensibilización Social", "desc": "Análisis sobre la vulnerabilidad geográfica de España y el efecto multiplicador sobre personas mayores, mujeres y colectivos de bajos ingresos.", "quote": "«Por sus condiciones geográficas, España es de los países más vulnerables. Carecer de recursos multiplica la vulnerabilidad».", "urlEs": "https://www.cruzroja.es/", "authors": "Cruz Roja Española", "year": "2023"}, {"id": 18, "title": "Impactes del canvi climàtic a Catalunya", "geo": "Cataluna", "type": "informe", "tag": "Generalitat de Catalunya", "desc": "Información y diagnósticos sobre los principales impactos del cambio climático proyectados para los sistemas naturales y humanos catalanes.", "quote": "«Anàlisi de los principales impactos científicos previstos a escala mediterránea y local para Cataluña».", "urlEs": "https://canviclimatic.gencat.cat/", "authors": "Oficina Catalana del Canvi Climàtic (OCCC)", "year": "2023"}, {"id": 19, "title": "Visor d'Escenaris Climàtics Futurs (AMB)", "geo": "Cataluna", "type": "visor", "tag": "Área Metropolitana BCN", "desc": "Buscador de datos y proyecciones de temperatura, precipitación, días tóridos y noches tropicales para los municipios metropolitanos de Barcelona.", "quote": "«Elaborat en el marc del Pla Clima i Energia 2030, permet cercar projeccions de nits tropicals i dies càlids».", "urlEs": "https://geoportal.amb.cat/canviclimatic/visor/", "authors": "Àrea Metropolitana de Barcelona (AMB)", "year": "2024"}, {"id": 20, "title": "Índex de Vulnerabilitat al Canvi Climàtic (IVAC)", "geo": "Cataluna", "type": "visor", "tag": "AMB / Vulnerabilidad", "desc": "Índice sintético diseñado para poner el foco en los riesgos por aumento de temperaturas y evaluar medidas de adaptación implementadas.", "quote": "«L'objectiu de l'IVAC és posar el focus en els riesgos provocats per l'augment de les temperatures en àrees urbanes».", "urlEs": "https://www.amb.cat/", "authors": "Àrea Metropolitana de Barcelona", "year": "2024"}, {"id": 21, "title": "INE - Atlas de Distribución de la Renta e Indicadores Urbanos", "geo": "Espana", "type": "salud", "tag": "INE / Estadística", "desc": "Proporciona información estadística a nivel de sección censal y municipio sobre nivel de renta, tasa de pobreza, edad y estructura de los hogares en España.", "quote": "«Crucial para vincular la exposición territorial a amenazas climáticas con la capacidad económica y vulnerabilidad social de la población».", "urlEs": "https://www.ine.es/", "authors": "Instituto Nacional de Estadística (INE)", "year": "2025"}, {"id": 22, "title": "IDESCAT - Índice Socioeconómico Territorial (IST)", "geo": "Cataluna", "type": "salud", "tag": "IDESCAT / Cataluña", "desc": "Resume las características socioeconómicas de la población de Cataluña por agrupación de secciones censales, identificando áreas con mayor vulnerabilidad social.", "quote": "«Permite clasificar el territorio según la situación laboral, nivel educativo, población ocupada e ingresos de las familias».", "urlEs": "https://www.idescat.cat/?lang=es", "urlEn": "https://www.idescat.cat/?lang=en", "authors": "Institut d'Estadística de Catalunya (IDESCAT)", "year": "2025"}, {"id": 23, "title": "Sistema MoMo - Monitorización de la Mortalidad Diaria por Temperatura", "geo": "Espana", "type": "salud", "tag": "ISCIII / Salud Pública", "desc": "Sistema oficial de vigilancia epidemiológica que cuantifica el impacto real de las temperaturas extremas (calor y frío) en la mortalidad de la población española.", "quote": "«Ofrece estimaciones de exceso de mortalidad atribuible a temperatura para el seguimiento continuo de crisis climáticas estivales e invernales».", "urlEs": "https://momo.isciii.es/", "authors": "Centro Nacional de Epidemiología - ISCIII", "year": "2026"}, {"id": 24, "title": "Observatorio de Salud y Cambio Climático (OSCC)", "geo": "Espana", "type": "informe", "tag": "MITECO / Sanidad", "desc": "Órgano interministerial encargado de diagnosticar, prevenir y monitorizar los efectos directos e indirectos del cambio climático sobre la salud humana en España.", "quote": "«Coordinación de políticas públicas para reducir la morbimortalidad derivada de olas de calor, calidad del aire y enfermedades vectoriales».", "urlEs": "https://www.sanidad.gob.es/", "authors": "Ministerio de Sanidad & MITECO", "year": "2025"}, {"id": 25, "title": "EFFIS - Sistema Europeo de Información sobre Incendios Forestales", "geo": "Europa", "type": "visor", "tag": "Copernicus / EFFIS", "desc": "Plataforma de la Comisión Europea que proporciona datos en tiempo real e históricos sobre peligro de incendio, focos activos y evaluación de incendios forestales.", "quote": "«Herramienta clave para la monitorización transfronteriza del riesgo de incendios y resiliencia forestal en la cuenca mediterránea».", "urlEn": "https://effis.jrc.ec.europa.eu/", "authors": "European Commission Joint Research Centre (JRC)", "year": "2026"}, {"id": 26, "title": "AEMET OpenData - Series Climatológicas e Históricas Observadas", "geo": "Espana", "type": "visor", "tag": "AEMET / Climatología", "desc": "Portal de datos abiertos de la Agencia Estatal de Meteorología para la descarga de datos observados, valores extremos y normales climatológicas de la red de estaciones.", "quote": "«Base empírica fundamental para la validación local de modelos climáticos y tendencias térmicas y pluviométricas en España».", "urlEs": "https://opendata.aemet.es/", "authors": "Agencia Estatal de Meteorología (AEMET)", "year": "2026"}, {"id": 27, "title": "Indicadores Oficiales de Pobreza Energética en España", "geo": "Espana", "type": "salud", "tag": "MITECO / Pobreza Energética", "desc": "Publicación estadística anual que evalúa el gasto desproporcionado, la pobreza energética oculta y la incapacidad de mantener la vivienda en temperatura confortable.", "quote": "«Diagnóstico cuantitativo clave para evaluar el impacto del calor extremo en familias vulnerables sin climatización adecuada».", "urlEs": "https://www.miteco.gob.es/es/energia/pobreza-energetica.html", "authors": "Secretaría de Estado de Energía - MITECO", "year": "2025"}]}, "ca": {"pageTitle": "Banc interactiu de fonts i bases de dades sobre vulnerabilitat climàtica i ambiental", "nav": ["Gràfics", "Fonts i Dades", "Matriu de Risc", "Web AFRONTA"], "heroBadge": "Projecte d'Investigació AFRONTA (PID2022-139502OB-I00)", "heroP": "Compilació estructurada de plataformes cartogràfiques, visors d'escenaris, índexs municipals de risc i informes científics de referència per a la resiliència socioambiental i l'adaptació climàtica.", "attrTitle": "Nota d'atribució", "attrText": "Totes les fonts de dades, models cartogràfics i informes científics recopilats en aquest portal són propietat de les respectives institucions d'origen i dels seus autors/autores, els quals conserven tots els drets de propietat intel·lectual sobre aquests continguts.", "kpis": [{"val": "27", "lbl": "Fonts Catalogades", "sub": "Internacionals, Nacionals i Locals"}, {"val": "854", "lbl": "Ciutats Europees", "sub": "Estudi Mortalitat Tèrmica (Nature Med. 2025)"}, {"val": "10", "lbl": "Àmbits Sectorials", "sub": "Avaluats a Espanya (MITECO/BC3)"}, {"val": "4", "lbl": "Indicadors de Risc", "sub": "Sequera, Calor, Inundació, Pujada del Mar"}], "chartSecTitle": "Visualitzacions d'Evidència Científica", "chartSecSub": "Gràfics interactius elaborats a partir de les dades publicades en les fonts compilades.", "chartSecHint": "Passa el cursor o prem sobre els gràfics per veure dades detallades", "charts": [{"tag": "Nature Medicine (2025)", "subTag": "854 Ciutats d'Europa", "title": "Impacte Projectat en Mortalitat Atribuïble a la Temperatura", "desc": "Projecció de canvi net en morts per calor vs. fred sota l'escenari RCP 4.5 / SSP2 (2050 sense adaptació substancial).", "srcLabel": "Font", "srcVal": "Masselot et al. (2025) Nature Medicine", "linkText": "Fitxa Font", "note": "* Indexació relativa a partir de l'avaluació qualitativa de la font"}, {"tag": "MITECO / BC3 (2021)", "subTag": "Espanya - Avaluacions Prioritàries", "title": "Nivell de Risc Relatiu per Àmbits Prioritaris a Espanya", "desc": "Valoració del grau d'urgència i severitat dels impactes del canvi climàtic reportats en l'informe nacional.", "srcLabel": "Font", "srcVal": "MITECO & Basque Centre for Climate Change", "linkText": "Fitxa Font", "note": "* Indexació relativa a partir de l'avaluació qualitativa de la font"}, {"tag": "MedECC MAR1 Report", "subTag": "Conca Mediterrània vs. Global", "title": "Anomalia de Temperatura Mitjana (°C respecte a l'era preindustrial)", "desc": "La regió mediterrània s'escalfa un 20% més ràpid que la mitjana del planeta (+1,5 °C assolits acceleradament).", "srcLabel": "Font", "srcVal": "Xarxa MedECC (First Assessment Report)", "linkText": "Fitxa Font"}, {"tag": "AMB / Pla Clima 2030", "subTag": "Àrea Metropolitana de Barcelona", "title": "Projecció de Dies i Nits CÀLIDES / TÒRREDES a l'any", "desc": "Evolució observada vs. escenaris projectats en la trama urbana metropolitana (PNACC 2050).", "srcLabel": "Font", "srcVal": "Visor d'escenaris climàtics futurs AMB", "linkText": "Fitxa Font"}], "catTitle": "Catàleg de Fonts Recopilades", "catSub": "Explora i filtra les 27 fonts documentals, visors interactius i bases de dades sobre vulnerabilitat i canvi climàtic compilades.", "catSearchPlaceholder": "Cercar per paraula clau...", "catGeoLabel": "Àmbit", "catGeoOpts": ["Tots", "Europa / Global", "Espanya (Nacional)", "Catalunya / Local"], "catTypeLabel": "Tipus", "catTypeOpts": ["Tots", "Visors i Indicadors", "Informes Científics", "Salut i Pobresa"], "catResultsCount": "Mostrant {count} de {total} fonts", "resetFiltersBtn": "Restablir filtres", "matrixBadge": "Eines Operatives de Diagnòstic", "matrixTitle": "Matriu d'Indicadors i Riscos Clau enfront del Canvi Climàtic", "matrixSub": "Avaluació qualitativa de les 4 metodologies d'anàlisi del risc territorial i urbà a Espanya (<a href='https://www.adaptecca.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AdapteCCa</a> / <a href='https://www.miteco.gob.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>MITECO</a> / <a href='https://www.amb.cat/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AMB</a> / <a href='https://www.ign.es/web/ign/portal/rse-riesgos-naturales' target='_blank' class='text-afronta-600 font-semibold hover:underline'>IGN</a>).", "matrixTabs": ["Onades de Calor i Salut", "Sequera i Recursos Hídrics", "Inundació Urbana i Nivell del Mar", "Vulnerabilitat Socioeconòmica"], "footerDesc": "AFRONTA (PID2022-139502OB-I00) és un projecte d'investigació amb seu al Departament d'Antropologia Social i Cultural de la Universitat Autònoma de Barcelona (UAB).", "footerContactTitle": "Contacte i Institució", "footerContact": "Edifici B, Facultat de Filosofia i Lletres<br>Universitat Autònoma de Barcelona (UAB)<br>08193 Bellaterra (Cerdanyola del Vallès), Espanya<br><strong>Correu-e:</strong> proyectoafronta@gmail.com", "footerLegalTitle": "Avís Legal i Drets", "footerLegal": "Aquest portal interactiu recopila i sintetitza material preexistent elaborat per organismes públics i institucions científiques de prestigi reconegut. No s'atribueix l'autoria original de dits conjunts de dades.", "footerCopy": "Compilació per al Projecte AFRONTA.", "modal": {"authorLabel": "Institució / Autors", "descLabel": "Descripció del Recurs", "quoteLabel": "Cita textual catalogada", "btnAccess": "Accedir a la Font Original", "btnInfo": "Informació i Fitxa"}, "chartLabels": {"c1_labels": ["Sud d'Europa", "Europa Occidental", "Europa Oriental", "Europa del Nord"], "c1_ds1": "Augment morts per Calor (%)", "c1_ds2": "Reducció morts per Fred (%)", "c1_y": "Variació % neta", "c2_labels": ["Recursos Hídrics", "Salut Pública", "Zones Costaneres", "Agricultura", "Ecosistemes", "Àrees Urbanes"], "c2_ds1": "Nivell de Risc Relatiu (0-100)", "c3_ds1": "Anomalia Conca Mediterrània (°C)", "c3_ds2": "Mitjana Global (°C)", "c3_y": "Increment °C", "c4_labels": ["Històric (1971-2000)", "Actual (2011-2023)", "Projecció 2030", "Projecció 2050"], "c4_ds1": "Nits Tropicals (>20 °C)", "c4_ds2": "Dies Tòrreds (>35 °C)", "c4_y": "Dies / Nits a l'any"}, "tabData": {"calor": {"title": "Onades de Calor i Estrès Tèrmic Urbà", "indicators": ["Dies Tòrreds (>35 °C)", "Nits Tropicals (>20 °C)", "Mortalitat Atribuïble a la Temperatura", "Índex IVAC"], "desc": "Els visors com AdapteCCa i l'Atles de Vulnerabilitat de la Calor analitzen com la densitat urbana i les superfícies asfaltades incrementen l'efecte 'illa de calor', multiplicant la morbimortalitat en persones grans i col·lectius afectats per la desavantatge social.", "toolsLabel": "Eines i Fonts Clau (Fes clic per accedir-hi)", "toolsList": [{"name": "Atles de la Calor (MITECO)", "url": "https://www.miteco.gob.es/"}, {"name": "Visor d'Escenaris Climàtics (AMB)", "url": "https://geoportal.amb.cat/canviclimatic/visor/"}, {"name": "Nature Medicine (Masselot et al. 2025)", "url": "https://doi.org/10.1038/s41591-024-03452-2"}, {"name": "Plataforma AdapteCCa", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadors Monitorats"}, "sequia": {"title": "Sequera i Gestió de Recursos Hídrics", "indicators": ["Escorrentia Mitjana Anual", "Reducció d'Aportacions en Capçalera", "Índex de Sequera Agrícola", "CAMREC"], "desc": "L'aplicació CAMREC del CEDEX simula reduccions de fins a un 24% en recursos hídrics disponibles per a la segona meitat de segle en les conques del sud i interior peninsular.", "toolsLabel": "Eines i Fonts Clau (Fes clic per accedir-hi)", "toolsList": [{"name": "Aplicació CAMREC (CEDEX / OECC)", "url": "https://ceh.cedex.es/camrec/"}, {"name": "Plataforma AdapteCCa (Recursos Hídrics)", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadors Monitorats"}, "inundacion": {"title": "Inundació Fluvial Urbana i Pujada del Nivell del Mar", "indicators": ["Làmina d'Aigua T=100 anys", "Exposició d'Infraestructures", "Erosió Costanera", "IGN Riscos"], "desc": "L'Instituto Geográfico Nacional i els indicadors municipals d'AdapteCCa mapegen la vulnerabilitat d'assentaments urbans davant d'episodis DANA i inundacions sobressagudes costaneres.", "toolsLabel": "Eines i Fonts Clau (Fes clic per accedir-hi)", "toolsList": [{"name": "Visor Riscos Naturals i Ambientals (IGN)", "url": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales"}, {"name": "Informe d'Impactes i Riscos Costaners (MITECO)", "url": "https://www.miteco.gob.es/es/cambio-climatico/temas/impactos-vulnerabilidad-y-adaptacion/plan-nacional-adaptacion-cambio-climatico/informe-impactos-riesgos.html"}], "indLabel": "Indicadors Monitorats"}, "pobreza": {"title": "Vulnerabilitat Socioeconómica i Bretxa Social", "indicators": ["Pobresa Energètica (Estiu/Hivern)", "Qualitat d'Edificació", "Monoparentalitat / Població >65 anys"], "desc": "Els diagnòstics de Creu Roja i estudis de vulnerabilitat assenyalen que la manca de climatització adequada en habitatges de baixos ingressos reverteix els avenços en desenvolupament i empitjora la salut comunitària.", "toolsLabel": "Eines i Fonts Clau (Fes clic per accedir-hi)", "toolsList": [{"name": "Informe Creu Roja 'Activa't' i Vulnerabilitat", "url": "https://www.cruzroja.es/"}, {"name": "Indicadors Municipals de Vulnerabilitat (AdapteCCa)", "url": "https://www.adaptecca.es/"}], "indLabel": "Indicadors Monitorats"}}, "sources": [{"id": 1, "title": "European Environment Agency (EEA)", "geo": "Europa", "type": "visor", "tag": "Agència Europea", "desc": "Lloc web oficial de l'Agència Europea del Medi Ambient, amb accés a dades, indicadors i recursos sobre medi ambient i sostenibilitat a Europa.", "quote": "Accés centralitzat a dades mediambientals harmonitzades dels Estats membres de la UE.", "urlEs": "https://www.eea.europa.eu/es", "urlEn": "https://www.eea.europa.eu/en", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 2, "title": "Climate Change Policy & Resilience Framework", "geo": "Europa", "type": "informe", "tag": "Estratègia UE", "desc": "Marc estratègic de la Unió Europea per convertir-se en una societat resilient al canvi climàtic per a l'any 2050.", "quote": "«Through EU policy, legislation and strategies the EU has set itself the goal of becoming a climate-resilient society by 2050, fully adapted to the unavoidable impacts of climate change»", "urlEn": "https://climate.ec.europa.eu/", "authors": "European Commission", "year": "2024"}, {"id": 3, "title": "Climate change: what the EU is doing", "geo": "Europa", "type": "informe", "tag": "Consell Europeu", "desc": "Pàgina web del Consell Europeu amb informació sobre actuacions legislatives, finançament i mitigació d'efectes climàtics sobre la població.", "quote": "Panorama de decisions del Consell de la Unió Europea sobre acció climàtica.", "urlEs": "https://www.consilium.europa.eu/es/policies/climate-change/", "authors": "Consell Europeu", "year": "2024"}, {"id": 4, "title": "European Climate Data Explorer", "geo": "Europa", "type": "visor", "tag": "Climate-ADAPT", "desc": "Serveis clau, característiques temàtiques i eines de Climate-ADAPT amb la intenció de proporcionar coneixements per a l'adaptació resilient a Europa.", "quote": "«Serveis clau, les característiques temàtiques i les eines de Climate-ADAPT amb la intenció de coneixements d'adaptació per a una Europa resilient»", "urlEs": "https://climate-adapt.eea.europa.eu/en/knowledge/european-climate-data-explorer", "authors": "EEA & Copernicus Climate Change Service", "year": "2024"}, {"id": 5, "title": "European State of the Climate 2023", "geo": "Europa", "type": "informe", "tag": "Copernicus / WMO", "desc": "Informe anual elaborat pel Servei de Canvi Climàtic de Copernicus (C3S) i l'Organització Meteorològica Mundial (OMM).", "quote": "«Compiled by the Copernicus Climate Change Service (C3S) and the World Meteorological Organization (WMO). C3S is implemented by ECMWF on behalf of the European Commission».", "urlEn": "https://climate.copernicus.eu/esotc/2023", "authors": "C3S & WMO (ECMWF)", "year": "2024"}, {"id": 6, "title": "Heat-related and cold-related mortality in 854 European cities", "geo": "Europa", "type": "salud", "tag": "Nature Medicine", "desc": "Estudi científic d'alt impacte que projecta la mortalitat per fred i calor sota diversos escenaris climàtics, demogràfics i d'adaptació en 854 ciutats europees.", "quote": "«Showed that, with no adaptation to heat, the increase in heat-related deaths consistently exceeds any decrease in cold-related deaths across all considered scenarios...»", "urlEn": "https://doi.org/10.1038/s41591-024-03452-2", "authors": "Masselot, P., Mistry, M.N., Rao, S. et al.", "year": "2025"}, {"id": 7, "title": "Urban Adaptation Map Viewer", "geo": "Europa", "type": "visor", "tag": "Visor Urbà EEA", "desc": "Visor interactiu que proporciona una panoràmica dels riscos de salut actuals i futurs en ciutats europees (temperatures elevades, inundacions, escassetat d'aigua, incendis i malalties vectorials).", "quote": "«The aim of this map viewer is to provide an overview of the current and future climate-related health risks facing the European cities...»", "urlEn": "https://climate-adapt.eea.europa.eu/en/observatory/evidence/tools/urban-adaptation-map-viewer", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 8, "title": "Climate and Environmental Change in the Mediterranean Basin (MAR1)", "geo": "Europa", "type": "informe", "tag": "MedECC", "desc": "Primer Informe d'Avaluació Mediterrani preparat per la xarxa independent d'experts MedECC, sintetitzant dades de gairebé 190 científics de 25 països.", "quote": "«The report assesses the best available scientific knowledge on climate and environmental change and associated risks in the Mediterranean Basin in order to render it accessible to policymakers...»", "urlEn": "https://www.medecc.org/first-mediterranean-assessment-report-mar1/", "authors": "MedECC Network", "year": "2020"}, {"id": 9, "title": "Aplicació CAMREC - Canvi climàtic i recursos hídrics a Espanya", "geo": "Espana", "type": "visor", "tag": "CEDEX / OECC", "desc": "Aplicació informàtica per consultar els mapes de l'estudi 'Avaluació de l'Impacte del Canvi Climàtic en els Recursos Hídrics i Sequeres a Espanya'.", "quote": "«Facilitar la consulta i anàlisi dels mapes que resumeixen els resultats de l'estudi realitzat per CEDEX per a l'OECC».", "urlEs": "https://ceh.cedex.es/camrec/", "authors": "CEDEX & Oficina Española de Cambio Climático", "year": "2023"}, {"id": 10, "title": "AdapteCCa - Plataforma sobre Adaptació al Canvi Climàtic", "geo": "Espana", "type": "visor", "tag": "MITECO / Fund. Biodiversitat", "desc": "Plataforma de consulta i intercanvi d'informació en matèria d'impactes, vulnerabilitat i adaptació al canvi climàtic a Espanya.", "quote": "«Iniciativa conjunta de la Oficina Española de Cambio Climático i la Fundación Biodiversidad per centralitzar el coneixement sobre adaptació».", "urlEs": "https://www.adaptecca.es/", "authors": "OECC & Fundación Biodiversidad (MITECO)", "year": "2024"}, {"id": 11, "title": "Impactes i riscos derivats del canvi climàtic a Espanya", "geo": "Espana", "type": "informe", "tag": "MITECO / BC3", "desc": "Informe que exposa els principals impactes en 10 sectors productius i sistemes naturals prioritaris (aigua, agricultura, costes, salut, turisme, etc.).", "quote": "«Sintetitza la informació sobre impactes del canvi climàtic per a cada àmbit de treball i aprofundeix en la interrelació dels riscos a Espanya».", "urlEs": "https://www.miteco.gob.es/es/ceneam/recursos/pag-web/impactos-cambio-climatico-espana.html", "authors": "MITECO & BC3 (Basque Centre for Climate Change)", "year": "2021"}, {"id": 12, "title": "Índexs de vulnerabilitat i risc municipal enfront del canvi climàtic", "geo": "Espana", "type": "visor", "tag": "Indicadors Municipals", "desc": "Indicadors per a 4 impactes clau a escala municipal: Sequera agrícola, onades de calor (salut), inundació fluvial urbana i inundació costanera.", "quote": "«Disseny i elaboració d'indicadors de vulnerabilitat i risc enfront del canvi climàtic per a 4 impactes clau a nivell municipal».", "urlEs": "https://www.adaptecca.es/", "authors": "AdapteCCa / MITECO", "year": "2023"}, {"id": 13, "title": "Mesures per a l'afrontament i la recuperació. Informe diagnòstic", "geo": "Espana", "type": "salud", "tag": "Vulnerabilitat Social", "desc": "Investigació mecantil i aplicada sobre l'impacte directe del canvi climàtic en les poblacions en situació de pobresa i exclusió social.", "quote": "«Estudi enfocat en com els factors de desigualtat social multipliquen la vulnerabilitat davant crisis climàtiques».", "urlEs": "https://www.cruzroja.es/", "authors": "Cruz Roja & Organismes Socials", "year": "2023"}, {"id": 14, "title": "Riscos Ambientals - Instituto Geográfico Nacional (IGN)", "geo": "Espana", "type": "visor", "tag": "IGN Espanya", "desc": "Recurs geogràfic per comprendre la freqüència i magnitud d'esdeveniments naturals extrems combinats amb l'ocupació i població del territori.", "quote": "«La combinació de paràmetres de perillositat i vulnerabilitat territorial resulta essencial per a la planificació del territori».", "urlEs": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales", "authors": "Instituto Geográfico Nacional", "year": "2024"}, {"id": 15, "title": "Visor d'Escenaris de Canvi Climàtic (PNACC)", "geo": "Espana", "type": "visor", "tag": "AEMET / OECC", "desc": "Projeccions regionalitzades de canvi climàtic per a Espanya basades en el V Informe d'Avaluació de l'IPCC (Escenaris PNACC 2017).", "quote": "«Eina oficial per visualitzar canvis projectats en temperatura i precipitació en quadrícules regionals d'Espanya».", "urlEs": "http://escenarios.adaptecca.es/", "authors": "AEMET, OECC & Fundación Biodiversidad", "year": "2023"}, {"id": 16, "title": "Atles de Vulnerabilitat de la Calor", "geo": "Espana", "type": "salud", "tag": "Atles Urbà", "desc": "Eina que visibilitza la diversitat de situacions de risc per calor a les quals s'enfronten els municipis espanyols i la configuració urbana.", "quote": "«Pretèn assenyalar les mancances de les trames urbanes sobre les quals resulta necessari actuar davant temperatures extremes».", "urlEs": "https://www.miteco.gob.es/", "authors": "MITECO / Observatoris de Salut", "year": "2023"}, {"id": 17, "title": "Activa't contra el canvi climàtic i la pobresa", "geo": "Espana", "type": "salud", "tag": "Sensibilització Social", "desc": "Anàlisi sobre la vulnerabilitat geogràfica d'Espanya i l'efecte multiplicador sobre persones grans, dones i col·lectius de baixos ingressos.", "quote": "«Poles seves condicions geogràfiques, Espanya és dels països més vulnerables. Manca de recursos multiplica la vulnerabilitat».", "urlEs": "https://www.cruzroja.es/", "authors": "Cruz Roja Española", "year": "2023"}, {"id": 18, "title": "Impactes del canvi climàtic a Catalunya", "geo": "Cataluna", "type": "informe", "tag": "Generalitat de Catalunya", "desc": "Informació i diagnòstics sobre els principals impactes del canvi climàtic projectats per als sistemes naturals i humans catalans.", "quote": "«Anàlisi dels principals impactes científics previstos a escala mediterrània i local per a Catalunya».", "urlEs": "https://canviclimatic.gencat.cat/", "authors": "Oficina Catalana del Canvi Climàtic (OCCC)", "year": "2023"}, {"id": 19, "title": "Visor d'Escenaris Climàtics Futurs (AMB)", "geo": "Cataluna", "type": "visor", "tag": "Àrea Metropolitana BCN", "desc": "Cercador de dades i projeccions de temperatura, precipitació, dies tòrreds i nits tropicals per als municipis metropolitans de Barcelona.", "quote": "«Elaborat en el marc del Pla Clima i Energia 2030, permet cercar projeccions de nits tropicals i dies càlids».", "urlEs": "https://geoportal.amb.cat/canviclimatic/visor/", "authors": "Àrea Metropolitana de Barcelona (AMB)", "year": "2024"}, {"id": 20, "title": "Índex de Vulnerabilitat al Canvi Climàtic (IVAC)", "geo": "Cataluna", "type": "visor", "tag": "AMB / Vulnerabilitat", "desc": "Índex sintètic dissenyat per posar el focus en els riscos per augment de temperatures i avaluar mesures d'adaptació implementades.", "quote": "«L'objectiu de l'IVAC és posar el focus en els riscos provocats per l'augment de les temperatures en àrees urbanes».", "urlEs": "https://www.amb.cat/", "authors": "Àrea Metropolitana de Barcelona", "year": "2024"}, {"id": 21, "title": "INE - Atles de Distribució de la Renda i Indicadors Urbans", "geo": "Espana", "type": "salud", "tag": "INE / Estadística", "desc": "Proporciona informació estadística a nivell de secció censal i municipi sobre nivell de renda, taxa de pobresa, edat i estructura de les meutes a Espanya.", "quote": "«Crucial per vincular l'exposició territorial a amenaces climàtiques amb la capacitat econòmica i vulnerabilitat social de la població».", "urlEs": "https://www.ine.es/", "authors": "Instituto Nacional de Estadística (INE)", "year": "2025"}, {"id": 22, "title": "IDESCAT - Índex Socioeconòmic Territorial (IST)", "geo": "Cataluna", "type": "salud", "tag": "IDESCAT / Catalunya", "desc": "Resumeix les característiques socioeconòmiques de la població de Catalunya per agrupació de seccions censals, identificant àrees amb major vulnerabilitat social.", "quote": "«Permet classificar el territori segons la situació laboral, nivell educatiu, població ocupada i ingressos de les famílies».", "urlEs": "https://www.idescat.cat/", "urlEn": "https://www.idescat.cat/?lang=en", "authors": "Institut d'Estadística de Catalunya (IDESCAT)", "year": "2025"}, {"id": 23, "title": "Sistema MoMo - Monitorització de la Mortalitat Diària per Temperatura", "geo": "Espana", "type": "salud", "tag": "ISCIII / Salut Pública", "desc": "Sistema oficial de vigilància epidemiològica que quantifica l'impacte real de les temperatures extremes (calor i fred) en la mortalitat de la població espanyola.", "quote": "«Ofereix estimacions d'excés de mortalitat atribuïble a la temperatura per al seguiment continu de crisis climàtiques estivals i hivernals».", "urlEs": "https://momo.isciii.es/", "authors": "Centro Nacional de Epidemiología - ISCIII", "year": "2026"}, {"id": 24, "title": "Observatori de Salut i Canvi Climàtic (OSCC)", "geo": "Espana", "type": "informe", "tag": "MITECO / Sanitat", "desc": "Òrgan interministerial encarregat de diagnosticar, prevenir i monitoritzar els efectes directes i indirectes del canvi climàtic sobre la salut humana a Espanya.", "quote": "«Coordinació de polítiques públiques per reduir la morbimortalitat derivada d'onades de calor, qualitat de l'aire i malalties vectorials».", "urlEs": "https://www.sanidad.gob.es/", "authors": "Ministerio de Sanidad & MITECO", "year": "2025"}, {"id": 25, "title": "EFFIS - Sistema Europeu d'Informació sobre Incendis Forestals", "geo": "Europa", "type": "visor", "tag": "Copernicus / EFFIS", "desc": "Plataforma de la Comissió Europea que proporciona dades en temps real i històriques sobre perill d'incendi, focs actius i avaluació d'incendis forestals.", "quote": "«Eina clau per a la monitorització transfronterera del risc d'incendis i resiliència forestal a la conca mediterrània».", "urlEn": "https://effis.jrc.ec.europa.eu/", "authors": "European Commission Joint Research Centre (JRC)", "year": "2026"}, {"id": 26, "title": "AEMET OpenData - Sèries Climatològiques i Històriques Observades", "geo": "Espana", "type": "visor", "tag": "AEMET / Climatologia", "desc": "Portal de dades obertes de l'Agència Estatal de Meteorologia per a la descàrrega de dades observades, valors extrems i normals climatològiques.", "quote": "«Base empírica fonamental per a la validació local de models climàtics i tendències tèrmiques i pluviomètriques a Espanya».", "urlEs": "https://opendata.aemet.es/", "authors": "Agencia Estatal de Meteorología (AEMET)", "year": "2026"}, {"id": 27, "title": "Indicadors Oficials de Pobresa Energètica a Espanya", "geo": "Espana", "type": "salud", "tag": "MITECO / Pobresa Energètica", "desc": "Publicació estadística anual que avalua la despesa desproporcionada, la pobresa energètica oculta i la incapacitat de mantenir l'habitatge a temperatura confortable.", "quote": "«Diagnòstic quantitatiu clau per avaluar l'impacte de la calor extrema en famílies vulnerables sense climatització adequada».", "urlEs": "https://www.miteco.gob.es/es/energia/pobreza-energetica.html", "authors": "Secretaría de Estado de Energía - MITECO", "year": "2025"}]}, "en": {"pageTitle": "Interactive Bank of Sources and Databases on Climate and Environmental Vulnerability", "nav": ["Charts", "Sources & Data", "Risk Matrix", "AFRONTA Web"], "heroBadge": "AFRONTA Research Project (PID2022-139502OB-I00)", "heroP": "Structured compilation of mapping platforms, scenario viewers, municipal risk indices, and reference scientific reports for socio-environmental resilience and climate adaptation.", "attrTitle": "Attribution Note", "attrText": "All data sources, mapping models, and scientific reports collected in this portal are the property of their respective originating institutions and authors, who retain all intellectual property rights over said contents.", "kpis": [{"val": "27", "lbl": "Cataloged Sources", "sub": "International, National, and Local"}, {"val": "854", "lbl": "European Cities", "sub": "Thermal Mortality Study (Nature Med. 2025)"}, {"val": "10", "lbl": "Sectoral Domains", "sub": "Evaluated in Spain (MITECO/BC3)"}, {"val": "4", "lbl": "Risk Indicators", "sub": "Drought, Heat, Flooding, Sea Level Rise"}], "chartSecTitle": "Scientific Evidence Visualizations", "chartSecSub": "Interactive charts created from published data across compiled sources.", "chartSecHint": "Hover or click on charts for detailed data", "charts": [{"tag": "Nature Medicine (2025)", "subTag": "854 European Cities", "title": "Projected Impact on Temperature-Attributable Mortality", "desc": "Projected net change in heat vs. cold deaths under RCP 4.5 / SSP2 scenario (2050 without substantial adaptation).", "srcLabel": "Source", "srcVal": "Masselot et al. (2025) Nature Medicine", "linkText": "Source Card", "note": "* Relative indexation based on qualitative evaluation of the source"}, {"tag": "MITECO / BC3 (2021)", "subTag": "Spain - Priority Assessments", "title": "Relative Risk Level Across Priority Domains in Spain", "desc": "Assessment of urgency degree and severity of climate change impacts reported in national assessment.", "srcLabel": "Source", "srcVal": "MITECO & Basque Centre for Climate Change", "linkText": "Source Card", "note": "* Relative indexation based on qualitative evaluation of the source"}, {"tag": "MedECC MAR1 Report", "subTag": "Mediterranean Basin vs. Global", "title": "Mean Temperature Anomaly (°C relative to pre-industrial era)", "desc": "The Mediterranean region warms 20% faster than the global average (+1.5°C rapidly reached).", "srcLabel": "Source", "srcVal": "MedECC Network (First Assessment Report)", "linkText": "Source Card"}, {"tag": "AMB / Pla Clima 2030", "subTag": "Barcelona Metropolitan Area", "title": "Projected HOT Days / TROPICAL Nights per year", "desc": "Observed evolution vs. projected scenarios in the metropolitan urban fabric (PNACC 2050).", "srcLabel": "Source", "srcVal": "Visor d'escenaris climàtics futurs AMB", "linkText": "Source Card"}], "catTitle": "Catalog of Compiled Sources", "catSub": "Explore and filter the 27 documentary sources, interactive viewers, and databases on vulnerability and climate change compiled.", "catSearchPlaceholder": "Search by keyword...", "catGeoLabel": "Domain", "catGeoOpts": ["All", "Europe / Global", "Spain (National)", "Catalonia / Local"], "catTypeLabel": "Type", "catTypeOpts": ["All", "Viewers & Indicators", "Scientific Reports", "Health & Poverty"], "catResultsCount": "Showing {count} of {total} sources", "resetFiltersBtn": "Reset filters", "matrixBadge": "Operational Diagnostic Tools", "matrixTitle": "Matrix of Key Climate Change Risk Indicators", "matrixSub": "Qualitative evaluation of the 4 territorial and urban risk analysis methodologies in Spain (<a href='https://www.adaptecca.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AdapteCCa</a> / <a href='https://www.miteco.gob.es/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>MITECO</a> / <a href='https://www.amb.cat/' target='_blank' class='text-afronta-600 font-semibold hover:underline'>AMB</a> / <a href='https://www.ign.es/web/ign/portal/rse-riesgos-naturales' target='_blank' class='text-afronta-600 font-semibold hover:underline'>IGN</a>).", "matrixTabs": ["Heatwaves & Health", "Drought & Water Resources", "Urban Flooding & Sea Level", "Socioeconomic Vulnerability"], "footerDesc": "AFRONTA (PID2022-139502OB-I00) is a research project hosted at the Department of Social and Cultural Anthropology of the Universitat Autònoma de Barcelona (UAB).", "footerContactTitle": "Contact & Institution", "footerContact": "Building B, Faculty of Philosophy and Letters<br>Universitat Autònoma de Barcelona (UAB)<br>08193 Bellaterra (Cerdanyola del Vallès), Spain<br><strong>Email:</strong> proyectoafronta@gmail.com", "footerLegalTitle": "Legal Notice & Rights", "footerLegal": "This interactive portal compiles and synthesizes pre-existing materials prepared by public bodies and scientific institutions of recognized prestige. Original authorship of said datasets is not claimed.", "footerCopy": "Compilation for the AFRONTA Project.", "modal": {"authorLabel": "Author / Institution", "descLabel": "Resource Description", "quoteLabel": "Cataloged Quote", "btnAccess": "Access Original Source", "btnInfo": "Info & Card"}, "chartLabels": {"c1_labels": ["Southern Europe", "Western Europe", "Eastern Europe", "Northern Europe"], "c1_ds1": "Heat Death Increase (%)", "c1_ds2": "Cold Death Decrease (%)", "c1_y": "Net % Variation", "c2_labels": ["Water Resources", "Public Health", "Coastal Areas", "Agriculture", "Ecosystems", "Urban Areas"], "c2_ds1": "Relative Risk Level (0-100)", "c3_ds1": "Mediterranean Basin Anomaly (°C)", "c3_ds2": "Global Average (°C)", "c3_y": "Increase °C", "c4_labels": ["Historical (1971-2000)", "Current (2011-2023)", "Projection 2030", "Projection 2050"], "c4_ds1": "Tropical Nights (>20°C)", "c4_ds2": "Hot Days (>35°C)", "c4_y": "Days / Nights per year"}, "tabData": {"calor": {"title": "Heatwaves and Urban Thermal Stress", "indicators": ["Hot Days (>35°C)", "Tropical Nights (>20°C)", "Temperature-Attributable Mortality", "IVAC Index"], "desc": "Viewers such as AdapteCCa and the Heat Vulnerability Atlas analyze how urban density and asphalt surfaces increase the 'urban heat island' effect, multiplying morbidity and mortality among elderly and socially disadvantaged populations.", "toolsLabel": "Key Tools & Sources (Click to access)", "toolsList": [{"name": "Heat Vulnerability Atlas (MITECO)", "url": "https://www.miteco.gob.es/"}, {"name": "Future Climate Scenario Viewer (AMB)", "url": "https://geoportal.amb.cat/canviclimatic/visor/"}, {"name": "Nature Medicine (Masselot et al. 2025)", "url": "https://doi.org/10.1038/s41591-024-03452-2"}, {"name": "AdapteCCa Platform", "url": "https://www.adaptecca.es/"}], "indLabel": "Monitored Indicators"}, "sequia": {"title": "Drought and Water Resource Management", "indicators": ["Mean Annual Runoff", "Headwater Inflow Reduction", "Agricultural Drought Index", "CAMREC"], "desc": "CEDEX's CAMREC application simulates reductions of up to 24% in available water resources for the second half of the century in southern and inland river basins.", "toolsLabel": "Key Tools & Sources (Click to access)", "toolsList": [{"name": "CAMREC Application (CEDEX / OECC)", "url": "https://ceh.cedex.es/camrec/"}, {"name": "AdapteCCa Platform (Water Resources)", "url": "https://www.adaptecca.es/"}], "indLabel": "Monitored Indicators"}, "inundacion": {"title": "Urban River Flooding and Sea Level Rise", "indicators": ["Water Surface Elevation T=100yr", "Infrastructure Exposure", "Coastal Erosion", "IGN Risks"], "desc": "The National Geographic Institute and AdapteCCa municipal indicators map urban settlement vulnerability to flash flooding (DANA events) and coastal inundation.", "toolsLabel": "Key Tools & Sources (Click to access)", "toolsList": [{"name": "Natural & Environmental Risks Viewer (IGN)", "url": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales"}, {"name": "Coastal Impacts & Risks Report (MITECO)", "url": "https://www.miteco.gob.es/es/cambio-climatico/temas/impactos-vulnerabilidad-y-adaptacion/plan-nacional-adaptacion-cambio-climatico/informe-impactos-riesgos.html"}], "indLabel": "Monitored Indicators"}, "pobreza": {"title": "Socioeconomic Vulnerability and Social Gap", "indicators": ["Energy Poverty (Summer/Winter)", "Building Quality", "Single-parent Households / Population >65yr"], "desc": "Red Cross diagnostics and vulnerability studies point out that lack of adequate cooling/heating in low-income homes reverses development gains and worsens community health.", "toolsLabel": "Key Tools & Sources (Click to access)", "toolsList": [{"name": "Red Cross 'Activate' & Vulnerability Report", "url": "https://www.cruzroja.es/"}, {"name": "Municipal Vulnerability Indicators (AdapteCCa)", "url": "https://www.adaptecca.es/"}], "indLabel": "Monitored Indicators"}}, "sources": [{"id": 1, "title": "European Environment Agency (EEA)", "geo": "Europa", "type": "visor", "tag": "European Agency", "desc": "Official website of the European Environment Agency, providing access to data, indicators, and resources on environment and sustainability in Europe.", "quote": "Centralized access to harmonized environmental data from EU Member States.", "urlEs": "https://www.eea.europa.eu/es", "urlEn": "https://www.eea.europa.eu/en", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 2, "title": "Climate Change Policy & Resilience Framework", "geo": "Europa", "type": "informe", "tag": "EU Strategy", "desc": "European Union strategic framework to become a climate-resilient society by 2050.", "quote": "«Through EU policy, legislation and strategies the EU has set itself the goal of becoming a climate-resilient society by 2050, fully adapted to the unavoidable impacts of climate change»", "urlEn": "https://climate.ec.europa.eu/", "authors": "European Commission", "year": "2024"}, {"id": 3, "title": "Climate change: what the EU is doing", "geo": "Europa", "type": "informe", "tag": "European Council", "desc": "European Council webpage providing information on legislative actions, funding, and mitigation of climate impacts on the population.", "quote": "Overview of European Council decisions on climate action.", "urlEs": "https://www.consilium.europa.eu/es/policies/climate-change/", "authors": "European Council", "year": "2024"}, {"id": 4, "title": "European Climate Data Explorer", "geo": "Europa", "type": "visor", "tag": "Climate-ADAPT", "desc": "Key services, thematic features, and tools from Climate-ADAPT aimed at delivering adaptation knowledge for a resilient Europe.", "quote": "«Key services, thematic features and tools of Climate-ADAPT intended to provide adaptation knowledge for a climate-resilient Europe»", "urlEs": "https://climate-adapt.eea.europa.eu/en/knowledge/european-climate-data-explorer", "authors": "EEA & Copernicus Climate Change Service", "year": "2024"}, {"id": 5, "title": "European State of the Climate 2023", "geo": "Europa", "type": "informe", "tag": "Copernicus / WMO", "desc": "Annual report compiled by the Copernicus Climate Change Service (C3S) and the World Meteorological Organization (WMO).", "quote": "«Compiled by the Copernicus Climate Change Service (C3S) and the World Meteorological Organization (WMO). C3S is implemented by ECMWF on behalf of the European Commission».", "urlEn": "https://climate.copernicus.eu/esotc/2023", "authors": "C3S & WMO (ECMWF)", "year": "2024"}, {"id": 6, "title": "Heat-related and cold-related mortality in 854 European cities", "geo": "Europa", "type": "salud", "tag": "Nature Medicine", "desc": "High-impact scientific study projecting heat- and cold-related mortality under various climate, demographic, and adaptation scenarios in 854 European cities.", "quote": "«Showed that, with no adaptation to heat, the increase in heat-related deaths consistently exceeds any decrease in cold-related deaths across all considered scenarios...»", "urlEn": "https://doi.org/10.1038/s41591-024-03452-2", "authors": "Masselot, P., Mistry, M.N., Rao, S. et al.", "year": "2025"}, {"id": 7, "title": "Urban Adaptation Map Viewer", "geo": "Europa", "type": "visor", "tag": "EEA Urban Viewer", "desc": "Interactive viewer providing an overview of current and future climate-related health risks facing European cities (high temperatures, flooding, water scarcity, wildfires, vector-borne diseases).", "quote": "«The aim of this map viewer is to provide an overview of the current and future climate-related health risks facing the European cities...»", "urlEn": "https://climate-adapt.eea.europa.eu/en/observatory/evidence/tools/urban-adaptation-map-viewer", "authors": "European Environment Agency (EEA)", "year": "2024"}, {"id": 8, "title": "Climate and Environmental Change in the Mediterranean Basin (MAR1)", "geo": "Europa", "type": "informe", "tag": "MedECC", "desc": "First Mediterranean Assessment Report prepared by the independent MedECC network, synthesizing knowledge from nearly 190 scientists across 25 countries.", "quote": "«The report assesses the best available scientific knowledge on climate and environmental change and associated risks in the Mediterranean Basin in order to render it accessible to policymakers...»", "urlEn": "https://www.medecc.org/first-mediterranean-assessment-report-mar1/", "authors": "MedECC Network", "year": "2020"}, {"id": 9, "title": "CAMREC Application - Climate Change and Water Resources in Spain", "geo": "Espana", "type": "visor", "tag": "CEDEX / OECC", "desc": "Software application to query map results from the study 'Evaluation of Climate Change Impact on Water Resources and Droughts in Spain'.", "quote": "«Facilitating query and analysis of maps summarizing study results produced by CEDEX for OECC».", "urlEs": "https://ceh.cedex.es/camrec/", "authors": "CEDEX & Spanish Climate Change Office", "year": "2023"}, {"id": 10, "title": "AdapteCCa - Climate Change Adaptation Platform", "geo": "Espana", "type": "visor", "tag": "MITECO / Fund. Biodiversidad", "desc": "Consultation and information exchange platform on climate change impacts, vulnerability, and adaptation in Spain.", "quote": "«Joint initiative by the Spanish Climate Change Office and Biodiversity Foundation to centralize adaptation knowledge».", "urlEs": "https://www.adaptecca.es/", "authors": "OECC & Biodiversity Foundation (MITECO)", "year": "2024"}, {"id": 11, "title": "Impacts and Risks Derived from Climate Change in Spain", "geo": "Espana", "type": "informe", "tag": "MITECO / BC3", "desc": "Report outlining major impacts across 10 priority productive sectors and natural systems (water, agriculture, coasts, health, tourism, etc.).", "quote": "«Synthesizes climate impact knowledge per work area and explores risk interrelations across Spain».", "urlEs": "https://www.miteco.gob.es/es/ceneam/recursos/pag-web/impactos-cambio-climatico-espana.html", "authors": "MITECO & BC3 (Basque Centre for Climate Change)", "year": "2021"}, {"id": 12, "title": "Municipal Vulnerability and Risk Indices for Climate Change", "geo": "Espana", "type": "visor", "tag": "Municipal Indicators", "desc": "Indicators for 4 key impacts at municipal scale: Agricultural drought, heatwaves (health), urban river flooding, and coastal flooding.", "quote": "«Design and production of climate vulnerability and risk indicators for 4 key municipal impacts».", "urlEs": "https://www.adaptecca.es/", "authors": "AdapteCCa / MITECO", "year": "2023"}, {"id": 13, "title": "Coping and Recovery Measures. Diagnostic Report", "geo": "Espana", "type": "salud", "tag": "Social Vulnerability", "desc": "Applied research on the direct impact of climate change on populations living in poverty and social exclusion.", "quote": "«Study focused on how social inequality factors multiply vulnerability during climate crises».", "urlEs": "https://www.cruzroja.es/", "authors": "Red Cross & Social Organizations", "year": "2023"}, {"id": 14, "title": "Environmental Risks - National Geographic Institute (IGN)", "geo": "Espana", "type": "visor", "tag": "IGN Spain", "desc": "Geographic resource to understand the frequency and magnitude of extreme natural events combined with land occupation and population.", "quote": "«Combining hazard and territorial vulnerability parameters is essential for spatial planning».", "urlEs": "https://www.ign.es/web/ign/portal/rse-riesgos-naturales", "authors": "National Geographic Institute (IGN)", "year": "2024"}, {"id": 15, "title": "Climate Change Scenario Viewer (PNACC)", "geo": "Espana", "type": "visor", "tag": "AEMET / OECC", "desc": "Regionalized climate change projections for Spain based on the IPCC 5th Assessment Report (PNACC 2017 Scenarios).", "quote": "«Official tool to visualize projected changes in temperature and precipitation across regional grids in Spain».", "urlEs": "http://escenarios.adaptecca.es/", "authors": "AEMET, OECC & Biodiversity Foundation", "year": "2023"}, {"id": 16, "title": "Heat Vulnerability Atlas", "geo": "Espana", "type": "salud", "tag": "Urban Atlas", "desc": "Tool highlighting the diversity of heat risk situations faced by Spanish municipalities and urban fabric configurations.", "quote": "«Aims to point out urban grid deficiencies requiring action when facing extreme temperatures».", "urlEs": "https://www.miteco.gob.es/", "authors": "MITECO / Health Observatories", "year": "2023"}, {"id": 17, "title": "Activate Against Climate Change and Poverty", "geo": "Espana", "type": "salud", "tag": "Social Awareness", "desc": "Analysis of Spain's geographic vulnerability and its compounding effect on elderly people, women, and low-income groups.", "quote": "«Due to its geography, Spain is among the most vulnerable countries. Lack of resources multiplies vulnerability».", "urlEs": "https://www.cruzroja.es/", "authors": "Spanish Red Cross", "year": "2023"}, {"id": 18, "title": "Climate Change Impacts in Catalonia", "geo": "Cataluna", "type": "informe", "tag": "Government of Catalonia", "desc": "Information and diagnostics on main climate change impacts projected for Catalan natural and human systems.", "quote": "«Analysis of key scientific impacts predicted at Mediterranean and local scales for Catalonia».", "urlEs": "https://canviclimatic.gencat.cat/", "authors": "Catalan Climate Change Office (OCCC)", "year": "2023"}, {"id": 19, "title": "Future Climate Scenario Viewer (AMB)", "geo": "Cataluna", "type": "visor", "tag": "BCN Metropolitan Area", "desc": "Search tool for data and projections of temperature, precipitation, hot days, and tropical nights across Barcelona metropolitan municipalities.", "quote": "«Developed under the Climate and Energy Plan 2030, allowing queries on projected tropical nights and warm days».", "urlEs": "https://geoportal.amb.cat/canviclimatic/visor/", "authors": "Barcelona Metropolitan Area (AMB)", "year": "2024"}, {"id": 20, "title": "Climate Change Vulnerability Index (IVAC)", "geo": "Cataluna", "type": "visor", "tag": "AMB / Vulnerability", "desc": "Synthetic index designed to focus on risks caused by rising temperatures and evaluate implemented adaptation measures.", "quote": "«The goal of IVAC is to focus on risks caused by increasing temperatures in urban areas».", "urlEs": "https://www.amb.cat/", "authors": "Barcelona Metropolitan Area", "year": "2024"}, {"id": 21, "title": "INE - Household Income Distribution Atlas and Urban Indicators", "geo": "Espana", "type": "salud", "tag": "INE / Statistics", "desc": "Provides statistical data at census tract and municipal levels on income, poverty rates, age, and household structure across Spain.", "quote": "«Crucial for linking territorial exposure to climate hazards with population socioeconomic vulnerability and coping capacity».", "urlEs": "https://www.ine.es/en/", "urlEn": "https://www.ine.es/en/", "authors": "National Statistics Institute of Spain (INE)", "year": "2025"}, {"id": 22, "title": "IDESCAT - Territorial Socioeconomic Index (IST)", "geo": "Cataluna", "type": "salud", "tag": "IDESCAT / Catalonia", "desc": "Summarizes socioeconomic characteristics of Catalonia's population by census section groups, highlighting areas of elevated social vulnerability.", "quote": "«Enables territorial classification according to employment status, educational attainment, occupation, and family income».", "urlEn": "https://www.idescat.cat/?lang=en", "authors": "Statistical Institute of Catalonia (IDESCAT)", "year": "2025"}, {"id": 23, "title": "MoMo System - Daily Temperature-Attributable Mortality Monitoring", "geo": "Espana", "type": "salud", "tag": "ISCIII / Public Health", "desc": "Official epidemiological surveillance system quantifying the real impact of extreme temperatures (heat and cold) on population mortality in Spain.", "quote": "«Provides excess mortality estimates attributable to ambient temperature for real-time tracking during climate extremes».", "urlEs": "https://momo.isciii.es/", "urlEn": "https://momo.isciii.es/", "authors": "National Epidemiology Center - ISCIII", "year": "2026"}, {"id": 24, "title": "Health and Climate Change Observatory (OSCC)", "geo": "Espana", "type": "informe", "tag": "MITECO / Health", "desc": "Interministerial body responsible for diagnosing, preventing, and monitoring the direct and indirect impacts of climate change on human health in Spain.", "quote": "«Public policy coordination aiming to reduce morbidity and mortality caused by heatwaves, air quality degradation, and vector-borne diseases».", "urlEs": "https://www.sanidad.gob.es/", "urlEn": "https://www.sanidad.gob.es/", "authors": "Ministry of Health & MITECO", "year": "2025"}, {"id": 25, "title": "EFFIS - European Forest Fire Information System", "geo": "Europa", "type": "visor", "tag": "Copernicus / EFFIS", "desc": "European Commission platform providing real-time and historical data on fire danger, active fires, and burnt area assessments across Europe.", "quote": "«Key tool for cross-border monitoring of wildfire risk and forest resilience in the Mediterranean region».", "urlEn": "https://effis.jrc.ec.europa.eu/", "authors": "European Commission Joint Research Centre (JRC)", "year": "2026"}, {"id": 26, "title": "AEMET OpenData - Observed Historical Climatological Datasets", "geo": "Espana", "type": "visor", "tag": "AEMET / Climatology", "desc": "Open data portal of the State Meteorological Agency providing access to historical observations, climate normals, and extreme values across Spain.", "quote": "«Essential empirical foundation for local climate model validation and long-term thermal and precipitation trend analysis».", "urlEs": "https://opendata.aemet.es/", "urlEn": "https://opendata.aemet.es/", "authors": "State Meteorological Agency of Spain (AEMET)", "year": "2026"}, {"id": 27, "title": "Official Energy Poverty Indicators in Spain", "geo": "Espana", "type": "salud", "tag": "MITECO / Energy Poverty", "desc": "Annual statistical publication assessing disproportionate expenditure, hidden energy poverty, and inability to maintain adequate home temperature.", "quote": "«Key quantitative diagnostic for evaluating extreme heat impact on vulnerable households lacking proper cooling/heating».", "urlEs": "https://www.miteco.gob.es/es/energia/pobreza-energetica.html", "urlEn": "https://www.miteco.gob.es/es/energia/pobreza-energetica.html", "authors": "State Secretariat for Energy - MITECO", "year": "2025"}]}};
+
+        let currentLang = 'es';
+        let currentGeo = 'all';
+        let currentType = 'all';
+        let activeTab = 'calor';
+
+        let chart1, chart2, chart3, chart4;
+
+        function resetFilters() {
+            currentGeo = 'all';
+            currentType = 'all';
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.value = '';
+
+            document.querySelectorAll('.geo-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-medium');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            const geoAll = document.getElementById('geo-all');
+            if (geoAll) geoAll.classList.add('bg-emerald-600', 'text-white', 'font-medium');
+
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-medium');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            const typeAll = document.getElementById('type-all');
+            if (typeAll) typeAll.classList.add('bg-emerald-600', 'text-white', 'font-medium');
+
+            renderCatalog();
+        }
+
+        function goToSource(id) {
+            // Restablecer filtros para asegurar que la tarjeta de la fuente esté visible
+            resetFilters();
+
+            // Abrir el modal informativo
+            openModal(id);
+
+            // Desplazar suavemente a la tarjeta en el catálogo
+            const cardEl = document.getElementById(`card-${id}`);
+            if (cardEl) {
+                cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                cardEl.classList.add('ring-2', 'ring-afronta-600');
+                setTimeout(() => cardEl.classList.remove('ring-2', 'ring-afronta-600'), 3000);
+            }
+        }
+
+        function setLanguage(lang) {
+            if (!i18n[lang]) return;
+            currentLang = lang;
+
+            // Actualizar botones de idioma en header
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.className = "lang-btn px-2.5 py-1 rounded-md text-xs font-bold transition text-slate-600 hover:bg-slate-100";
+            });
+            const activeBtn = document.getElementById(`langBtn-${lang}`);
+            if (activeBtn) activeBtn.className = "lang-btn px-2.5 py-1 rounded-md text-xs font-bold transition bg-afronta-600 text-white";
+
+            const data = i18n[lang];
+
+            // Título general HTML y hero
+            document.getElementById('htmlTitle').innerText = data.pageTitle;
+            document.getElementById('heroTitle').innerText = data.pageTitle;
+            document.getElementById('heroBadge').innerHTML = `<i class="fa-solid fa-seedling"></i> ${data.heroBadge}`;
+            document.getElementById('heroP').innerText = data.heroP;
+
+            // Navegación rápida
+            document.getElementById('navG').innerHTML = `<i class="fa-solid fa-chart-line mr-1.5 text-afronta-600"></i> ${data.nav[0]}`;
+            document.getElementById('navF').innerHTML = `<i class="fa-solid fa-database mr-1.5 text-afronta-600"></i> ${data.nav[1]}`;
+            document.getElementById('navM').innerHTML = `<i class="fa-solid fa-layer-group mr-1.5 text-afronta-600"></i> ${data.nav[2]}`;
+            document.getElementById('navA').querySelector('span').innerText = data.nav[3];
+
+            // Atribución
+            document.getElementById('attrTitle').innerText = data.attrTitle;
+            document.getElementById('attrText').innerText = data.attrText;
+
+            // KPIs
+            data.kpis.forEach((k, idx) => {
+                document.getElementById(`kpiVal${idx}`).innerText = k.val;
+                document.getElementById(`kpiLbl${idx}`).innerText = k.lbl;
+                document.getElementById(`kpiSub${idx}`).innerText = k.sub;
+            });
+
+            // Sección Gráficos
+            document.getElementById('chartSecTitle').innerHTML = `<i class="fa-solid fa-chart-simple text-afronta-600"></i> ${data.chartSecTitle}`;
+            document.getElementById('chartSecSub').innerText = data.chartSecSub;
+            document.getElementById('chartSecHint').innerText = data.chartSecHint;
+
+            data.charts.forEach((c, idx) => {
+                const num = idx + 1;
+                document.getElementById(`c${num}_tag`).innerText = c.tag;
+                document.getElementById(`c${num}_subTag`).innerText = c.subTag;
+                document.getElementById(`c${num}_title`).innerText = c.title;
+                document.getElementById(`c${num}_desc`).innerText = c.desc;
+                document.getElementById(`c${num}_srcLabel`).innerText = c.srcLabel + ":";
+                document.getElementById(`c${num}_srcVal`).innerText = c.srcVal;
+                
+                const link = document.getElementById(`c${num}_link`);
+                if (link) {
+                    link.innerHTML = `${c.linkText} <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
+                }
+
+                const note = document.getElementById(`c${num}_note`);
+                if (note) {
+                    if (c.note) {
+                        note.innerText = c.note;
+                        note.classList.remove('hidden');
+                    } else {
+                        note.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Catálogo
+            document.getElementById('catTitle').innerHTML = `<i class="fa-solid fa-boxes-stacked text-emerald-400"></i> ${data.catTitle}`;
+            document.getElementById('catSub').innerText = data.catSub;
+            document.getElementById('searchInput').placeholder = data.catSearchPlaceholder;
+            document.getElementById('catGeoLabel').innerText = data.catGeoLabel + ":";
+            document.getElementById('geo-all').innerText = data.catGeoOpts[0];
+            document.getElementById('geo-Europa').innerText = data.catGeoOpts[1];
+            document.getElementById('geo-Espana').innerText = data.catGeoOpts[2];
+            document.getElementById('geo-Cataluna').innerText = data.catGeoOpts[3];
+
+            document.getElementById('catTypeLabel').innerText = data.catTypeLabel + ":";
+            document.getElementById('type-all').innerText = data.catTypeOpts[0];
+            document.getElementById('type-visor').innerText = data.catTypeOpts[1];
+            document.getElementById('type-informe').innerText = data.catTypeOpts[2];
+            document.getElementById('type-salud').innerText = data.catTypeOpts[3];
+
+            const resetBtnSpan = document.getElementById('resetFiltersBtn')?.querySelector('span');
+            if (resetBtnSpan) resetBtnSpan.innerText = data.resetFiltersBtn;
+
+            // Matriz
+            document.getElementById('matrixBadge').innerText = data.matrixBadge;
+            document.getElementById('matrixTitle').innerText = data.matrixTitle;
+            document.getElementById('matrixSub').innerHTML = data.matrixSub;
+            data.matrixTabs.forEach((t, idx) => {
+                document.getElementById(`tabTitle${idx}`).innerText = t;
+            });
+
+            // Footer
+            document.getElementById('footerDesc').innerText = data.footerDesc;
+            document.getElementById('footerContactTitle').innerText = data.footerContactTitle;
+            document.getElementById('footerContact').innerHTML = data.footerContact;
+            document.getElementById('footerLegalTitle').innerText = data.footerLegalTitle;
+            document.getElementById('footerLegal').innerText = data.footerLegal;
+            document.getElementById('footerCopy').innerText = data.footerCopy;
+
+            // Renderizar elementos dinámicos
+            renderCatalog();
+            switchTab(activeTab);
+            updateCharts();
+        }
+
+        function renderCatalog() {
+            const data = i18n[currentLang];
+            const grid = document.getElementById('sourcesGrid');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            grid.innerHTML = '';
+
+            const total = data.sources.length;
+            const filtered = data.sources.filter(item => {
+                const matchesGeo = (currentGeo === 'all') || (item.geo === currentGeo);
+                const matchesType = (currentType === 'all') || (item.type === currentType);
+                const matchesSearch = item.title.toLowerCase().includes(searchVal) || 
+                                      item.desc.toLowerCase().includes(searchVal) || 
+                                      item.tag.toLowerCase().includes(searchVal);
+                return matchesGeo && matchesType && matchesSearch;
+            });
+
+            // Actualizar contador dinámico de resultados
+            const count = filtered.length;
+            const counterEl = document.getElementById('catCounter');
+            if (counterEl) {
+                counterEl.innerHTML = `<i class="fa-solid fa-list-check text-emerald-400"></i> ${data.catResultsCount.replace('{count}', count).replace('{total}', total)}`;
+            }
+
+            // Mostrar u ocultar botón de restablecer filtros
+            const isFiltered = (currentGeo !== 'all' || currentType !== 'all' || searchVal.trim() !== '');
+            const resetBtn = document.getElementById('resetFiltersBtn');
+            if (resetBtn) {
+                if (isFiltered) {
+                    resetBtn.classList.remove('hidden');
+                } else {
+                    resetBtn.classList.add('hidden');
+                }
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                        <p>No results found / No se encontraron resultados.</p>
+                    </div>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group";
+                card.id = `card-${item.id}`;
+
+                let geoBadge = '';
+                if(item.geo === 'Europa') geoBadge = `<span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full text-xs font-semibold">${data.catGeoOpts[1]}</span>`;
+                if(item.geo === 'Espana') geoBadge = `<span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-semibold">${data.catGeoOpts[2]}</span>`;
+                if(item.geo === 'Cataluna') geoBadge = `<span class="bg-purple-50 text-purple-700 px-2.5 py-1 rounded-full text-xs font-semibold">${data.catGeoOpts[3]}</span>`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            ${geoBadge}
+                            <span class="text-xs text-slate-400 font-mono"><i class="fa-regular fa-bookmark"></i> #${item.id}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 group-hover:text-afronta-600 transition mb-2 leading-snug">
+                            ${item.title}
+                        </h3>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                            ${item.desc}
+                        </p>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs italic text-slate-500 mb-4">
+                            "${item.quote.substring(0, 110)}${item.quote.length > 110 ? '...' : ''}"
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                        <button onclick="openModal(${item.id})" class="text-slate-600 hover:text-afronta-600 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-circle-info"></i> ${data.modal.btnInfo}
+                        </button>
+                        <div class="flex items-center gap-2">
+                            ${item.urlEs ? `<a href="${item.urlEs}" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md font-medium transition">ES <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
+                            ${item.urlEn ? `<a href="${item.urlEn}" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md font-medium transition">EN <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>` : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function setGeoFilter(geo) {
+            currentGeo = geo;
+            document.querySelectorAll('.geo-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-medium');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            document.getElementById(`geo-${geo}`).classList.remove('bg-slate-800', 'text-slate-300');
+            document.getElementById(`geo-${geo}`).classList.add('bg-emerald-600', 'text-white', 'font-medium');
+            renderCatalog();
+        }
+
+        function setTypeFilter(type) {
+            currentType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-medium');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            document.getElementById(`type-${type}`).classList.remove('bg-slate-800', 'text-slate-300');
+            document.getElementById(`type-${type}`).classList.add('bg-emerald-600', 'text-white', 'font-medium');
+            renderCatalog();
+        }
+
+        function filterCatalog() {
+            renderCatalog();
+        }
+
+        function openModal(id) {
+            const langData = i18n[currentLang];
+            const item = langData.sources.find(x => x.id === id);
+            if(!item) return;
+
+            const modal = document.getElementById('sourceModal');
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div class="mb-4">
+                    <span class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-afronta-100 text-afronta-800">
+                        ${item.tag}
+                    </span>
+                    <h2 class="text-xl font-bold text-slate-900 mt-2">${item.title}</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">${langData.modal.authorLabel}: <strong>${item.authors}</strong> (${item.year})</p>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">${langData.modal.descLabel}:</strong>
+                        ${item.desc}
+                    </div>
+
+                    <div class="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/80 text-amber-900 italic">
+                        <strong class="not-italic text-amber-800 block mb-1">${langData.modal.quoteLabel}:</strong>
+                        "${item.quote}"
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-end">
+                    <a href="${item.urlEs || item.urlEn}" target="_blank" class="bg-afronta-600 hover:bg-afronta-700 text-white font-semibold px-4 py-2 rounded-lg text-xs transition flex items-center gap-2">
+                        ${langData.modal.btnAccess} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('sourceModal').classList.add('hidden');
+        }
+
+        function switchTab(key) {
+            activeTab = key;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-afronta-600', 'text-afronta-600', 'font-bold');
+                btn.classList.add('text-slate-500', 'border-transparent');
+            });
+            document.getElementById(`tab-${key}`).classList.add('border-afronta-600', 'text-afronta-600', 'font-bold');
+            document.getElementById(`tab-${key}`).classList.remove('text-slate-500', 'border-transparent');
+
+            const info = i18n[currentLang].tabData[key];
+            const content = document.getElementById('tab-content');
+
+            const toolsHtml = info.toolsList.map(t => 
+                `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-afronta-700 bg-afronta-50 hover:bg-afronta-100 hover:text-afronta-900 border border-afronta-200/60 px-3 py-1.5 rounded-lg transition shadow-sm">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ${t.name}
+                </a>`
+            ).join(' ');
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">${info.title}</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">${info.desc}</p>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2 font-mono flex items-center gap-1.5">
+                                <i class="fa-solid fa-link text-afronta-600"></i> ${info.toolsLabel}:
+                            </span>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                ${toolsHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">${info.indLabel}:</span>
+                        <ul class="space-y-2 text-xs text-slate-700">
+                            ${info.indicators.map(ind => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ${ind}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initCharts() {
+            const cl = i18n[currentLang].chartLabels;
+
+            const ctx1 = document.getElementById('chartNatureMortality').getContext('2d');
+            chart1 = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: cl.c1_labels,
+                    datasets: [
+                        { label: cl.c1_ds1, data: [135, 92, 78, 45], backgroundColor: 'rgba(225, 29, 72, 0.85)', borderRadius: 6 },
+                        { label: cl.c1_ds2, data: [-22, -28, -35, -40], backgroundColor: 'rgba(56, 189, 248, 0.85)', borderRadius: 6 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: { y: { title: { display: true, text: cl.c1_y, font: { size: 10 } } } }
+                }
+            });
+
+            const ctx2 = document.getElementById('chartMitecoSectores').getContext('2d');
+            chart2 = new Chart(ctx2, {
+                type: 'radar',
+                data: {
+                    labels: cl.c2_labels,
+                    datasets: [{
+                        label: cl.c2_ds1, data: [92, 88, 85, 79, 82, 90], fill: true,
+                        backgroundColor: 'rgba(13, 122, 112, 0.25)', borderColor: '#0d7a70', pointBackgroundColor: '#0d7a70'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { r: { angleLines: { color: '#e2e8f0' }, suggestedMin: 50, suggestedMax: 100, ticks: { display: false } } }
+                }
+            });
+
+            const ctx3 = document.getElementById('chartMedECC').getContext('2d');
+            chart3 = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: ['1980', '2000', '2020', '2040 (Proj)', '2060 (Proj)', '2080 (Proj)'],
+                    datasets: [
+                        { label: cl.c3_ds1, data: [0.3, 0.8, 1.5, 2.2, 2.9, 3.8], borderColor: '#d97706', backgroundColor: 'rgba(217, 119, 6, 0.1)', fill: true, tension: 0.3, borderWidth: 2.5 },
+                        { label: cl.c3_ds2, data: [0.2, 0.6, 1.1, 1.6, 2.1, 2.7], borderColor: '#64748b', borderDash: [5, 5], tension: 0.3, borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: { y: { title: { display: true, text: cl.c3_y, font: { size: 10 } } } }
+                }
+            });
+
+            const ctx4 = document.getElementById('chartAMBProyecciones').getContext('2d');
+            chart4 = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: cl.c4_labels,
+                    datasets: [
+                        { label: cl.c4_ds1, data: [18, 38, 52, 68], backgroundColor: '#38bdf8' },
+                        { label: cl.c4_ds2, data: [2, 7, 14, 22], backgroundColor: '#f43f5e' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: { y: { title: { display: true, text: cl.c4_y, font: { size: 10 } } } }
+                }
+            });
+        }
+
+        function updateCharts() {
+            if (!chart1) return;
+            const cl = i18n[currentLang].chartLabels;
+
+            chart1.data.labels = cl.c1_labels;
+            chart1.data.datasets[0].label = cl.c1_ds1;
+            chart1.data.datasets[1].label = cl.c1_ds2;
+            chart1.options.scales.y.title.text = cl.c1_y;
+            chart1.update();
+
+            chart2.data.labels = cl.c2_labels;
+            chart2.data.datasets[0].label = cl.c2_ds1;
+            chart2.update();
+
+            chart3.data.datasets[0].label = cl.c3_ds1;
+            chart3.data.datasets[1].label = cl.c3_ds2;
+            chart3.options.scales.y.title.text = cl.c3_y;
+            chart3.update();
+
+            chart4.data.labels = cl.c4_labels;
+            chart4.data.datasets[0].label = cl.c4_ds1;
+            chart4.data.datasets[1].label = cl.c4_ds2;
+            chart4.options.scales.y.title.text = cl.c4_y;
+            chart4.update();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setLanguage('es');
+            initCharts();
+        });
+    </script>
+</body>
+</html>

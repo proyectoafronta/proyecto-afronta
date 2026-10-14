@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc-title">Itinerari 2: Comprendre les vulnerabilitats contemporànies</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome per a icones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- HEADER / NAVEGACIÓ -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" alt="Logo Afronta UAB" class="h-14 sm:h-16 w-auto object-contain">
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+                <a href="#cap1" class="hover:text-brand-600 transition" data-i18n="nav_cap1">Càpsula 1</a>
+                <a href="#cap2" class="hover:text-brand-600 transition" data-i18n="nav_cap2">Càpsula 2</a>
+                <a href="#cap3" class="hover:text-brand-600 transition" data-i18n="nav_cap3">Càpsula 3</a>
+                <a href="#cap4" class="hover:text-brand-600 transition" data-i18n="nav_cap4">Càpsula 4</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold text-slate-700">
+                    <i class="fas fa-globe text-slate-500 ml-2 mr-1"></i>
+                    <button onclick="changeLanguage('ca')" id="btn-ca" class="px-2.5 py-1 rounded-lg transition bg-white text-brand-700 shadow-xs">CA</button>
+                    <button onclick="changeLanguage('es')" id="btn-es" class="px-2.5 py-1 rounded-lg transition hover:text-brand-600">ES</button>
+                    <button onclick="changeLanguage('en')" id="btn-en" class="px-2.5 py-1 rounded-lg transition hover:text-brand-600">EN</button>
+                </div>
+
+                <div class="hidden sm:flex items-center bg-brand-50 border border-brand-100 px-4 py-2 rounded-full text-brand-800 text-sm font-semibold shadow-inner">
+                    <i class="far fa-clock mr-2 text-brand-600"></i> <span data-i18n="duration">Durada: 90 minuts</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-brand-900 to-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-6" data-i18n="hero_badge">
+                <i class="fas fa-layer-group mr-1.5"></i> Itinerari 2
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-6 leading-tight" data-i18n="hero_title">
+                Comprendre les vulnerabilitats contemporànies
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 mb-10 leading-relaxed font-light" data-i18n="hero_desc">
+                Com les crisis actuals generen noves formes de vulnerabilitat i per què l'accés a la informació i als recursos marca la diferència.
+            </p>
+            
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 text-left border border-white/10 shadow-2xl">
+                <h3 class="text-lg font-bold text-brand-300 mb-4 flex items-center" data-i18n="hero_obj_title">
+                    <i class="fas fa-bullseye mr-2.5"></i> Objectius d'Aprenentatge
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-200">
+                    <div class="flex items-start space-x-3 bg-white/5 p-3 rounded-xl">
+                        <i class="fas fa-check-circle text-brand-400 mt-1 flex-shrink-0"></i>
+                        <span data-i18n="hero_obj_1">Comprendre que la vulnerabilitat és un fenomen multidimensional.</span>
+                    </div>
+                    <div class="flex items-start space-x-3 bg-white/5 p-3 rounded-xl">
+                        <i class="fas fa-check-circle text-brand-400 mt-1 flex-shrink-0"></i>
+                        <span data-i18n="hero_obj_2">Identificar diferents tipus de vulnerabilitat en situacions quotidianes.</span>
+                    </div>
+                    <div class="flex items-start space-x-3 bg-white/5 p-3 rounded-xl">
+                        <i class="fas fa-check-circle text-brand-400 mt-1 flex-shrink-0"></i>
+                        <span data-i18n="hero_obj_3">Reconèixer com les desigualtats socials, tecnològiques i institucionals es poden reforçar mútuament.</span>
+                    </div>
+                    <div class="flex items-start space-x-3 bg-white/5 p-3 rounded-xl">
+                        <i class="fas fa-check-circle text-brand-400 mt-1 flex-shrink-0"></i>
+                        <span data-i18n="hero_obj_4">Valorar el paper de la informació fiable com a factor de protecció.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTINGUT PRINCIPAL -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- ================= CÀPSULA 1 ================= -->
+        <section id="cap1" class="bg-white rounded-3xl custom-shadow border border-slate-100 overflow-hidden transition duration-300 hover:shadow-xl">
+            <div class="bg-gradient-to-r from-slate-900 to-brand-900 text-white px-6 sm:px-8 py-6 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold tracking-wider text-brand-400 uppercase" data-i18n="cap1_badge">Càpsula 1</span>
+                    <h2 class="text-2xl font-bold mt-1" data-i18n="cap1_title">Què significa ser vulnerable avui?</h2>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-full text-xs font-medium">
+                    <i class="far fa-clock text-brand-300"></i> <span data-i18n="cap1_time">20 minuts</span>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-8">
+                <!-- Objectius específics -->
+                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3" data-i18n="cap1_obj_head">Objectius de la càpsula:</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap1_obj_1">Comprendre que la vulnerabilitat no és una característica permanent de les persones, sinó una situació condicionada per múltiples factors.</span></li>
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap1_obj_2">Reconèixer que qualsevol persona pot experimentar situacions de vulnerabilitat al llarg de la seva vida.</span></li>
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap1_obj_3">Identificar l'existència de diferents tipus de vulnerabilitat (social, econòmica, sanitària, educativa, climàtica, digital, etc.).</span></li>
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap1_obj_4">Reflexionar sobre el paper del context social en la generació o reducció de la vulnerabilitat.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Recursos Multimedia -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Vídeo -->
+                    <div class="bg-slate-900 rounded-2xl overflow-hidden flex flex-col justify-between text-white p-6 shadow-md">
+                        <div>
+                            <span class="bg-red-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full mb-3 inline-block" data-i18n="cap1_vid_tag"><i class="fab fa-youtube mr-1"></i> Vídeo de sensibilització</span>
+                            <h5 class="font-bold text-lg mb-2">"La vulnerabilitat és aquí"</h5>
+                        </div>
+                        <div class="mt-4">
+                            <a href="https://youtu.be/mBnfR-nf5Og?si=ZzkTb0U-rYGOmJgr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-xl transition text-sm shadow-sm">
+                                <i class="fas fa-play mr-2"></i> <span data-i18n="cap1_vid_btn">Veure vídeo a YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Infografia -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-brand-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full mb-3 inline-block" data-i18n="cap1_info_tag"><i class="fas fa-image mr-1"></i> Infografia Introductòria</span>
+                            <p class="text-sm text-slate-600 mb-4" data-i18n="cap1_info_desc">Esquema visual sobre vulnerabilitats i barreres d'accés.</p>
+                        </div>
+                        <button onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-vulnerabilidades-barreras-1.png')" class="inline-flex items-center justify-center w-full bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-xl transition text-sm shadow-sm">
+                            <i class="fas fa-expand-arrows-alt text-brand-600 mr-2"></i> <span data-i18n="cap1_info_btn">Ampliar infografia</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Activitat 1 -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="act1_tag">Activitat 1 (2 minuts)</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-4" data-i18n="act1_q">Què et ve al cap quan penses en una persona vulnerable? <span class="text-xs font-normal text-slate-500">(Pots marcar més d'una casella)</span></p>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act1_o1">Una persona gran.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act1_o2">Una persona sense llar.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act1_o3">Una persona migrant.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act1_o4">Un nen o una nena.</span>
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act1_o5">Qualsevol persona es pot trobar en una situació de vulnerabilitat.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Activitat 2 -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="act2_tag">Activitat 2 (4 minuts)</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-3" data-i18n="act2_q">Mira el vídeo <a href="https://youtu.be/mBnfR-nf5Og" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline hover:text-brand-700">"La vulnerabilitat és aquí"</a> i anota mentalment dues situacions que puguin generar vulnerabilitat.</p>
+                    <textarea class="w-full p-4 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none bg-slate-50" rows="2" data-i18n-ph="act2_ph" placeholder="Escriu les teves notes mentals aquí..."></textarea>
+                </div>
+
+                <!-- Activitat 3 -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="act3_tag">Activitat 3 (5 minuts)</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-3" data-i18n="act3_q">Observa la <a href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-vulnerabilidades-barreras-1.png" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">infografia AFRONTA</a>. Relaciona cada situació amb el tipus de vulnerabilitat predominant.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <!-- Situacions -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 flex flex-col justify-between">
+                            <h5 class="text-xs font-bold uppercase text-slate-500 tracking-wider" data-i18n="act3_col1">Situacions</h5>
+                            <div class="space-y-3 flex-grow flex flex-col justify-around">
+                                <div class="bg-white p-3 rounded-lg border border-slate-200 text-sm shadow-xs flex items-center h-full" data-i18n="act3_s1">
+                                    1. Una onada de calor afecta especialment aquells qui viuen sols i sense recursos.
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200 text-sm shadow-xs flex items-center h-full" data-i18n="act3_s2">
+                                    2. Una família no pot mantenir una temperatura adequada al seu habitatge.
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200 text-sm shadow-xs flex items-center h-full" data-i18n="act3_s3">
+                                    3. Una persona gran no aconsegueix sol·licitar un ajut perquè el tràmit només es pot fer per Internet.
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200 text-sm shadow-xs flex items-center h-full" data-i18n="act3_s4">
+                                    4. Un estudiant no disposa d'ordinador per seguir les classes.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opcions de select -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 flex flex-col justify-between" id="act3-selects">
+                            <h5 class="text-xs font-bold uppercase text-slate-500 tracking-wider" data-i18n="act3_col2">Associa el tipus correcte</h5>
+                            <div class="space-y-3 text-sm flex-grow flex flex-col justify-around">
+                                <div class="h-full flex flex-col justify-center">
+                                    <span class="block text-xs text-slate-500 mb-1" data-i18n="act3_lbl1">Per a situació 1:</span>
+                                    <select onchange="checkAct3()" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-brand-500">
+                                        <option value="" selected disabled data-i18n="act3_opt_def">Selecciona tipus...</option>
+                                        <option value="energetica" data-i18n="opt_ener">Energètica</option>
+                                        <option value="educativa" data-i18n="opt_edu">Educativa / Digital</option>
+                                        <option value="institucional" data-i18n="opt_inst">Digital / Institucional</option>
+                                        <option value="sanitaria" data-i18n="opt_cli">Climàtica / Sanitària</option>
+                                    </select>
+                                </div>
+                                <div class="h-full flex flex-col justify-center">
+                                    <span class="block text-xs text-slate-500 mb-1" data-i18n="act3_lbl2">Per a situació 2:</span>
+                                    <select onchange="checkAct3()" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-brand-500">
+                                        <option value="" selected disabled data-i18n="act3_opt_def">Selecciona tipus...</option>
+                                        <option value="energetica" data-i18n="opt_ener">Energètica</option>
+                                        <option value="educativa" data-i18n="opt_edu">Educativa / Digital</option>
+                                        <option value="institucional" data-i18n="opt_inst">Digital / Institucional</option>
+                                        <option value="sanitaria" data-i18n="opt_cli">Climàtica / Sanitària</option>
+                                    </select>
+                                </div>
+                                <div class="h-full flex flex-col justify-center">
+                                    <span class="block text-xs text-slate-500 mb-1" data-i18n="act3_lbl3">Per a situació 3:</span>
+                                    <select onchange="checkAct3()" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-brand-500">
+                                        <option value="" selected disabled data-i18n="act3_opt_def">Selecciona tipus...</option>
+                                        <option value="energetica" data-i18n="opt_ener">Energètica</option>
+                                        <option value="educativa" data-i18n="opt_edu">Educativa / Digital</option>
+                                        <option value="institucional" data-i18n="opt_inst">Digital / Institucional</option>
+                                        <option value="sanitaria" data-i18n="opt_cli">Climàtica / Sanitària</option>
+                                    </select>
+                                </div>
+                                <div class="h-full flex flex-col justify-center">
+                                    <span class="block text-xs text-slate-500 mb-1" data-i18n="act3_lbl4">Per a situació 4:</span>
+                                    <select onchange="checkAct3()" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-xs font-medium focus:ring-2 focus:ring-brand-500">
+                                        <option value="" selected disabled data-i18n="act3_opt_def">Selecciona tipus...</option>
+                                        <option value="energetica" data-i18n="opt_ener">Energètica</option>
+                                        <option value="educativa" data-i18n="opt_edu">Educativa / Digital</option>
+                                        <option value="institucional" data-i18n="opt_inst">Digital / Institucional</option>
+                                        <option value="sanitaria" data-i18n="opt_cli">Climàtica / Sanitària</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activitat 4 -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="act4_tag">Activitat 4 (4 minuts)</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-4" data-i18n="act4_q">Quina afirmació resumeix adequadament la idea principal d'aquesta càpsula?</p>
+                    <div class="space-y-3">
+                        <label class="flex items-start p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="cap1_q4" onchange="checkAct4()" class="w-4 h-4 text-brand-600 mt-0.5 border-slate-300">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act4_o1">La vulnerabilitat afecta únicament determinats col·lectius.</span>
+                        </label>
+                        <label class="flex items-start p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="cap1_q4" onchange="checkAct4()" class="w-4 h-4 text-brand-600 mt-0.5 border-slate-300">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act4_o2">La vulnerabilitat depèn exclusivament del nivell d'ingressos.</span>
+                        </label>
+                        <label class="flex items-start p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="cap1_q4" onchange="checkAct4()" class="w-4 h-4 text-brand-600 mt-0.5 border-slate-300">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act4_o3">La vulnerabilitat pot afectar qualsevol persona i depèn de la interacció entre les persones i el seu context.</span>
+                        </label>
+                        <label class="flex items-start p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="cap1_q4" onchange="checkAct4()" class="w-4 h-4 text-brand-600 mt-0.5 border-slate-300">
+                            <span class="ml-3 text-sm text-slate-700" data-i18n="act4_o4">Totes les persones experimenten les mateixes situacions de vulnerabilitat.</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= CÀPSULA 2 ================= -->
+        <section id="cap2" class="bg-white rounded-3xl custom-shadow border border-slate-100 overflow-hidden transition duration-300 hover:shadow-xl">
+            <div class="bg-gradient-to-r from-slate-900 to-brand-900 text-white px-6 sm:px-8 py-6 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold tracking-wider text-brand-400 uppercase" data-i18n="cap2_badge">Càpsula 2</span>
+                    <h2 class="text-2xl font-bold mt-1" data-i18n="cap2_title">Les múltiples cares de la vulnerabilitat</h2>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-full text-xs font-medium">
+                    <i class="far fa-clock text-brand-300"></i> <span data-i18n="cap2_time">20 minuts</span>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6">
+                <p class="text-sm text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-100" data-i18n="cap2_intro">
+                    <i class="fas fa-lightbulb text-amber-500 mr-2"></i> Llegeix aquestes històries i, quan acabis, fes clic a la icona de la clau per veure l'element clau de cada història. <em>(Les claus canvien de groc a verd en obrir-les)</em>.
+                </p>
+
+                <!-- Acordió d'Històries -->
+                <div class="space-y-4">
+
+                    <!-- Història 1 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story1')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st1_title">Vulnerabilitat energètica</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key1')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-1" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story1"></i>
+                            </div>
+                        </div>
+                        <div id="story1" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st1_body">
+                            <p>Quan va arribar el novembre, la Marta va començar a mirar el termòmetre més que el calendari. No era un costum nou, sinó una manera de calcular quant de temps podrien intentar no encendre la calefacció. Viu amb els seus dos fills, de vuit i dotze anys, en un pis petit on el fred es cola per les finestres antigues.</p>
+                            <p>Cada tarda repetien el mateix ritual: mitjons gruixuts, mantes al sofà i xocolata calenta si quedava prou llet. Els nens pensaven que allò era una mena de tradició familiar. La Marta preferia que fos així. No volia que sentissin el pes de les factures que s'acumulaven a la taula de la cuina.</p>
+                            <p>Quan va arribar la primera factura de l'hivern, va comprendre que hauria de triar entre pagar l'electricitat o comprar tota la quantitat de menjar que havia previst per a la setmana. Va fer números un cop i un altre. Sempre faltava alguna cosa.</p>
+                            <p>El seu fill gran va començar a quedar-se més temps a la biblioteca de l'escola. Allà feia els deures perquè deia que hi havia més silenci. En realitat, l'edifici estava calent. La petita va començar a despertar-se diverses vegades a la nit perquè tenia fred, tot i que mai es queixava.</p>
+                            <p>Un dissabte, una amiga va convidar els nens a dormir a casa seva. En tornar, van comentar amb entusiasme com n'era d'agradable caminar descalços pel terra perquè la calefacció estava encesa. La Marta va somriure mentre recollia les seves motxilles. Després, quan ells van anar a la seva habitació, va estar uns minuts immòbil davant del radiador apagat.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 2 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story2')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st2_title">Vulnerabilitat climàtica</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key2')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-2" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story2"></i>
+                            </div>
+                        </div>
+                        <div id="story2" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st2_body">
+                            <p>L'Antonio tenia vuitanta-quatre anys i en feia més de quaranta que vivia al mateix barri. Coneixia tots els veïns d'abans, però molts havien marxat i d'altres ja no hi eren. Els seus fills vivien a centenars de quilòmetres i les trucades telefòniques eren freqüents, tot i que breus.</p>
+                            <p>L'estiu va arribar acompanyat d'una intensa onada de calor. A les notícies術istien que les persones grans s'havien d'hidratar, evitar sortir a certes hores i romandre en llocs frescos. L'Antonio escoltava els consells mentre observava el ventilador girar lentament. No tenia aire condicionat i mantenir el ventilador enprès tot el dia també suposava una despesa que intentava controlar.</p>
+                            <p>Les persianes es mantenien baixades gairebé tot el temps. Amb prou feines obria les finestres perquè l'aire calent semblava entrar amb més força que el fresc. A poc a poc va deixar de sortir a comprar el pa. El trajecte de tot just deu minuts es va convertir en un esforç esgotador.</p>
+                            <p>Una tarda va començar a sentir-se marejat. Va pensar que descansant una estona se li passaria. No va voler trucar a ningú perquè no volia preocupar els seus fills. Tampoc coneixia prou els nous veïns per demanar ajut.</p>
+                            <p>Van passar diverses hores fins que una voluntària del centre de gent gran va trucar a la seva porta. Feia dies que no anava a les activitats habituals i van decidir comprovar com es trobava. L'Antonio va obrir a poc a poc. Va somriure per educació, tot i que amb prou feines tenia forces per mantenir-se dret.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 3 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story3')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st3_title">Vulnerabilitat educativa</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key3')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-3" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story3"></i>
+                            </div>
+                        </div>
+                        <div id="story3" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st3_body">
+                            <p>La Valèria va començar la universitat amb la il·lusió de ser la primera de la seva família a obtenir un títol universitari. Durant les primeres setmanes va descobrir que gairebé tot passava per una pantalla: apunts, treballs en grup, classes gravades, tutories, plataformes virtuals i avaluacions.</p>
+                            <p>Ella només disposava d'un telèfon mòbil antic… Al principi va pensar que se'n podria sortir. Descarregava documents que amb prou feines podia llegir, escrivia treballs amb el teclat del mòbil i enviava arxius des d'una connexió que fallava amb freqüència. Quan un professor va anunciar que l'examen parcial seria en línia, va començar a preocupar-se de debò.</p>
+                            <p>La biblioteca oferia ordinadors, però no sempre n'hi havia de disponibles. Alguns dies esperava més d'una hora per aconseguir-ne un. Si coincidia amb el seu torn a la feina del cap de setmana, perdia aquesta oportunitat.</p>
+                            <p>En les reunions de grup, els seus companys compartien pantalla i editaven documents col·laboratius en temps real. La Valèria hi participava com podia, procurant que ningú notés les dificultats. Li feia vergonya reconèixer que no tenia ordinador.</p>
+                            <p>Una professora va detectar que lliurava els treballs sempre pocs minuts abans del límit. Li va preguntar si tenia cap problema tècnic. La Valèria va dubtar uns segons abans de respondre. Era la primera vegada que algú li feia aquesta pregunta sense jutjar-la.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 4 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story4')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st4_title">Vulnerabilitat sanitària</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key4')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-4" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story4"></i>
+                            </div>
+                        </div>
+                        <div id="story4" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st4_body">
+                            <p>La Lucía té sis anys i des de fa diverses setmanes es desperta algunes nits amb un dolor de panxa que apareix sense un patró clar. Els seus pares, l'Elena i el David, van decidir demanar hora amb la seva metgessa d'atenció primària per descartar que es tractés d'alguna cosa important.</p>
+                            <p>Van entrar a l'aplicació del servei de salut. No hi havia cites disponibles durant els següents deu dies. Van provar trucant per telèfon. Després de diversos intents, una locució els va indicar que podien gestionar la cita per internet. L'endemà van anar personalment al centre de salut abans d'anar a treballar.</p>
+                            <p>L'administrativa els va explicar que l'agenda estava completa i que, llevat que la situació s'agreugés i requereix atenció urgent, haurien d'esperar que s'obrissin nous forats.</p>
+                            <p>Durant les dues setmanes següents, la família va reorganitzar horaris per estar pendent de la Lucía. Algunes nits el dolor desapareixia. Altres vegades tornava amb intensitat suficient per mantenir-la desperta. Cada episodi alimentava la incertesa: era una cosa passatgera o el símptoma d'un problema major?</p>
+                            <p>Finalment van aconseguir una cita. L'exploració va confirmar que no es tractava d'un problema greu, però la metgessa va dedicar uns minuts a escoltar com havien viscut aquelles setmanes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 5 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story5')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st5_title">Vulnerabilitat residencial</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key5')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-5" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story5"></i>
+                            </div>
+                        </div>
+                        <div id="story5" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st5_body">
+                            <p>L'Amina i en Sergio feia cinc anys que vivien al mateix pis amb els seus dos fills. No era un habitatge gran, però estava perfectament connectat amb l'escola dels nens, la feina d'en Sergio i el centre de salut del barri. Havien construït allà una xarxa solidària de veïns i rutines que els aportaven tranquil·litat.</p>
+                            <p>Un dimarts van rebre un correu electrònic formal de la propietat comunicant la renovació del contracte de lloguer. La nova proposta incloïa un increment del 35% sobre la renda habitual. Van relegir la xifra diverses vegades, convelçuts que es tractava d'un error mecanogràfic. En contactar amb l'agència, els van confirmar que aquell era el preu ajustat al mercat actual.</p>
+                            <p>Van fer comptes durant tota la setmana. Fins i tot eliminant qualsevol despesa prescindible, el nou import suposava més del 60% dels seus ingressos familiars. Van revisar exhaustivament els portals immobiliaris de la ciutat, però van descobrir amb angoixa que els habitatges en oferta no només exigien garanties inabastables, sinó que els preus eren encara més elevats.</p>
+                            <p>La perspectiva de haver de mudar-se a un municipi llunyà amenaçava de trencar l'escolarització dels seus fills i obligar en Sergio a abandonar la seva feina per la falta de transport. Davant dels documents del contracte expirat, la família va comprendre que el risc d'exclusió no sempre comença per la falta d'ingressos, sinó per la inestabilitat de les condicions de vida més bàsiques.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 6 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story6')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st6_title">Fiabilitat de la informació</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key6')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-6" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story6"></i>
+                            </div>
+                        </div>
+                        <div id="story6" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st6_body">
+                            <p>La Nadia estava acabant un treball per a l'escola quan va rebre un missatge al grup familiar de WhatsApp. Una coneguda reenviava un enllaç amb un titular sensacionalista acompanyat d'un text contundent: «Les famílies estrangeres reben automàticament ajuts econòmics que la resta de la població no pot sol·licitar».</p>
+                            <p>El missatge havia generat una acalorada discussió al xat familiar. Diversos membres expressaven indignació, assumint l'afirmació com una veritat inqüestionable. La Nadia, conscient del malestar que aquestes notícies provocaven al seu entorn, va decidir no respondre per impuls i dedicar uns minuts a contrastar el contingut.</p>
+                            <p>Va buscar la normativa oficial a les pàgines del ministeri corresponent i en portals de verificació independents. Va descobrir ràpidament que l'ajut esmentat formava part d'una partida ordinària del sistema de serveis socials, subjecta strictly a criteris de renda, vulnerabilitat econòmica i empadronament, aplicables a qualsevol persona resident legal sense distinció de nacionalitat o origen.</p>
+                            <p>Després de reunir els enllaços i la informació verificada, va redactar una resposta serena per al grup familiar explicant com el titular manipulava els fets. Va comprendre que la desinformació no només propaga dades errònies, sinó que fractura la convivència i genera tensions socials alimentant prejudicis sobre col·lectius en situació de vulnerabilitat.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 7 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story7')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st7_title">Bretxa digital</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key7')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-7" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story7"></i>
+                            </div>
+                        </div>
+                        <div id="story7" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st7_body">
+                            <p>La Carmen i en José, de 72 i 75 anys, feia tres setmanes que intentaven sol·licitar cita prèvia per renovar la prestació per dependència d'en José. En anar a la seva oficina habitual d'atenció ciutadana, un cartell a la porta els va informar que l'atenció presencial exigia reserva prèvia exclusivament per via telemàtica.</p>
+                            <p>La seva nebot els havia ensenyat a utilitzar una aplicació mòbil mesos enrere, però des de l'última actualització l'interfície havia canviat per complet. Els meús principals havien estat reubicats, el sistema exigia una signatura digital mitjançant certificat de clau electrònica i els missatges d'error mostraven termes tècnics incomprensibles per a ells.</p>
+                            <p>Van passar tardes primeres davant del telèfon mòbil, tement que una fallada en la tramitació bloquegés el cobrament del subsidi del qual depenien les seves medicacions. Van intentar trucar al servei telefònic de suport, però les locucions automàtiques acabaven remetent-los de nou a la pàgina web.</p>
+                            <p>Finalment, van haver d'esperar al cap de setmana perquè la seva nebot pogués anar a casa a realitzar la gestió. L'experiència va deixar en la Carmen una profunda sensació d'impotència i inseguretat, en comprovar com la digitalització de l'administració pública, concebuda per agilitzar tràmits, s'havia convertit en una barrera infranquejable per a la seva autonomia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 8 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story8')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st8_title">Diferències culturals</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key8')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-8" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story8"></i>
+                            </div>
+                        </div>
+                        <div id="story8" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st8_body">
+                            <p>La Lina va anar al centre d'atenció precoç amb el seu fill de dos anys per avaluar el seu desenvolupament del llenguatge. Durant la consulta, quan el professional va intentar realitzar una prova individual amb el menor, el nen va esclatar a plorar i la Lina el va agafar immediatament en braços, bressolant-lo i intervenint per respondre en el seu lloc.</p>
+                            <p>El professional va anotar a la fitxa del menor una observació crítica sobre «conducta sobreprotectora que limita el desenvolupament autonòmic del menor». El to sever de la indicació va fer que la Lina es sentís qüestionada i avergonyida com a mare, evitant fer preguntes durant la resta de la sessió.</p>
+                            <p>En la comunitat d'origen de la Lina, la criança de la infància primerenca es concep com un procés fortament comunitari i afectiu on el contacte físic constant és la norma principal de seguretat i cura. La independència individual es fomenta de forma molt més gradual i mai en entorns desconeguts.</p>
+                            <p>El desencís en la consulta va posar de manifest com la falta de competència intercultural en els serveis públics pot reinterpretar pràctiques culturals legítimes de cura com a deficiències parentals, generant desconfiança i distanciant les famílies dels recursos institucionals de suport.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 9 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story9')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st9_title">Bretxa de gènere</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key9')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-9" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story9"></i>
+                            </div>
+                        </div>
+                        <div id="story9" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st9_body">
+                            <p>En Marcos tenia nou anys i durant els últims mesos el seu rendiment a l'escola havia caigut de forma preocupant. A classe es mostrava hipervigilant, irritable o absent, i els seus professors van notar que reaccionava amb sobresalt davant de qualsevol elevació del to de veu a l'aula.</p>
+                            <p>A la llar, en Marcos vivia en un estat constant de tensió. Tot i que els episodis de violència psicològica i control exercits contra la seva mare no es dirigien verbalment contra ell, el menor havia assumit el rol de protector constant de la seva germana petita, inventant jocs per aïllar-la a la seva habitació quan començaven les discussions.</p>
+                            <p>L'exposició continuada a aquesta violència mantenia en Marcos en un estat de estrès crònic que afectava el seu son, la seva capacitat de concentració i les seves relacions amb altres nens de la seva edat, els quals no aconseguien entendre els seus canvis de humor de sobte.</p>
+                            <p>La història d'en Marcos evidencia que la violència masclista en l'àmbit de la parella mai no es limita a la relació entre adults. Els nens, nenes i adolescents que hi conviuen són víctimes directes la salut emocional, desenvolupament cognitiu i seguretat dels quals es veuen greument vulnerats.</p>
+                        </div>
+                    </div>
+
+                    <!-- Història 10 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                        <div class="bg-slate-50 px-6 py-4 flex justify-between items-center cursor-pointer select-none" onclick="toggleStory('story10')">
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base flex items-center">
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2.5"></span> <span data-i18n="st10_title">Obstacles institucionals</span>
+                            </h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="event.stopPropagation(); openKeyModal('key10')" class="text-amber-400 hover:text-emerald-500 text-lg transition transform hover:scale-110" id="key-btn-10" title="Veure element clau">
+                                    <i class="fas fa-key"></i>
+                                </button>
+                                <i class="fas fa-chevron-down text-slate-400 text-sm transition-transform" id="arrow-story10"></i>
+                            </div>
+                        </div>
+                        <div id="story10" class="hidden px-6 py-4 text-sm text-slate-600 space-y-3 bg-white border-t border-slate-100" data-i18n="st10_body">
+                            <p>L'Oleksandr va arribar al país feia un any fugint del conflicte bèl·lic a la seva terra natal. Tot i comptar amb formació universitària i d'enginyeria, la falta d'homologació dels seus títols el va portar a acceptar una feina a la construcció mentre estudiava activament l'idioma local a les nits.</p>
+                            <p>En intentar renovar la seva documentació de residència i sol·licitar l'empadronament definitiu, es va trobar amb un laberint burocràtic. Per renovar el permís li exigien un compte bancari actiu; per obrir el compte bancari, l'entitat exigia el certificat d'empadronament actualitzat; i per empadronar-se, l'ajuntament exigia una autorització del propietari de l'immoble que aquest es negava a signar per por a càrregues fiscals.</p>
+                            <p>Atrapat en aquesta exigència circular de requisits, l'Oleksandr va veure expirar els terminis administratius. Cada notificació amb llenguatge jurídic complex rebuda a la seva bústia li generava una paràlisi angoixant per por a quedar en situació irregular no per falta de feina o voluntat, sinó per la rigidesa del sistema.</p>
+                            <p>El seu cas il·lustra com les barreres burocràtiques i institucionals ens poden atrapar en bucles d'exclusió, convertint els tràmits administratius dissenyats per garantir drets en autèntics generadors de vulnerabilitat.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CÀPSULA 3 ================= -->
+        <section id="cap3" class="bg-white rounded-3xl custom-shadow border border-slate-100 overflow-hidden transition duration-300 hover:shadow-xl">
+            <div class="bg-gradient-to-r from-slate-900 to-brand-900 text-white px-6 sm:px-8 py-6 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold tracking-wider text-brand-400 uppercase" data-i18n="cap3_badge">Càpsula 3</span>
+                    <h2 class="text-2xl font-bold mt-1" data-i18n="cap3_title">Quan les vulnerabilitats s'acumulen</h2>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-full text-xs font-medium">
+                    <i class="far fa-clock text-brand-300"></i> <span data-i18n="cap3_time">30 minuts</span>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-8">
+                <!-- Objectius i Recursos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2" data-i18n="cap3_obj_head">Objectius</h4>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            <li><i class="fas fa-check text-brand-600 mr-2"></i> <span data-i18n="cap3_obj_1">Comprendre que les vulnerabilitats es poden acumular.</span></li>
+                            <li><i class="fas fa-check text-brand-600 mr-2"></i> <span data-i18n="cap3_obj_2">Identificar relacions entre diferents factors.</span></li>
+                            <li><i class="fas fa-check text-brand-600 mr-2"></i> <span data-i18n="cap3_obj_3">Reconèixer el paper de la informació i l'accés a recursos.</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2" data-i18n="cap3_res_head">Recursos de suport</h4>
+                            <p class="text-xs text-slate-600 mb-3" data-i18n="cap3_res_desc">Vídeo i dossier d'indicadors de pobresa (EAPN Espanya).</p>
+                        </div>
+                        <div class="space-y-2">
+                            <a href="https://youtu.be/fE7jGkT-eqw?si=Epm4UN929WvfJj5I" target="_blank" rel="noopener noreferrer" class="block text-center bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition">
+                                <i class="fab fa-youtube mr-1"></i> <span data-i18n="cap3_vid_btn">Veure vídeo explicatiu</span>
+                            </a>
+                            <a href="https://www.eapn.es/estadopobreza/materiales.php?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="block text-center bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold py-2 px-3 rounded-lg transition">
+                                <i class="fas fa-file-alt mr-1"></i> <span data-i18n="cap3_rep_btn">Informe EAPN Espanya</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activitat Pràctica: Cas Rosa -->
+                <div class="border border-slate-200 rounded-2xl p-6 bg-slate-50/50">
+                    <div class="flex flex-col sm:flex-row items-center gap-6 mb-6">
+                        <div class="relative group flex-shrink-0 cursor-pointer" onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Rosa-es-vulnerable.png')">
+                            <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Rosa-es-vulnerable-150x150.png" alt="Rosa" class="w-24 h-24 rounded-full object-cover shadow-md border-2 border-brand-500 hover:opacity-90 transition">
+                            <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                                <i class="fas fa-search-plus text-lg"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="bg-brand-100 text-brand-800 text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full" data-i18n="case_rosa_tag">Activitat Pràctica</span>
+                            <h4 class="text-lg font-bold text-slate-900 mt-1" data-i18n="case_rosa_title">"Una història, moltes vulnerabilitats"</h4>
+                            <p class="text-sm text-slate-600 mt-1" data-i18n="case_rosa_text">
+                                La Rosa té 76 anys, viu sola a Manresa i la seva pensió és reduïda. A l'hivern limita l'ús de la calefacció i a l'estiu no es pot permetre climatitzar adequadament el seu habitatge. Té dificultats per desplaçar-se al centre de salut, no utilitza Internet i depèn d'una veïna per fer tràmits administratius.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 pt-4 border-t border-slate-200">
+                        <!-- Pregunta 1 -->
+                        <div>
+                            <p class="font-semibold text-sm text-slate-900 mb-3" data-i18n="rosa_q1">Pregunta 1: Quines vulnerabilitats observes? <span class="text-xs font-normal text-slate-500">(Pots seleccionar-ne més d'una)</span></p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_ener">Energètica</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_san">Sanitària</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_dig">Digital</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_res">Residencial</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_clim">Climàtica</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_econ">Econòmica</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 2 -->
+                        <div>
+                            <p class="font-semibold text-sm text-slate-900 mb-3" data-i18n="rosa_q2">Pregunta 2: Crees que hi ha alguna bretxa o barrera que pugui agreujar o dificultar la situació de la Rosa? <span class="text-xs font-normal text-slate-500">(Pots seleccionar-ne més d'una)</span></p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_gen">Gènere</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_dig">Digital</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_sociotec">Sociotecnològica</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_cult">Diferència cultural</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="checkbox" class="w-4 h-4 text-brand-600 rounded border-slate-300 mr-2"> <span data-i18n="opt_inst_obs">Obstacles institucionals</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pregunta 3 -->
+                        <div>
+                            <p class="font-semibold text-sm text-slate-900 mb-3" data-i18n="rosa_q3">Pregunta 3: Quina situació va ser probablement la primera?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="radio" name="rosa_q3_opt" onchange="checkRosaRefl()" class="w-4 h-4 text-brand-600 border-slate-300 mr-2"> <span data-i18n="rosa_q3_o1">La pensió reduïda.</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="radio" name="rosa_q3_opt" onchange="checkRosaRefl()" class="w-4 h-4 text-brand-600 border-slate-300 mr-2"> <span data-i18n="rosa_q3_o2">La falta d'Internet.</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="radio" name="rosa_q3_opt" onchange="checkRosaRefl()" class="w-4 h-4 text-brand-600 border-slate-300 mr-2"> <span data-i18n="rosa_q3_o3">Viure sola.</span>
+                                </label>
+                                <label class="flex items-center p-3 bg-white rounded-xl border border-slate-200 text-xs font-medium cursor-pointer hover:border-brand-400">
+                                    <input type="radio" name="rosa_q3_opt" onchange="checkRosaRefl()" class="w-4 h-4 text-brand-600 border-slate-300 mr-2"> <span data-i18n="rosa_q3_o4">El fred.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= CÀPSULA 4 ================= -->
+        <section id="cap4" class="bg-white rounded-3xl custom-shadow border border-slate-100 overflow-hidden transition duration-300 hover:shadow-xl">
+            <div class="bg-gradient-to-r from-slate-900 to-brand-900 text-white px-6 sm:px-8 py-6 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold tracking-wider text-brand-400 uppercase" data-i18n="cap4_badge">Càpsula 4</span>
+                    <h2 class="text-2xl font-bold mt-1" data-i18n="cap4_title">Construir la vulnerabilitat</h2>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-full text-xs font-medium">
+                    <i class="far fa-clock text-brand-300"></i> <span data-i18n="cap4_time">20 minuts</span>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-8">
+                <!-- Objectius -->
+                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3" data-i18n="cap4_obj_head">Objectius de la càpsula:</h4>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap4_obj_1">Comprendre que la vulnerabilitat no és un atribut individual.</span></li>
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap4_obj_2">Identificar factors socials, institucionals i culturals.</span></li>
+                        <li class="flex items-center"><i class="fas fa-angle-right text-brand-600 mr-2 font-bold"></i> <span data-i18n="cap4_obj_3">Reconèixer el paper dels discursos, les normes i les barreres.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Activitat 1: Guillermo i Sara -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="cap4_act1_tag">Activitat 1</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-4" data-i18n="cap4_act1_intro">Reflexiona a partir dels perfils d'en Guillermo i la Sara:</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Guillermo -->
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative group cursor-pointer" onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Guillermo-es-vulnerable.png')">
+                                    <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Guillermo-es-vulnerable-150x150.png" alt="Guillermo" class="w-16 h-16 rounded-full object-cover shadow-sm border border-slate-300 hover:opacity-90 transition">
+                                    <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                                        <i class="fas fa-search-plus text-xs"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-slate-900 text-base" data-i18n="guillermo_name">Guillermo (48 anys)</h5>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="guillermo_desc">
+                                Va perdre la seva feina després del tancament de la seva fàbrica. Sense qualificació digital prèvia ni xarxa familiar propera, troba serioses barreres per reinsertar-se laboralment i tramitar subsidis.
+                            </p>
+                            <div class="pt-2 border-t border-slate-200">
+                                <span class="text-xs font-semibold text-brand-800 block mb-1" data-i18n="guillermo_q">Per què és vulnerable? Com ha arribat a ser-ho?</span>
+                            </div>
+                        </div>
+
+                        <!-- Sara -->
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative group cursor-pointer" onclick="openModal('https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Sara-es-vulnerable.png')">
+                                    <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Sara-es-vulnerable-150x150.png" alt="Sara" class="w-16 h-16 rounded-full object-cover shadow-sm border border-slate-300 hover:opacity-90 transition">
+                                    <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                                        <i class="fas fa-search-plus text-xs"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-slate-900 text-base" data-i18n="sara_name">Sara (29 anys)</h5>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="sara_desc">
+                                Mare monomarental amb una feina a temps parcial precària. Compagina jornades irregulars amb la criança de la seva filla, sense places públiques d'escola bressol accessibles a la seva zona.
+                            </p>
+                            <div class="pt-2 border-t border-slate-200">
+                                <span class="text-xs font-semibold text-brand-800 block mb-1" data-i18n="sara_q">Per què és vulnerable? Com ha arribat a ser-ho?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea class="w-full p-4 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none bg-slate-50" rows="3" data-i18n-ph="cap4_act1_ph" placeholder="Anota les teves reflexions sobre en Guillermo i la Sara..."></textarea>
+                </div>
+
+                <!-- Activitat 2 -->
+                <div class="border-t border-slate-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-brand-100 text-brand-800 text-xs font-bold px-3 py-1 rounded-full" data-i18n="cap4_act2_tag">Activitat 2</span>
+                    </div>
+                    <p class="font-semibold text-slate-900 mb-1" data-i18n="cap4_act2_q">A partir de la infografia, què canviaries de l'entorn per reduir aquesta situació de vulnerabilitat?</p>
+                    <p class="text-xs text-slate-500 mb-4" data-i18n="cap4_act2_sub">Escriu la teva proposta de canvi sistèmic o estructural.</p>
+
+                    <textarea class="w-full p-4 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none bg-slate-50 mb-4" rows="3" data-i18n-ph="cap4_act2_ph" placeholder="Escriu la teva proposta aquí..."></textarea>
+
+                    <button onclick="openIdeaModal()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-6 rounded-xl transition text-sm shadow-md flex items-center justify-center">
+                        <i class="fas fa-lightbulb mr-2"></i> <span data-i18n="cap4_btn_idea">Veure idea clau final</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PEU DE PÀGINA / FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
+                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" alt="Logo Afronta UAB" class="h-12 sm:h-14 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition">
+                <p class="text-xs text-slate-400" data-i18n="footer_text">
+                    Projecte AFRONTA — Universitat Autònoma de Barcelona (UAB)<br>
+                    Itinerari 2: Comprendre les vulnerabilitats contemporànies.
+                </p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer" title="Llicència Creative Commons CC BY-NC-ND 4.0">
+                    <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" alt="Llicència Creative Commons CC BY-NC-ND 4.0" class="h-10 w-auto">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE VISUALITZACIÓ D'IMATGES -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-[1920px] max-h-[1080px] w-full h-full flex items-center justify-center p-2" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white hover:text-brand-400 text-3xl font-bold transition z-50 bg-black/50 w-12 h-12 rounded-full flex items-center justify-center">
+                &times;
+            </button>
+            <img id="modalImg" src="" alt="Visualització d'imatge a alta resolució" class="max-w-full max-h-full object-contain mx-auto rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- MODAL D'ELEMENT CLAU (CÀPSULA 2) -->
+    <div id="keyModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeKeyModal()">
+        <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="key_modal_title">Element Clau</h3>
+            </div>
+            <p id="keyModalText" class="text-sm text-slate-600 leading-relaxed mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            </p>
+            <button onclick="closeKeyModal()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-xl transition text-sm shadow-sm" data-i18n="key_modal_btn">
+                Entès
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE FEEDBACK I EXPLICACIÓ FLOTANT (CÀPSULES 1 I 3) -->
+    <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeFeedbackModal()">
+        <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex items-center space-x-3 mb-4">
+                <div id="feedbackModalIcon" class="w-10 h-10 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold text-lg">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <h3 id="feedbackModalTitle" class="text-lg font-bold text-slate-900">Explicació</h3>
+            </div>
+            <div id="feedbackModalBody" class="text-sm text-slate-600 leading-relaxed mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+            </div>
+            <button onclick="closeFeedbackModal()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-xl transition text-sm shadow-sm" data-i18n="key_modal_btn">
+                Entès
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE IDEA CLAU FINAL (CÀPSULA 4) -->
+    <div id="ideaModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="closeIdeaModal()">
+        <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center font-bold text-lg">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="idea_modal_title">Idea clau</h3>
+            </div>
+            <div class="text-sm text-slate-600 leading-relaxed mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3" id="ideaModalBody">
+                <p data-i18n="idea_modal_p1">La vulnerabilitat no defineix les persones. És el resultat de la interacció entre les persones, els recursos de què disposen i el context social, econòmic, institucional i cultural en què viuen.</p>
+                <p data-i18n="idea_modal_p2">Comprendre la vulnerabilitat significa deixar de preguntar-nos només <strong>"qui és vulnerable?"</strong> per començar a preguntar-nos també <strong>"quines circumstàncies o condicions poden generar vulnerabilitat?"</strong></p>
+            </div>
+            <button onclick="closeIdeaModal()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-xl transition text-sm shadow-sm" data-i18n="idea_modal_btn">
+                Tancar i finalitzar
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT PER A FUNCIONALITAT I INTERCANVI D'IDIOMES -->
+    <script>
+        let currentLang = 'ca';
+
+        // DICCIONARI DE TRADUCCIONS COMPLET
+        const translations = {
+            ca: {
+                doc_title: "Itinerari 2: Comprendre les vulnerabilitats contemporànies",
+                nav_cap1: "Càpsula 1",
+                nav_cap2: "Càpsula 2",
+                nav_cap3: "Càpsula 3",
+                nav_cap4: "Càpsula 4",
+                duration: "Durada: 90 minuts",
+                hero_badge: "<i class=\"fas fa-layer-group mr-1.5\"></i> Itinerari 2",
+                hero_title: "Comprendre les vulnerabilitats contemporànies",
+                hero_desc: "Com les crisis actuals generen noves formes de vulnerabilitat i per què l'accés a la informació i als recursos marca la diferència.",
+                hero_obj_title: "<i class=\"fas fa-bullseye mr-2.5\"></i> Objectius d'Aprenentatge",
+                hero_obj_1: "Comprendre que la vulnerabilitat és un fenomen multidimensional.",
+                hero_obj_2: "Identificar diferents tipus de vulnerabilitat en situacions quotidianes.",
+                hero_obj_3: "Reconèixer com les desigualtats socials, tecnològiques i institucionals es poden reforçar mútuament.",
+                hero_obj_4: "Valorar el paper de la informació fiable com a factor de protecció.",
+                
+                cap1_badge: "Càpsula 1",
+                cap1_title: "Què significa ser vulnerable avui?",
+                cap1_time: "20 minuts",
+                cap1_obj_head: "Objectius de la càpsula:",
+                cap1_obj_1: "Comprendre que la vulnerabilitat no és una característica permanent de les persones, sinó una situació condicionada per múltiples factors.",
+                cap1_obj_2: "Reconèixer que qualsevol persona pot experimentar situacions de vulnerabilitat al llarg de la seva vida.",
+                cap1_obj_3: "Identificar l'existència de diferents tipus de vulnerabilitat (social, econòmica, sanitària, educativa, climàtica, digital, etc.).",
+                cap1_obj_4: "Reflexionar sobre el paper del context social en la generació o reducció de la vulnerabilitat.",
+                cap1_vid_tag: "<i class=\"fab fa-youtube mr-1\"></i> Vídeo de sensibilització",
+                cap1_vid_btn: "Veure vídeo a YouTube",
+                cap1_info_tag: "<i class=\"fas fa-image mr-1\"></i> Infografia Introductòria",
+                cap1_info_desc: "Esquema visual sobre vulnerabilitats i barreres d'accés.",
+                cap1_info_btn: "Ampliar infografia",
+
+                act1_tag: "Activitat 1 (2 minuts)",
+                act1_q: "Què et ve al cap quan penses en una persona vulnerable? <span class=\"text-xs font-normal text-slate-500\">(Pots marcar més d'una casella)</span>",
+                act1_o1: "Una persona gran.",
+                act1_o2: "Una persona sense llar.",
+                act1_o3: "Una persona migrant.",
+                act1_o4: "Un nen o una nena.",
+                act1_o5: "Qualsevol persona es pot trobar en una situació de vulnerabilitat.",
+
+                act2_tag: "Activitat 2 (4 minuts)",
+                act2_q: "Mira el vídeo <a href=\"https://youtu.be/mBnfR-nf5Og\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline hover:text-brand-700\">\"La vulnerabilitat és aquí\"</a> i anota mentalment dues situacions que puguin generar vulnerabilitat.",
+                act2_ph: "Escriu les teves notes mentals aquí...",
+
+                act3_tag: "Activitat 3 (5 minuts)",
+                act3_q: "Observa la <a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-vulnerabilidades-barreras-1.png\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline\">infografia AFRONTA</a>. Relaciona cada situació amb el tipus de vulnerabilitat predominant.",
+                act3_col1: "Situacions",
+                act3_s1: "1. Una onada de calor afecta especialment aquells qui viuen sols i sense recursos.",
+                act3_s2: "2. Una família no pot mantenir una temperatura adequada al seu habitatge.",
+                act3_s3: "3. Una persona gran no aconsegueix sol·licitar un ajut perquè el tràmit només es pot fer per Internet.",
+                act3_s4: "4. Un estudiant no disposa d'ordinador per seguir les classes.",
+                act3_col2: "Associa el tipus correcte",
+                act3_lbl1: "Per a situació 1:",
+                act3_lbl2: "Per a situació 2:",
+                act3_lbl3: "Per a situació 3:",
+                act3_lbl4: "Per a situació 4:",
+                act3_opt_def: "Selecciona tipus...",
+                act3_title_modal: "Explicació",
+                act3_note: "<i class=\"fas fa-info-circle mr-1 text-brand-600\"></i> <strong>Explicació:</strong> Les situacions reals poques vegades responen a un únic tipus de vulnerabilitat. Amb freqüència es combinen diferents factors personals, socials, econòmics i institucionals.",
+
+                opt_ener: "Energètica",
+                opt_edu: "Educativa / Digital",
+                opt_inst: "Digital / Institucional",
+                opt_cli: "Climàtica / Sanitària",
+                opt_san: "Sanitària",
+                opt_dig: "Digital",
+                opt_res: "Residencial",
+                opt_clim: "Climàtica",
+                opt_econ: "Econòmica",
+                opt_gen: "Gènere",
+                opt_sociotec: "Sociotecnològica",
+                opt_cult: "Diferència cultural",
+                opt_inst_obs: "Obstacles institucionals",
+
+                act4_tag: "Activitat 4 (4 minuts)",
+                act4_q: "Quina afirmació resumeix adequadament la idea principal d'aquesta càpsula?",
+                act4_o1: "La vulnerabilitat afecta únicament determinats col·lectius.",
+                act4_o2: "La vulnerabilitat depèn exclusivament del nivell d'ingressos.",
+                act4_o3: "La vulnerabilitat pot afectar qualsevol persona i depèn de la interacció entre les persones i el seu context.",
+                act4_o4: "Totes les persones experimenten les mateixes situacions de vulnerabilitat.",
+                act4_title_modal: "Retroalimentació",
+                act4_fb: "<strong class=\"font-bold text-slate-900 block mb-1\">Retroalimentació:</strong> La vulnerabilitat no defineix les persones. Sorgeix quan determinades circumstàncies limiten l'accés a recursos, drets o oportunitats. Comprendre-la implica analitzar tant les condicions individuals com l'entorn social, econòmic, institucional i cultural.",
+
+                cap2_badge: "Càpsula 2",
+                cap2_title: "Les múltiples cares de la vulnerabilitat",
+                cap2_time: "20 minuts",
+                cap2_intro: "<i class=\"fas fa-lightbulb text-amber-500 mr-2\"></i> Llegeix aquestes històries i, quan acabis, fes clic a la icona de la clau per veure l'element clau de cada història. <em>(Les claus canvien de groc a verd en obrir-les)</em>.",
+
+                st1_title: "Vulnerabilitat energètica",
+                st2_title: "Vulnerabilitat climàtica",
+                st3_title: "Vulnerabilitat educativa",
+                st4_title: "Vulnerabilitat sanitària",
+                st5_title: "Vulnerabilitat residencial",
+                st6_title: "Fiabilitat de la informació",
+                st7_title: "Bretxa digital",
+                st8_title: "Diferències culturals",
+                st9_title: "Bretxa de gènere",
+                st10_title: "Obstacles institucionals",
+
+                cap3_badge: "Càpsula 3",
+                cap3_title: "Quan les vulnerabilitats s'acumulen",
+                cap3_time: "30 minuts",
+                cap3_obj_head: "Objectius",
+                cap3_obj_1: "Comprendre que les vulnerabilitats es poden acumular.",
+                cap3_obj_2: "Identificar relacions entre diferents factors.",
+                cap3_obj_3: "Reconèixer el paper de la informació i l'accés a recursos.",
+                cap3_res_head: "Recursos de suport",
+                cap3_res_desc: "Vídeo i dossier d'indicadors de pobresa (EAPN Espanya).",
+                cap3_vid_btn: "Veure vídeo explicatiu",
+                cap3_rep_btn: "Informe EAPN Espanya",
+
+                case_rosa_tag: "Activitat Pràctica",
+                case_rosa_title: "\"Una història, moltes vulnerabilitats\"",
+                case_rosa_text: "La Rosa té 76 anys, viu sola a Manresa i la seva pensió és reduïda. A l'hivern limita l'ús de la calefacció i a l'estiu no es pot permetre climatitzar adequadament el seu habitatge. Té dificultats per desplaçar-se al centre de salut, no utilitza Internet i depèn d'una veïna per fer tràmits administratius.",
+
+                rosa_q1: "Pregunta 1: Quines vulnerabilitats observes? <span class=\"text-xs font-normal text-slate-500\">(Pots seleccionar-ne més d'una)</span>",
+                rosa_q2: "Pregunta 2: Crees que hi ha alguna bretxa o barrera que pugui agreujar o dificultar la situació de la Rosa? <span class=\"text-xs font-normal text-slate-500\">(Pots seleccionar-ne més d'una)</span>",
+                rosa_q3: "Pregunta 3: Quina situació va ser probablement la primera?",
+                rosa_q3_o1: "La pensió reduïda.",
+                rosa_q3_o2: "La falta d'Internet.",
+                rosa_q3_o3: "Viure sola.",
+                rosa_q3_o4: "El fred.",
+                rosa_title_modal: "Reflexió clau",
+                rosa_refl: "<strong class=\"font-bold block mb-1\">Reflexió clau:</strong> En moltes ocasions no existeix una única causa originària. L'edat, la bretxa de gènere acumulada en pensions baixes, l'aïllament social i la bretxa digital es creuen en allò que la sociologia anomena <em>interseccionalitat</em>, on cada factor amplifica i multiplica l'impacte dels altres.",
+
+                cap4_badge: "Càpsula 4",
+                cap4_title: "Construir la vulnerabilitat",
+                cap4_time: "20 minuts",
+                cap4_obj_head: "Objectius de la càpsula:",
+                cap4_obj_1: "Comprendre que la vulnerabilitat no és un atribut individual.",
+                cap4_obj_2: "Identificar factors socials, institucionals i culturals.",
+                cap4_obj_3: "Reconèixer el paper dels discursos, les normes i les barreres.",
+
+                cap4_act1_tag: "Activitat 1",
+                cap4_act1_intro: "Reflexiona a partir dels perfils d'en Guillermo i la Sara:",
+                guillermo_name: "Guillermo (48 anys)",
+                guillermo_desc: "Va perdre la seva feina després del tancament de la seva fàbrica. Sense qualificació digital prèvia ni xarxa familiar propera, troba serioses barreres per reinsertar-se laboralment i tramitar subsidis.",
+                guillermo_q: "Per què és vulnerable? Com ha arribat a ser-ho?",
+                sara_name: "Sara (29 anys)",
+                sara_desc: "Mare monomarental amb una feina a temps parcial precària. Compagina jornades irregulars amb la criança de la seva filla, sense places públiques d'escola bressol accessibles a la seva zona.",
+                sara_q: "Per què és vulnerable? Com ha arribat a ser-ho?",
+                cap4_act1_ph: "Anota les teves reflexions sobre en Guillermo i la Sara...",
+
+                cap4_act2_tag: "Activitat 2",
+                cap4_act2_q: "A partir de la infografia, què canviaries de l'entorn per reduir aquesta situació de vulnerabilitat?",
+                cap4_act2_sub: "Escriu la teva proposta de canvi sistèmic o estructural.",
+                cap4_act2_ph: "Escriu la teva proposta aquí...",
+                cap4_btn_idea: "Veure idea clau final",
+
+                footer_text: "Projecte AFRONTA — Universitat Autònoma de Barcelona (UAB)<br>Itinerari 2: Comprendre les vulnerabilitats contemporànies.",
+                key_modal_title: "Element Clau",
+                key_modal_btn: "Entès",
+                idea_modal_title: "Idea clau",
+                idea_modal_p1: "La vulnerabilitat no defineix les persones. És el resultat de la interacció entre les persones, els recursos de què disposen i el context social, econòmic, institucional i cultural en què viuen.",
+                idea_modal_p2: "Comprendre la vulnerabilitat significa deixar de preguntar-nos només <strong>\"qui és vulnerable?\"</strong> per començar a preguntar-nos també <strong>\"quines circumstàncies o condicions poden generar vulnerabilitat?\"</strong>",
+                idea_modal_btn: "Tancar i finalitzar"
+            },
+            es: {
+                doc_title: "Itinerario 2: Comprender las vulnerabilidades contemporáneas",
+                nav_cap1: "Cápsula 1",
+                nav_cap2: "Cápsula 2",
+                nav_cap3: "Cápsula 3",
+                nav_cap4: "Cápsula 4",
+                duration: "Duración: 90 minutos",
+                hero_badge: "<i class=\"fas fa-layer-group mr-1.5\"></i> Itinerario 2",
+                hero_title: "Comprender las vulnerabilidades contemporáneas",
+                hero_desc: "Cómo las crisis actuales generan nuevas formas de vulnerabilidad y por qué el acceso a la información y a los recursos marca la diferencia.",
+                hero_obj_title: "<i class=\"fas fa-bullseye mr-2.5\"></i> Objetivos de Aprendizaje",
+                hero_obj_1: "Comprender que la vulnerabilidad es un fenómeno multidimensional.",
+                hero_obj_2: "Identificar distintos tipos de vulnerabilidad en situaciones cotidianas.",
+                hero_obj_3: "Reconocer cómo las desigualdades sociales, tecnológicas e institucionales pueden reforzarse mutuamente.",
+                hero_obj_4: "Valorar el papel de la información fiable como factor de protección.",
+                
+                cap1_badge: "Cápsula 1",
+                cap1_title: "¿Qué significa ser vulnerable hoy?",
+                cap1_time: "20 minutos",
+                cap1_obj_head: "Objetivos de la cápsula:",
+                cap1_obj_1: "Comprender que la vulnerabilidad no es una característica permanente de las personas, sino una situación condicionada por múltiples factores.",
+                cap1_obj_2: "Reconocer que cualquier persona puede experimentar situaciones de vulnerabilidad a lo largo de su vida.",
+                cap1_obj_3: "Identificar la existencia de distintos tipos de vulnerabilidad (social, económica, sanitaria, educativa, climática, digital, etc.).",
+                cap1_obj_4: "Reflexionar sobre el papel del contexto social en la generación o reducción de la vulnerabilidad.",
+                cap1_vid_tag: "<i class=\"fab fa-youtube mr-1\"></i> Vídeo de sensibilización",
+                cap1_vid_btn: "Ver vídeo en YouTube",
+                cap1_info_tag: "<i class=\"fas fa-image mr-1\"></i> Infografía Introductoria",
+                cap1_info_desc: "Esquema visual sobre vulnerabilidades y barreras de acceso.",
+                cap1_info_btn: "Ampliar infografía",
+
+                act1_tag: "Actividad 1 (2 minutos)",
+                act1_q: "¿Qué te viene a la mente cuando piensas en una persona vulnerable? <span class=\"text-xs font-normal text-slate-500\">(Puedes marcar más de una casilla)</span>",
+                act1_o1: "Una persona mayor.",
+                act1_o2: "Una persona sin hogar.",
+                act1_o3: "Una persona migrante.",
+                act1_o4: "Un niño o una niña.",
+                act1_o5: "Cualquier persona puede encontrarse en una situación de vulnerabilidad.",
+
+                act2_tag: "Actividad 2 (4 minutos)",
+                act2_q: "Mira el vídeo <a href=\"https://youtu.be/mBnfR-nf5Og\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline hover:text-brand-700\">\"La vulnerabilitat és aquí\"</a> y anota mentalmente dos situaciones que puedan generar vulnerabilidad.",
+                act2_ph: "Escribe tus notas mentales aquí...",
+
+                act3_tag: "Actividad 3 (5 minutos)",
+                act3_q: "Observa la <a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-vulnerabilidades-barreras-1.png\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline\">infografía AFRONTA</a>. Relaciona cada situación con el tipo de vulnerabilidad predominante.",
+                act3_col1: "Situaciones",
+                act3_s1: "1. Una ola de calor afecta especialmente a quienes viven solos y sin recursos.",
+                act3_s2: "2. Una familia no puede mantener una temperatura adecuada en su vivienda.",
+                act3_s3: "3. Una persona mayor no consigue solicitar una ayuda porque el trámite solo puede hacerse por Internet.",
+                act3_s4: "4. Un estudiante no dispone de ordenador para seguir las clases.",
+                act3_col2: "Asocia el tipo correcto",
+                act3_lbl1: "Para situación 1:",
+                act3_lbl2: "Para situación 2:",
+                act3_lbl3: "Para situación 3:",
+                act3_lbl4: "Para situación 4:",
+                act3_opt_def: "Selecciona tipo...",
+                act3_title_modal: "Explicación",
+                act3_note: "<i class=\"fas fa-info-circle mr-1 text-brand-600\"></i> <strong>Explicación:</strong> Las situaciones reales rara vez responden a un único tipo de vulnerabilidad. Con frecuencia se combinan distintos factores personales, sociales, económicos e institucionales.",
+
+                opt_ener: "Energética",
+                opt_edu: "Educativa / Digital",
+                opt_inst: "Digital / Institucional",
+                opt_cli: "Climática / Sanitaria",
+                opt_san: "Sanitaria",
+                opt_dig: "Digital",
+                opt_res: "Habitacional",
+                opt_clim: "Climática",
+                opt_econ: "Económica",
+                opt_gen: "Género",
+                opt_sociotec: "Sociotecnológica",
+                opt_cult: "Diferencia cultural",
+                opt_inst_obs: "Obstáculos institucionales",
+
+                act4_tag: "Actividad 4 (4 minutos)",
+                act4_q: "¿Qué afirmación resume adecuadamente la idea principal de esta cápsula?",
+                act4_o1: "La vulnerabilidad afecta únicamente a determinados colectivos.",
+                act4_o2: "La vulnerabilidad depende exclusivamente del nivel de ingresos.",
+                act4_o3: "La vulnerabilidad puede afectar a cualquier persona y depende de la interacción entre las personas y su contexto.",
+                act4_o4: "Todas las personas experimentan las mismas situaciones de vulnerabilidad.",
+                act4_title_modal: "Retroalimentación",
+                act4_fb: "<strong class=\"font-bold text-slate-900 block mb-1\">Retroalimentación:</strong> La vulnerabilidad no define a las personas. Surge cuando determinadas circunstancias limitan el acceso a recursos, derechos u oportunidades. Comprenderla implica analizar tanto las condiciones individuales como el entorno social, económico, institucional y cultural.",
+
+                cap2_badge: "Cápsula 2",
+                cap2_title: "Las múltiples caras de la vulnerabilidad",
+                cap2_time: "20 minutos",
+                cap2_intro: "<i class=\"fas fa-lightbulb text-amber-500 mr-2\"></i> Lee estas historias y, cuando termines, haz clic en el icono de la llave para ver el elemento clave de cada historia. <em>(Las llaves cambian de amarillo a verde al abrirlas)</em>.",
+
+                st1_title: "Vulnerabilidad energética",
+                st2_title: "Vulnerabilidad climática",
+                st3_title: "Vulnerabilidad educativa",
+                st4_title: "Vulnerabilidad sanitaria",
+                st5_title: "Vulnerabilidad habitacional",
+                st6_title: "Fiabilidad de la información",
+                st7_title: "Brecha digital",
+                st8_title: "Diferencias culturales",
+                st9_title: "Brecha de género",
+                st10_title: "Obstáculos institucionales",
+
+                cap3_badge: "Cápsula 3",
+                cap3_title: "Cuando las vulnerabilidades se acumulan",
+                cap3_time: "30 minutos",
+                cap3_obj_head: "Objetivos",
+                cap3_obj_1: "Comprender que las vulnerabilidades pueden acumularse.",
+                cap3_obj_2: "Identificar relaciones entre distintos factores.",
+                cap3_obj_3: "Reconocer el papel de la información y el acceso a recursos.",
+                cap3_res_head: "Recursos de apoyo",
+                cap3_res_desc: "Vídeo y dossier de indicadores de pobreza (EAPN España).",
+                cap3_vid_btn: "Ver vídeo explicativo",
+                cap3_rep_btn: "Informe EAPN España",
+
+                case_rosa_tag: "Actividad Práctica",
+                case_rosa_title: "\"Una historia, muchas vulnerabilidades\"",
+                case_rosa_text: "Rosa tiene 76 años, vive sola en Manresa y su pensión es reducida. En invierno limita el uso de la calefacción y en verano no puede permitirse climatizar adecuadamente su vivienda. Tiene dificultades para desplazarse al centro de salud, no utiliza Internet y depende de una vecina para realizar trámites administrativos.",
+
+                rosa_q1: "Pregunta 1: ¿Qué vulnerabilidades observas? <span class=\"text-xs font-normal text-slate-500\">(Puedes seleccionar más de una)</span>",
+                rosa_q2: "Pregunta 2: ¿Crees que hay alguna brecha o barrera que pueda agravar o dificultar la situación de Rosa? <span class=\"text-xs font-normal text-slate-500\">(Puedes seleccionar más de una)</span>",
+                rosa_q3: "Pregunta 3: ¿Qué situación fue probablemente la primera?",
+                rosa_q3_o1: "La pensión reducida.",
+                rosa_q3_o2: "La falta de Internet.",
+                rosa_q3_o3: "Vivir sola.",
+                rosa_q3_o4: "El frío.",
+                rosa_title_modal: "Reflexión clave",
+                rosa_refl: "<strong class=\"font-bold block mb-1\">Reflexión clave:</strong> En muchas ocasiones no existe una única causa originaria. La edad, la brecha de género acumulada en pensiones bajas, el aislamiento social y la brecha digital se cruzan en lo que la sociología denomina <em>interseccionalidad</em>, donde cada factor amplifica y multiplica el impacto de los demás.",
+
+                cap4_badge: "Cápsula 4",
+                cap4_title: "Construir la vulnerabilidad",
+                cap4_time: "20 minutos",
+                cap4_obj_head: "Objetivos de la cápsula:",
+                cap4_obj_1: "Comprender que la vulnerabilidad no es un atributo individual.",
+                cap4_obj_2: "Identificar factores sociales, institucionales y culturales.",
+                cap4_obj_3: "Reconocer el papel de los discursos, las normas y las barreras.",
+
+                cap4_act1_tag: "Actividad 1",
+                cap4_act1_intro: "Reflexiona a partir de los perfiles de Guillermo y Sara:",
+                guillermo_name: "Guillermo (48 años)",
+                guillermo_desc: "Perdió su empleo tras el cierre de su fábrica. Sin cualificación digital previa ni red familiar cercana, encuentra serias barreras para reinsertarse laboralmente y tramitar subsidios.",
+                guillermo_q: "¿Por qué es vulnerable? ¿Cómo ha llegado a serlo?",
+                sara_name: "Sara (29 años)",
+                sara_desc: "Madre monomarental con un empleo parcial precario. Compagina jornadas irregulares con la crianza de su hija, sin plazas públicas de guardería accesibles en su zona.",
+                sara_q: "¿Por qué es vulnerable? ¿Cómo ha llegado a serlo?",
+                cap4_act1_ph: "Anota tus reflexiones sobre Guillermo y Sara...",
+
+                cap4_act2_tag: "Actividad 2",
+                cap4_act2_q: "A partir de la infografía, ¿qué cambiarías del entorno para reducir esta situación de vulnerabilidad?",
+                cap4_act2_sub: "Escribe tu propuesta de cambio sistémico o estructural.",
+                cap4_act2_ph: "Escribe tu propuesta aquí...",
+                cap4_btn_idea: "Ver idea clave final",
+
+                footer_text: "Proyecto AFRONTA — Universitat Autònoma de Barcelona (UAB)<br>Itinerario 2: Comprender las vulnerabilidades contemporáneas.",
+                key_modal_title: "Elemento Clave",
+                key_modal_btn: "Entendido",
+                idea_modal_title: "Idea clave",
+                idea_modal_p1: "La vulnerabilidad no define a las personas. Es el resultado de la interacción entre las personas, los recursos de que disponen y el contexto social, económico, institucional y cultural en el que viven.",
+                idea_modal_p2: "Comprender la vulnerabilidad significa dejar de preguntarnos sólo <strong>\"¿quién es vulnerable?\"</strong> para empezar a preguntarnos también <strong>\"¿qué circunstancias o condiciones pueden generar vulnerabilidad?\"</strong>",
+                idea_modal_btn: "Cerrar y finalizar"
+            },
+            en: {
+                doc_title: "Itinerary 2: Understanding contemporary vulnerabilities",
+                nav_cap1: "Capsule 1",
+                nav_cap2: "Capsule 2",
+                nav_cap3: "Capsule 3",
+                nav_cap4: "Capsule 4",
+                duration: "Duration: 90 minutes",
+                hero_badge: "<i class=\"fas fa-layer-group mr-1.5\"></i> Itinerary 2",
+                hero_title: "Understanding contemporary vulnerabilities",
+                hero_desc: "How current crises generate new forms of vulnerability and why access to information and resources makes all the difference.",
+                hero_obj_title: "<i class=\"fas fa-bullseye mr-2.5\"></i> Learning Objectives",
+                hero_obj_1: "Understand that vulnerability is a multidimensional phenomenon.",
+                hero_obj_2: "Identify different types of vulnerability in everyday situations.",
+                hero_obj_3: "Recognize how social, technological, and institutional inequalities can reinforce each other.",
+                hero_obj_4: "Value the role of reliable information as a protective factor.",
+
+                cap1_badge: "Capsule 1",
+                cap1_title: "What does it mean to be vulnerable today?",
+                cap1_time: "20 minutes",
+                cap1_obj_head: "Capsule objectives:",
+                cap1_obj_1: "Understand that vulnerability is not a permanent characteristic of people, but a situation conditioned by multiple factors.",
+                cap1_obj_2: "Recognize that anyone can experience situations of vulnerability throughout their life.",
+                cap1_obj_3: "Identify the existence of different types of vulnerability (social, economic, health, educational, climate, digital, etc.).",
+                cap1_obj_4: "Reflect on the role of the social context in generating or reducing vulnerability.",
+                cap1_vid_tag: "<i class=\"fab fa-youtube mr-1\"></i> Awareness Video",
+                cap1_vid_btn: "Watch video on YouTube",
+                cap1_info_tag: "<i class=\"fas fa-image mr-1\"></i> Introductory Infographic",
+                cap1_info_desc: "Visual diagram on vulnerabilities and access barriers.",
+                cap1_info_btn: "Expand infographic",
+
+                act1_tag: "Activity 1 (2 minutes)",
+                act1_q: "What comes to mind when you think of a vulnerable person? <span class=\"text-xs font-normal text-slate-500\">(You can select more than one box)</span>",
+                act1_o1: "An elderly person.",
+                act1_o2: "A homeless person.",
+                act1_o3: "A migrant person.",
+                act1_o4: "A child.",
+                act1_o5: "Anyone can find themselves in a situation of vulnerability.",
+
+                act2_tag: "Activity 2 (4 minutes)",
+                act2_q: "Watch the video <a href=\"https://youtu.be/mBnfR-nf5Og\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline hover:text-brand-700\">\"La vulnerabilitat és aquí\"</a> and mentally write down two situations that could generate vulnerability.",
+                act2_ph: "Write your mental notes here...",
+
+                act3_tag: "Activity 3 (5 minutes)",
+                act3_q: "Observe the <a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2026/07/Infografia-vulnerabilidades-barreras-1.png\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-brand-600 underline\">AFRONTA infographic</a>. Match each situation with the predominant type of vulnerability.",
+                act3_col1: "Situations",
+                act3_s1: "1. A heatwave especially affects those who live alone and without resources.",
+                act3_s2: "2. A family cannot maintain an adequate temperature in their home.",
+                act3_s3: "3. An elderly person cannot apply for aid because the procedure can only be done online.",
+                act3_s4: "4. A student does not have a computer to follow classes.",
+                act3_col2: "Associate correct type",
+                act3_lbl1: "For situation 1:",
+                act3_lbl2: "For situation 2:",
+                act3_lbl3: "For situation 3:",
+                act3_lbl4: "For situation 4:",
+                act3_opt_def: "Select type...",
+                act3_title_modal: "Explanation",
+                act3_note: "<i class=\"fas fa-info-circle mr-1 text-brand-600\"></i> <strong>Explanation:</strong> Real situations rarely correspond to a single type of vulnerability. Personal, social, economic, and institutional factors are frequently combined.",
+
+                opt_ener: "Energy",
+                opt_edu: "Educational / Digital",
+                opt_inst: "Digital / Institutional",
+                opt_cli: "Climate / Health",
+                opt_san: "Health",
+                opt_dig: "Digital",
+                opt_res: "Housing",
+                opt_clim: "Climate",
+                opt_econ: "Economic",
+                opt_gen: "Gender",
+                opt_sociotec: "Sociotechnological",
+                opt_cult: "Cultural Difference",
+                opt_inst_obs: "Institutional Obstacles",
+
+                act4_tag: "Activity 4 (4 minutes)",
+                act4_q: "Which statement adequately summarizes the main idea of this capsule?",
+                act4_o1: "Vulnerability affects only specific groups.",
+                act4_o2: "Vulnerability depends exclusively on income level.",
+                act4_o3: "Vulnerability can affect anyone and depends on the interaction between people and their context.",
+                act4_o4: "Everyone experiences the same vulnerability situations.",
+                act4_title_modal: "Feedback",
+                act4_fb: "<strong class=\"font-bold text-slate-900 block mb-1\">Feedback:</strong> Vulnerability does not define people. It arises when certain circumstances limit access to resources, rights, or opportunities. Understanding it involves analyzing both individual conditions and the social, economic, institutional, and cultural environment.",
+
+                cap2_badge: "Capsule 2",
+                cap2_title: "The multiple faces of vulnerability",
+                cap2_time: "20 minutes",
+                cap2_intro: "<i class=\"fas fa-lightbulb text-amber-500 mr-2\"></i> Read these stories and, when finished, click the key icon to see the key element of each story. <em>(The keys change from yellow to green when opened)</em>.",
+
+                st1_title: "Energy vulnerability",
+                st2_title: "Climate vulnerability",
+                st3_title: "Educational vulnerability",
+                st4_title: "Health vulnerability",
+                st5_title: "Housing vulnerability",
+                st6_title: "Information reliability",
+                st7_title: "Digital divide",
+                st8_title: "Cultural differences",
+                st9_title: "Gender gap",
+                st10_title: "Institutional obstacles",
+
+                cap3_badge: "Capsule 3",
+                cap3_title: "When vulnerabilities accumulate",
+                cap3_time: "30 minutes",
+                cap3_obj_head: "Objectives",
+                cap3_obj_1: "Understand that vulnerabilities can accumulate.",
+                cap3_obj_2: "Identify relationships between different factors.",
+                cap3_obj_3: "Recognize the role of information and access to resources.",
+                cap3_res_head: "Support resources",
+                cap3_res_desc: "Video and poverty indicators dossier (EAPN Spain).",
+                cap3_vid_btn: "Watch explanatory video",
+                cap3_rep_btn: "EAPN Spain Report",
+
+                case_rosa_tag: "Practical Activity",
+                case_rosa_title: "\"One story, many vulnerabilities\"",
+                case_rosa_text: "Rosa is 76 years old, lives alone in Manresa and her pension is small. In winter she limits heating use and in summer she cannot afford adequate air conditioning. She has difficulty travelling to the health center, does not use the Internet, and depends on a neighbor for administrative procedures.",
+
+                rosa_q1: "Question 1: What vulnerabilities do you observe? <span class=\"text-xs font-normal text-slate-500\">(You can select more than one)</span>",
+                rosa_q2: "Question 2: Do you think there is any gap or barrier that could worsen or complicate Rosa's situation? <span class=\"text-xs font-normal text-slate-500\">(You can select more than one)</span>",
+                rosa_q3: "Question 3: Which situation was probably the first?",
+                rosa_q3_o1: "The small pension.",
+                rosa_q3_o2: "Lack of Internet.",
+                rosa_q3_o3: "Living alone.",
+                rosa_q3_o4: "The cold.",
+                rosa_title_modal: "Key Reflection",
+                rosa_refl: "<strong class=\"font-bold block mb-1\">Key Reflection:</strong> In many cases there is no single root cause. Age, accumulated gender gap in low pensions, social isolation, and the digital divide intersect in what sociology calls <em>intersectionality</em>, where each factor amplifies and multiplies the impact of others.",
+
+                cap4_badge: "Capsule 4",
+                cap4_title: "Building vulnerability",
+                cap4_time: "20 minutes",
+                cap4_obj_head: "Capsule objectives:",
+                cap4_obj_1: "Understand that vulnerability is not an individual attribute.",
+                cap4_obj_2: "Identify social, institutional, and cultural factors.",
+                cap4_obj_3: "Recognize the role of discourses, norms, and barriers.",
+
+                cap4_act1_tag: "Activity 1",
+                cap4_act1_intro: "Reflect based on the profiles of Guillermo and Sara:",
+                guillermo_name: "Guillermo (48 years old)",
+                guillermo_desc: "Lost his job after his factory closed down. Without prior digital skills or a close family network, he faces serious barriers to re-entering the workforce and applying for benefits.",
+                guillermo_q: "Why is he vulnerable? How did he get there?",
+                sara_name: "Sara (29 years old)",
+                sara_desc: "Single mother with a precarious part-time job. Balances irregular work shifts with raising her daughter, with no accessible public nursery spots in her area.",
+                sara_q: "Why is she vulnerable? How did she get there?",
+                cap4_act1_ph: "Write your reflections about Guillermo and Sara...",
+
+                cap4_act2_tag: "Activity 2",
+                cap4_act2_q: "Based on the infographic, what would you change in the environment to reduce this situation of vulnerability?",
+                cap4_act2_sub: "Write your proposal for systemic or structural change.",
+                cap4_act2_ph: "Write your proposal here...",
+                cap4_btn_idea: "See final key idea",
+
+                footer_text: "AFRONTA Project — Autonomous University of Barcelona (UAB)<br>Itinerary 2: Understanding contemporary vulnerabilities.",
+                key_modal_title: "Key Element",
+                key_modal_btn: "Understood",
+                idea_modal_title: "Key Idea",
+                idea_modal_p1: "Vulnerability does not define people. It is the result of the interaction between people, the resources available to them, and the social, economic, institutional, and cultural context in which they live.",
+                idea_modal_p2: "Understanding vulnerability means stopping to ask only <strong>\"who is vulnerable?\"</strong> to start asking also <strong>\"what circumstances or conditions can generate vulnerability?\"</strong>",
+                idea_modal_btn: "Close and finish"
+            }
+        };
+
+        const keyData = {
+            key1: {
+                ca: "La vulnerabilitat energètica sol estar associada a ingressos baixos, fons d'habitatge ineficient i preus elevats dels subministraments.",
+                es: "La vulnerabilidad energética suele estar asociada a bajos ingresos, vivienda ineficiente y precios elevados de los suministros.",
+                en: "Energy vulnerability is usually associated with low income, inefficient housing, and high energy prices."
+            },
+            key2: {
+                ca: "L'aïllament social i les condicions de l'habitatge agreugen la vulnerabilitat davant de fenòmens climàtics extrems.",
+                es: "El aislamiento social y las condiciones de la vivienda agravan la vulnerabilidad ante fenómenos climáticos extremos.",
+                en: "Social isolation and housing conditions aggravate vulnerability to extreme climate events."
+            },
+            key3: {
+                ca: "La manca d'accés a eines digitals i connectivitat adequada redueix les oportunitats educatives.",
+                es: "La falta de acceso a herramientas digitales y conectividad adecuada reduce las oportunidades educativas.",
+                en: "Lack of access to digital tools and adequate connectivity reduces educational opportunities."
+            },
+            key4: {
+                ca: "La saturació i digitalització dels serveis de salut pot crear noves barreres d'accés.",
+                es: "La saturación y digitalización de los servicios de salud puede crear nuevas barreras de acceso.",
+                en: "Saturation and digitalization of health services can create new access barriers."
+            },
+            key5: {
+                ca: "La inseguretat residencial no depèn només de la falta d'ingressos, sinó de la dinàmica del mercat de l'habitatge.",
+                es: "La inseguridad habitacional no depende solo de la falta de ingresos, sino de las dinámicas del mercado de la vivienda.",
+                en: "Housing insecurity depends not only on lack of income, but on housing market dynamics."
+            },
+            key6: {
+                ca: "La desinformació pot alimentar prejudicis i fragmentació social vers col·lectius vulnerables.",
+                es: "La desinformación puede alimentar prejuicios y fragmentación social hacia colectivos vulnerables.",
+                en: "Disinformation can fuel prejudice and social fragmentation toward vulnerable groups."
+            },
+            key7: {
+                ca: "La burocràcia digitalitzada pot excloure persones que no tenen competències ni suport digital.",
+                es: "La burocracia digitalizada puede excluir a personas que carecen de competencias y soporte digital.",
+                en: "Digitalized bureaucracy can exclude people lacking digital skills and support."
+            },
+            key8: {
+                ca: "La manca de sensibilitat intercultural en les institucions pot generar incomprensió i aïllament.",
+                es: "La falta de sensibilidad intercultural en las instituciones puede generar incomprensión y aislamiento.",
+                en: "Lack of intercultural sensitivity in institutions can generate misunderstanding and isolation."
+            },
+            key9: {
+                ca: "La violència masclista té un impacte directe i profund en la salut i desenvolupament dels infants.",
+                es: "La violencia machista tiene un impacto directo y profundo en la salud y desarrollo de los menores.",
+                en: "Gender-based violence has a direct and profound impact on children's health and development."
+            },
+            key10: {
+                ca: "Els requisits administratius rígids i circulars poden generar situacions d'irregularitat forçada.",
+                es: "Los requisitos administrativos rígidos y circulares pueden generar situaciones de irregularidad forzada.",
+                en: "Rigid and circular administrative requirements can generate forced irregular status."
+            }
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            ['ca', 'es', 'en'].forEach(l => {
+                const btn = document.getElementById('btn-' + l);
+                if (btn) {
+                    if (l === lang) {
+                        btn.className = "px-2.5 py-1 rounded-lg transition bg-white text-brand-700 shadow-xs font-bold";
+                    } else {
+                        btn.className = "px-2.5 py-1 rounded-lg transition hover:text-brand-600 font-bold";
+                    }
+                }
+            });
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            if (translations[lang] && translations[lang]['doc_title']) {
+                document.title = translations[lang]['doc_title'];
+            }
+        }
+
+        function toggleStory(id) {
+            const content = document.getElementById(id);
+            const arrow = document.getElementById('arrow-' + id);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                if (arrow) arrow.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                if (arrow) arrow.classList.remove('rotate-180');
+            }
+        }
+
+        function openKeyModal(key) {
+            const modalText = document.getElementById('keyModalText');
+            if (keyData[key] && keyData[key][currentLang]) {
+                modalText.innerHTML = keyData[key][currentLang];
+            }
+            const btn = document.getElementById('key-btn-' + key.replace('key', ''));
+            if (btn) {
+                btn.classList.remove('text-amber-400');
+                btn.classList.add('text-emerald-500');
+            }
+            document.getElementById('keyModal').classList.remove('hidden');
+        }
+
+        function closeKeyModal() {
+            document.getElementById('keyModal').classList.add('hidden');
+        }
+
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('imageModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        function openIdeaModal() {
+            document.getElementById('ideaModal').classList.remove('hidden');
+        }
+
+        function closeIdeaModal() {
+            document.getElementById('ideaModal').classList.add('hidden');
+        }
+
+        // CONTROL DE LES FINESTRES FLOTANTS PER A LES ACTIVITATS (1.3, 1.4 i 3)
+        function openFeedbackModal(type) {
+            const modal = document.getElementById('feedbackModal');
+            const title = document.getElementById('feedbackModalTitle');
+            const body = document.getElementById('feedbackModalBody');
+            
+            if (type === 'act3') {
+                title.innerHTML = translations[currentLang]['act3_title_modal'];
+                body.innerHTML = translations[currentLang]['act3_note'];
+            } else if (type === 'act4') {
+                title.innerHTML = translations[currentLang]['act4_title_modal'];
+                body.innerHTML = translations[currentLang]['act4_fb'];
+            } else if (type === 'rosa') {
+                title.innerHTML = translations[currentLang]['rosa_title_modal'];
+                body.innerHTML = translations[currentLang]['rosa_refl'];
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').classList.add('hidden');
+        }
+
+        function checkAct3() {
+            const selects = document.querySelectorAll('#act3-selects select');
+            let allSelected = true;
+            selects.forEach(s => {
+                if (!s.value) allSelected = false;
+            });
+            if (allSelected) {
+                openFeedbackModal('act3');
+            }
+        }
+
+        function checkAct4() {
+            openFeedbackModal('act4');
+        }
+
+        function checkRosaRefl() {
+            openFeedbackModal('rosa');
+        }
+    </script>
+</body>
+</html>
