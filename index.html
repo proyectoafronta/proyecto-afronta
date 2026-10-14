@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyecto Afronta - Portal Principal</title>
+  <link rel="alternate" hreflang="ca" href="./index.html">
+  <link rel="alternate" hreflang="es" href="./index-es.html">
+  <link rel="alternate" hreflang="en" href="./index-en.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
@@ -59,6 +62,57 @@
       margin: 0 auto;
     }
 
+    .hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem 3rem;
+    }
+
+    .hero-text { flex: 1 1 320px; }
+
+    /* Logotipo Afronta · Grafo · UAB (sobre panel blanco para garantizar legibilidad) */
+    .brand {
+      flex: 0 1 520px;
+      width: min(520px, 100%);
+      background: #fff;
+      padding: 1rem 1.25rem;
+      border-radius: 18px 4px 18px 4px;
+      box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand img { display: block; width: 100%; height: auto; }
+
+    /* Selector de idioma */
+    .lang {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .lang a {
+      color: #c9d6f2;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid rgba(201, 214, 242, 0.45);
+      border-radius: 999px;
+    }
+
+    .lang a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    .lang a[aria-current="page"] {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--navy);
+    }
+
+    .lang a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
     .hero h1 {
       font-family: var(--font-head);
       font-weight: 800;
@@ -83,20 +137,6 @@
       margin-bottom: 1.6rem;
     }
 
-    /* Red de nodos: metáfora de comunidad conectada */
-    .network {
-      position: absolute;
-      right: -40px;
-      top: 50%;
-      width: min(620px, 70vw);
-      transform: translateY(-50%);
-      opacity: 0.55;
-      pointer-events: none;
-    }
-
-    .network line { stroke: #8fa7e0; stroke-width: 1.4; opacity: 0.55; }
-    .network circle { fill: #dbe6ff; }
-    .network circle.accent { fill: var(--amber); }
 
     /* ---------- Módulos ---------- */
     main {
@@ -210,11 +250,26 @@
 
     footer {
       text-align: center;
-      padding: 1.5rem;
+      padding: 2rem 1.5rem 2.2rem;
       font-size: 0.9rem;
       color: var(--muted);
       border-top: 1px solid var(--line);
     }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Ambos logotipos con la misma altura */
+    .footer-logos img { display: block; height: 56px; width: auto; }
+
+    footer p { margin: 0.2rem 0; }
+    footer a { color: var(--navy-2); }
 
     /* Una única entrada al cargar la página */
     @media (prefers-reduced-motion: no-preference) {
@@ -229,39 +284,27 @@
       .card, .go svg { transition: none; }
     }
 
-    @media (max-width: 600px) {
-      .network { opacity: 0.3; right: -120px; }
-    }
   </style>
 </head>
 <body>
 
   <header class="hero">
-    <svg class="network" viewBox="0 0 600 400" aria-hidden="true">
-      <g>
-        <line x1="80" y1="90" x2="210" y2="170"/>
-        <line x1="210" y1="170" x2="360" y2="90"/>
-        <line x1="210" y1="170" x2="300" y2="290"/>
-        <line x1="360" y1="90" x2="500" y2="180"/>
-        <line x1="300" y1="290" x2="500" y2="180"/>
-        <line x1="300" y1="290" x2="140" y2="330"/>
-        <line x1="500" y1="180" x2="540" y2="320"/>
-        <line x1="80" y1="90" x2="140" y2="330"/>
-        <line x1="360" y1="90" x2="300" y2="290"/>
-      </g>
-      <circle cx="80" cy="90" r="9"/>
-      <circle class="accent" cx="210" cy="170" r="14"/>
-      <circle cx="360" cy="90" r="10"/>
-      <circle cx="300" cy="290" r="12"/>
-      <circle cx="500" cy="180" r="9"/>
-      <circle cx="140" cy="330" r="7"/>
-      <circle cx="540" cy="320" r="6"/>
-    </svg>
-
     <div class="hero-inner">
-      <div class="rule"></div>
-      <h1>Proyecto Afronta</h1>
-      <p class="subtitle">Accés direct als continguts i mòduls del repositori</p>
+      <nav class="lang" aria-label="Idioma">
+        <a href="./index.html" hreflang="ca" lang="ca" title="Català" aria-current="page">CA</a>
+        <a href="./index-es.html" hreflang="es" lang="es" title="Español">ES</a>
+        <a href="./index-en.html" hreflang="en" lang="en" title="English">EN</a>
+      </nav>
+      <div class="hero-row">
+        <div class="hero-text">
+          <div class="rule"></div>
+          <h1>Proyecto Afronta</h1>
+          <p class="subtitle">Accés direct als continguts i mòduls del repositori</p>
+        </div>
+        <a class="brand" href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener" aria-label="Afronta · Grafo · UAB">
+          <img src="img/logo-afronta-grafo-uab.png" alt="Logotipos de Afronta y GRAFO-UAB" width="3648" height="770">
+        </a>
+      </div>
     </div>
   </header>
 
@@ -331,7 +374,15 @@
     </div>
   </main>
 
-  <footer>Proyecto Afronta</footer>
+  <footer>
+    <div class="footer-logos">
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca" target="_blank" rel="license noopener">
+        <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.eu.png" alt="Llicència Creative Commons Reconeixement-NoComercial-SenseObraDerivada">
+      </a>
+      <img src="img/MICINN_Gob_AEI.jpg" alt="Gobierno de España · Ministerio de Ciencia e Innovación · Agencia Estatal de Investigación">
+    </div>
+    <p>Proyecto Afronta · Contingut sota llicència Creative Commons BY-NC-ND</p>
+  </footer>
 
 </body>
 </html>

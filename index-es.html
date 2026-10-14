@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Afronta - Portal Principal</title>
+  <link rel="alternate" hreflang="ca" href="./index.html">
+  <link rel="alternate" hreflang="es" href="./index-es.html">
+  <link rel="alternate" hreflang="en" href="./index-en.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #12224a;
+      --navy-2: #1c3374;
+      --paper: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1d2740;
+      --muted: #55627f;
+      --line: #dbe3f0;
+      --amber: #f2b441;
+
+      /* Un color por módulo */
+      --c-comunitat: #0f8b8d;
+      --c-fake: #c2410c;
+      --c-ia: #5b4bc4;
+      --c-indicadors: #1d6fb8;
+      --c-itineraris: #2f855a;
+      --c-clima: #b7791f;
+
+      --font-head: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+      --font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    /* ---------- Cabecera ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(1100px 500px at 85% -10%, #2a4a9c 0%, transparent 60%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: #fff;
+      padding: clamp(3rem, 8vw, 6rem) 1.5rem clamp(5rem, 10vw, 8rem);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem 3rem;
+    }
+
+    .hero-text { flex: 1 1 320px; }
+
+    /* Logotipo Afronta · Grafo · UAB (sobre panel blanco para garantizar legibilidad) */
+    .brand {
+      flex: 0 1 520px;
+      width: min(520px, 100%);
+      background: #fff;
+      padding: 1rem 1.25rem;
+      border-radius: 18px 4px 18px 4px;
+      box-shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand img { display: block; width: 100%; height: auto; }
+
+    /* Selector de idioma */
+    .lang {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .lang a {
+      color: #c9d6f2;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid rgba(201, 214, 242, 0.45);
+      border-radius: 999px;
+    }
+
+    .lang a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    .lang a[aria-current="page"] {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: var(--navy);
+    }
+
+    .lang a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 7vw, 4.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.1rem;
+    }
+
+    .hero .subtitle {
+      max-width: 32rem;
+      margin: 0;
+      font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+      color: #c9d6f2;
+    }
+
+    .hero .rule {
+      width: 64px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--amber);
+      margin-bottom: 1.6rem;
+    }
+
+
+    /* ---------- Módulos ---------- */
+    main {
+      max-width: 1040px;
+      margin: -3.5rem auto 0;
+      padding: 0 1.5rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      --accent: var(--navy);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.5rem 1.5rem 1.4rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--accent);
+      border-radius: 4px 18px 4px 18px;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 10px 24px -14px rgba(18, 34, 74, 0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px -14px rgba(18, 34, 74, 0.45);
+    }
+
+    .card:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.7rem;
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--accent) 12%, white);
+      color: var(--accent);
+    }
+
+    .icon svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card h2 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .go {
+      margin-top: auto;
+      padding-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .go svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.18s ease;
+    }
+
+    .card:hover .go svg { transform: translateX(4px); }
+
+    .c-comunitat  { --accent: var(--c-comunitat); }
+    .c-fake       { --accent: var(--c-fake); }
+    .c-ia         { --accent: var(--c-ia); }
+    .c-indicadors { --accent: var(--c-indicadors); }
+    .c-itineraris { --accent: var(--c-itineraris); }
+    .c-clima      { --accent: var(--c-clima); }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 2.2rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Ambos logotipos con la misma altura */
+    .footer-logos img { display: block; height: 56px; width: auto; }
+
+    footer p { margin: 0.2rem 0; }
+    footer a { color: var(--navy-2); }
+
+    /* Una única entrada al cargar la página */
+    @media (prefers-reduced-motion: no-preference) {
+      .grid { animation: rise 0.6s ease-out both; }
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .go svg { transition: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <nav class="lang" aria-label="Idioma">
+        <a href="./index.html" hreflang="ca" lang="ca" title="Català">CA</a>
+        <a href="./index-es.html" hreflang="es" lang="es" title="Español" aria-current="page">ES</a>
+        <a href="./index-en.html" hreflang="en" lang="en" title="English">EN</a>
+      </nav>
+      <div class="hero-row">
+        <div class="hero-text">
+          <div class="rule"></div>
+          <h1>Proyecto Afronta</h1>
+          <p class="subtitle">Acceso directo a los contenidos y módulos del repositorio</p>
+        </div>
+        <a class="brand" href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener" aria-label="Afronta · Grafo · UAB">
+          <img src="img/logo-afronta-grafo-uab.png" alt="Logotipos de Afronta y GRAFO-UAB" width="3648" height="770">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+
+      <!-- Enllaç corregit a Construïm Comunitat -->
+      <a href="./construim-comunitat/" class="card c-comunitat">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15.5 14.3c.5-.2 1-.3 1.5-.3 2.2 0 4 1.8 4 4"/></svg>
+        </span>
+        <h2>Construyamos Comunidad</h2>
+        <p>Dinámicas y juego de cartas para la comunidad.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Desinformació / Fake News -->
+      <a href="./desinformacion-fake-news/" class="card c-fake">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/><path d="M11 8.5v3"/><path d="M11 13.7v.1"/></svg>
+        </span>
+        <h2>Desinformación y Fake News</h2>
+        <p>Recursos para analizar y detectar contenidos falsos.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- IA i Vulnerabilitat -->
+      <a href="./ia-vulnerabilidad/" class="card c-ia">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/><path d="M10 12h4"/></svg>
+        </span>
+        <h2>IA y Vulnerabilidad</h2>
+        <p>Inteligencia artificial aplicada al ámbito social.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Indicadors de Vulnerabilitat -->
+      <a href="./indicadores-vulnerabilidad/" class="card c-indicadors">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7.5" y="11" width="3" height="6" rx="0.5"/><rect x="12.5" y="7" width="3" height="10" rx="0.5"/><rect x="17.5" y="13" width="2.5" height="4" rx="0.5"/></svg>
+        </span>
+        <h2>Indicadores de Vulnerabilidad</h2>
+        <p>Métricas y herramientas de análisis de vulnerabilidad.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Enllaç al subportal d'Itineraris -->
+      <a href="./itinerarios-microaprendizaje/" class="card c-itineraris">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></svg>
+        </span>
+        <h2>Itinerarios de Microaprendizaje</h2>
+        <p>Accede a los 3 itinerarios de formación estructurados paso a paso.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Vulnerabilitat Climàtica -->
+      <a href="./vulnerabilidad-climatica/" class="card c-clima">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 2v1.5M2 8h1.5M3.8 3.8l1 1M12.2 3.8l-1 1"/><path d="M8 20h9.5a3.5 3.5 0 0 0 .3-7 5 5 0 0 0-9.5 1A3 3 0 0 0 8 20z"/></svg>
+        </span>
+        <h2>Vulnerabilidad Climática</h2>
+        <p>Proyectos y datos sobre adaptación e impacto climático.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-logos">
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es" target="_blank" rel="license noopener">
+        <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.eu.png" alt="Licencia Creative Commons Reconocimiento-NoComercial-SinObraDerivada">
+      </a>
+      <img src="img/MICINN_Gob_AEI.jpg" alt="Gobierno de España · Ministerio de Ciencia e Innovación · Agencia Estatal de Investigación">
+    </div>
+    <p>Proyecto Afronta · Contenido bajo licencia Creative Commons BY-NC-ND</p>
+  </footer>
+
+</body>
+</html>
