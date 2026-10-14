@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itineraris de Microaprenentatge - Proyecto Afronta</title>
+  <style>
+    :root {
+      --primary-color: #2b6cb0;
+      --bg-color: #f7fafc;
+      --card-bg: #ffffff;
+      --text-color: #2d3748;
+      --border-color: #e2e8f0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 3px solid var(--primary-color);
+      padding-bottom: 1rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0;
+      color: #1a365d;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-color);
+    }
+
+    .card h2 {
+      margin: 0 0 0.5rem 0;
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #4a5568;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="../" class="back-link">← Tornar al Portal Principal</a>
+    
+    <header>
+      <h1>Itineraris de Microaprenentatge</h1>
+      <p>Selecciona l'itinerari formatiu al qual vols accedir:</p>
+    </header>
+
+    <div class="grid">
+      <a href="./itinerario-1/" class="card">
+        <h2>Itinerari 1</h2>
+        <p>Accés al contingut i recursos del primer itinerari.</p>
+      </a>
+
+      <a href="./itinerario-2/" class="card">
+        <h2>Itinerari 2</h2>
+        <p>Accés al contingut i recursos del segon itinerari.</p>
+      </a>
+
+      <a href="./itinerario-3/" class="card">
+        <h2>Itinerari 3</h2>
+        <p>Accés al contingut i recursos del tercer itinerari.</p>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
