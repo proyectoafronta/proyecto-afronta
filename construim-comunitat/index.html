@@ -171,6 +171,50 @@ dialog{border:none;border-radius:16px;padding:24px;max-width:420px;width:90%;box
 </style>
 </head>
 <body>
+<!-- Estils directes per al fil d'Ariadna -->
+<style>
+  .breadcrumb-nav {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.9rem;
+  }
+  .breadcrumb {
+    display: flex !important;
+    flex-wrap: wrap;
+    list-style: none !important; /* Treu els números 1, 2... */
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: "›"; /* Separador entre elements */
+    padding: 0 0.5rem;
+    color: #6c757d;
+  }
+  .breadcrumb-item a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+  .breadcrumb-item.active {
+    color: #495057;
+    font-weight: 600;
+  }
+</style>
+
+<!-- HTML del fil d'Ariadna -->
+<nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="../index.html">Inici</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Construïm Comunitat</li>
+  </ol>
+</nav>
 <main>
   <!-- Fil d'Ariadna -->
   <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
