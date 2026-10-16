@@ -51,6 +51,55 @@
         .screen-content.active { display: block; }
     </style>
 </head>
+<body>
+
+  <!-- Estils del fil d'Ariadna -->
+  <style>
+    .breadcrumb-nav {
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.9rem;
+    }
+    .breadcrumb {
+      display: flex !important;
+      flex-wrap: wrap;
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .breadcrumb-item {
+      display: inline-flex;
+      align-items: center;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "›";
+      padding: 0 0.5rem;
+      color: #6c757d;
+    }
+    .breadcrumb-item a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-item.active {
+      color: #495057;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- Fil d'Ariadna de 3 nivells -->
+  <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="../../index.html">Inici</a></li>
+      <li class="breadcrumb-item"><a href="../index.html">Itineraris de Microaprenentatge</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Itinerari 3</li>
+    </ol>
+  </nav>
+
+  <!-- Continua el contingut de l'Itinerari 3 -->
 <body class="antialiased min-h-screen flex flex-col justify-between">
 
     <!-- Header Superior con Menú de Idiomas y Logo Ampliado -->
