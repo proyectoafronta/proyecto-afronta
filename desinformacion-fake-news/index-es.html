@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFRONTA | Prevención de Fakes y Desinformación</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        uab: {
+                            // Colores ajustados para cumplimiento estricto WCAG 2.1 AA (contraste >= 4.5:1)
+                            green: '#006b2e',
+                            greenHover: '#005223',
+                            darkGreen: '#004a1f',
+                            navy: '#0f172a',
+                            lightBg: '#f8fafc',
+                            cardBg: '#ffffff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos de accesibilidad y foco claro */
+        :focus-visible {
+            outline: 3px solid #006b2e;
+            outline-offset: 2px;
+        }
+        .active-tab {
+            border-bottom: 3px solid #006b2e;
+            color: #006b2e;
+            font-weight: 700;
+        }
+        .filter-btn.active {
+            background-color: #006b2e;
+            color: white;
+            border-color: #006b2e;
+        }
+        /* Efecto de resaltado para Deep Linking */
+        @keyframes highlightCard {
+            0% { ring: 4px solid #006b2e; transform: scale(1.02); }
+            50% { ring: 4px solid #006b2e; transform: scale(1.02); }
+            100% { ring: 0px solid transparent; transform: scale(1); }
+        }
+        .highlight-target {
+            animation: highlightCard 2.5s ease-in-out;
+            border-color: #006b2e !important;
+        }
+    </style>
+</head>
+<body>
+
+  <!-- Estils del fil d'Ariadna -->
+  <style>
+    .breadcrumb-nav {
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.9rem;
+    }
+    .breadcrumb {
+      display: flex !important;
+      flex-wrap: wrap;
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .breadcrumb-item {
+      display: inline-flex;
+      align-items: center;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "›";
+      padding: 0 0.5rem;
+      color: #6c757d;
+    }
+    .breadcrumb-item a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-item.active {
+      color: #495057;
+      font-weight: 600;
+    }
+  </style>
+
+ <!-- Hilo de Ariadna -->
+  <nav aria-label="Hilo de Ariadna" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="../index-es.html">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Desinformación y Fake News</li>
+    </ol>
+  </nav>
+
+  <!-- Continua el contingut de la pàgina -->
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- NOTIFICACIÓN TOAST PARA ENLACES COPIADOS -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-700" role="status" aria-live="polite">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-xs sm:text-sm font-medium">¡Enlace copiado al portapapeles!</span>
+    </div>
+
+    <!-- TOP BAR & LANGUAGE SELECTOR HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm" role="banner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3">
+                <!-- Logo AFRONTA - UAB -->
+                <div class="flex items-center space-x-4">
+                    <a href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener text-decoration-none" aria-label="Ir a la portada del proyecto AFRONTA UAB">
+                        <img id="afronta-logo" 
+                             src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" 
+                             alt="Logo Proyecto AFRONTA - Universitat Autònoma de Barcelona" 
+                             class="h-12 sm:h-16 w-auto object-contain">
+                    </a>
+                </div>
+
+                <!-- Selector de Idioma y Enlaces Rápidos -->
+                <div class="flex items-center space-x-3 sm:space-x-6">
+                    <div class="relative inline-block text-left">
+                        <label for="lang-select" class="sr-only">Seleccionar Idioma / Select Language</label>
+                        <div class="flex items-center bg-slate-100 rounded-lg p-1 border border-slate-300">
+                            <i class="fa-solid fa-globe text-slate-600 ml-2 mr-1" aria-hidden="true"></i>
+                            <select id="lang-select" onchange="changeLanguage(this.value)" 
+                                    aria-label="Seleccionar idioma de la página" 
+                                    class="bg-transparent text-sm font-medium text-slate-800 py-1 pr-2 focus:outline-none cursor-pointer">
+                                <option value="es" selected>Español (ES)</option>
+                                <option value="ca">Català (CA)</option>
+                                <option value="en">English (EN)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <a href="https://webs.uab.cat/afronta" target="_blank" rel="noopener" 
+                       aria-label="Visitar la web oficial del Proyecto AFRONTA (abre en pestaña nueva)"
+                       class="hidden md:inline-flex items-center text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-uab-green transition">
+                        <span id="txt-official-web">Web Oficial AFRONTA</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square ml-1.5 text-xs text-slate-500" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto text-center space-y-4">
+            <div class="inline-flex items-center space-x-2 bg-emerald-950/80 text-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-semibold border border-emerald-700/60 shadow-sm">
+                <i class="fa-solid fa-shield-halved text-emerald-400" aria-hidden="true"></i>
+                <span id="txt-hero-badge">Proyecto de Investigación AFRONTA (PID2022-139502OB-I00)</span>
+            </div>
+            <h1 id="txt-hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                Recursos para la Prevención de la Desinformación y "Fakes"
+            </h1>
+            <p id="txt-hero-subtitle" class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
+                Repositorio interactivo de herramientas, guías, verificadores, marcos regulatorios y recursos didácticos elaborados y recopilados para detectar, verificar y frenar las noticias falsas.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="pt-6 max-w-2xl mx-auto relative">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-lg" aria-hidden="true"></i>
+                    <input type="text" id="search-input" onkeyup="filterResources()" 
+                        aria-label="Buscar en el catálogo de recursos"
+                        placeholder="Buscar herramientas, verificadores, guías, informes..." 
+                        class="w-full pl-12 pr-4 py-3.5 rounded-xl text-slate-900 bg-white shadow-xl focus:outline-none focus:ring-2 focus:ring-uab-green text-sm sm:text-base border border-slate-200">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE BAR: VERIFICATION WORKFLOW & SELF-EVALUATION QUIZ -->
+    <section class="bg-emerald-50/80 border-b border-emerald-200 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-uab-green text-white flex items-center justify-center font-bold text-xl shadow-md shrink-0">
+                        <i class="fa-solid fa-check-double" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 id="txt-workflow-title" class="font-bold text-slate-900 text-base sm:text-lg">¿Tienes una noticia o imagen dudosa?</h3>
+                        <p id="txt-workflow-desc" class="text-slate-700 text-xs sm:text-sm">Usa nuestra guía de verificación rápida o pon a prueba tu criterio crítico.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                    <!-- Botón Modal Guía Interactiva -->
+                    <button onclick="openVerificationGuideModal()" 
+                            aria-label="Abrir guía interactiva Verifícalo paso a paso"
+                            class="w-full sm:w-auto bg-uab-green hover:bg-uab-greenHover text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition shadow-md flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                        <span id="btn-open-guide">Guía "Verifícalo"</span>
+                    </button>
+
+                    <!-- Botón Cuestionario / Minijuego de Autoevaluación -->
+                    <button onclick="openQuizModal()" 
+                            aria-label="Abrir test interactivo Pon a prueba tu criterio"
+                            class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition shadow-md flex items-center justify-center space-x-2 border border-slate-700">
+                        <i class="fa-solid fa-gamepad text-amber-400" aria-hidden="true"></i>
+                        <span id="btn-open-quiz">Pon a prueba tu criterio</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full" id="contenido-principal">
+
+        <!-- CATEGORY FILTERS (PILLS) -->
+        <div class="mb-8">
+            <h2 id="txt-categories-label" class="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-3">Categorías de Recursos</h2>
+            <div class="flex flex-wrap gap-2" id="category-filters" role="tablist" aria-label="Filtros de categoría">
+                <!-- Generado dinámicamente -->
+            </div>
+        </div>
+
+        <!-- RESOURCE CARDS GRID -->
+        <div id="resources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="region" aria-live="polite">
+            <!-- Tarjetas generadas dinámicamente mediante JS -->
+        </div>
+
+        <!-- NO RESULTS FALLBACK -->
+        <div id="no-results" class="hidden text-center py-16 space-y-3 bg-white rounded-2xl border border-slate-200 my-6 shadow-sm">
+            <i class="fa-solid fa-circle-exclamation text-4xl text-slate-400" aria-hidden="true"></i>
+            <p id="txt-no-results" class="text-slate-700 font-semibold text-base">No se encontraron recursos que coincidan con la búsqueda.</p>
+        </div>
+    </main>
+
+    <!-- MODAL 1: GUÍA INTERACTIVA DE VERIFICACIÓN -->
+    <div id="guide-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-guide-title">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto border border-slate-200">
+            <button onclick="closeVerificationGuideModal()" aria-label="Cerrar ventana de la guía" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-xl font-bold w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-100 transition">
+                &times;
+            </button>
+            
+            <div class="flex items-center space-x-3.5 mb-5 border-b border-slate-100 pb-4">
+                <div class="p-3 bg-emerald-100 text-uab-green rounded-xl">
+                    <i class="fa-solid fa-magnifying-glass-chart text-2xl" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <h3 id="modal-guide-title" class="text-xl font-extrabold text-slate-900">Guía de Verificación Interactiva</h3>
+                    <p id="modal-guide-subtitle" class="text-xs font-medium text-slate-600">Pautas recomendadas por el Equipo de Investigación AFRONTA UAB</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 my-6" id="modal-steps-container">
+                <!-- Pasos dinámicos -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="closeVerificationGuideModal()" id="btn-modal-close" aria-label="Cerrar diálogo" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CUESTIONARIO / MINI-JUEGO DE AUTOEVALUACIÓN ("Pon a prueba tu criterio") -->
+    <div id="quiz-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto border border-slate-200">
+            <button onclick="closeQuizModal()" aria-label="Cerrar cuestionario de autoevaluación" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 text-xl font-bold w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-100 transition">
+                &times;
+            </button>
+            
+            <div class="flex items-center space-x-3.5 mb-4 border-b border-slate-100 pb-4">
+                <div class="p-3 bg-amber-100 text-amber-800 rounded-xl">
+                    <i class="fa-solid fa-brain text-2xl" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <h3 id="quiz-modal-title" class="text-xl font-extrabold text-slate-900">Pon a prueba tu criterio</h3>
+                    <p id="quiz-modal-subtitle" class="text-xs font-medium text-slate-600">Minijuego interactivo de alfabetización mediática y detección de fakes</p>
+                </div>
+            </div>
+
+            <!-- Quiz Container Body -->
+            <div id="quiz-body" class="my-4">
+                <!-- Renderizado dinámicamente -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-between items-center" id="quiz-footer">
+                <span id="quiz-progress" class="text-xs font-bold text-slate-500">Pregunta 1 de 4</span>
+                <button onclick="closeQuizModal()" id="btn-quiz-close" aria-label="Cerrar cuestionario" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-12 py-10" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-3">
+                <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" alt="Logo AFRONTA UAB" class="h-12 w-auto bg-white/95 p-1.5 rounded-lg">
+                <p id="footer-project-desc" class="text-xs text-slate-400 leading-relaxed">
+                    Proyecto AFRONTA (PID2022-139502OB-I00). Departamento de Antropología Social y Cultural, Universitat Autònoma de Barcelona (UAB).
+                </p>
+            </div>
+
+            <div>
+                <h4 id="footer-contact-title" class="text-white font-bold text-xs uppercase tracking-wider mb-3">Contacto e Información</h4>
+                <ul class="text-xs space-y-2 text-slate-400">
+                    <li class="flex items-start"><i class="fa-solid fa-location-dot mr-2 mt-0.5 text-emerald-400" aria-hidden="true"></i><span id="footer-address">Edificio B, Facultad de Filosofía y Letras, UAB. 08193 Bellaterra, Barcelona</span></li>
+                    <li class="flex items-center"><i class="fa-solid fa-envelope mr-2 text-emerald-400" aria-hidden="true"></i><a href="mailto:proyectoafronta@gmail.com" class="hover:underline focus:text-white">proyectoafronta@gmail.com</a></li>
+                    <li class="flex items-center"><i class="fa-solid fa-globe mr-2 text-emerald-400" aria-hidden="true"></i><a href="https://webs.uab.cat/afronta" target="_blank" rel="noopener" class="hover:underline focus:text-white">webs.uab.cat/afronta</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 id="footer-legal-title" class="text-white font-bold text-xs uppercase tracking-wider mb-3">Institución</h4>
+                <p id="footer-uab-desc" class="text-xs text-slate-400 leading-relaxed mb-3">
+                    Universitat Autònoma de Barcelona. Investigación y transferencia social frente a la desinformación.
+                </p>
+                <div class="pt-2 flex items-center space-x-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Cc_by-nc-nd_euro_icon.svg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Licencia Creative Commons CC BY-NC-ND" class="h-8 w-auto">
+                    <p class="text-xs text-slate-500">&copy; <span id="year">2026</span> Universitat Autònoma de Barcelona.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Idioma actual
+        let currentLang = 'es';
+        let currentCategory = 'all';
+
+        // Traducciones UI Estáticas
+        const uiTranslations = {
+            es: {
+                officialWeb: "Web Oficial AFRONTA",
+                heroBadge: "Proyecto de Investigación AFRONTA (PID2022-139502OB-I00)",
+                heroTitle: "Recursos para la Prevención de la Desinformación y \"Fakes\"",
+                heroSubtitle: "Repositorio interactivo de herramientas, guías, verificadores, marcos regulatorios y recursos didácticos elaborados y recopilados para detectar, verificar y frenar las noticias falsas.",
+                searchPlaceholder: "Buscar herramientas, verificadores, guías, informes...",
+                workflowTitle: "¿Tienes una noticia o imagen dudosa?",
+                workflowDesc: "Usa nuestra guía de verificación rápida o pon a prueba tu criterio crítico.",
+                btnOpenGuide: "Guía \"Verifícalo\"",
+                btnOpenQuiz: "Pon a prueba tu criterio",
+                categoriesLabel: "Categorías de Recursos",
+                noResults: "No se encontraron recursos que coincidan con la búsqueda.",
+                allCategories: "Todos los Recursos",
+                visitResource: "Acceder al recurso",
+                keyTakeawaysTitle: "Puntos Clave",
+                externalLinkTooltip: "Enlace Externo",
+                internalLinkTooltip: "Portal AFRONTA / UAB",
+                copyLinkTooltip: "Copiar enlace directo",
+                linkCopiedToast: "¡Enlace del recurso copiado al portapapeles!",
+                modalGuideTitle: "Guía Interactiva \"Verifícalo\"",
+                modalGuideSubtitle: "Pasos metodológicos recomendados por AFRONTA UAB",
+                modalClose: "Entendido",
+                quizTitle: "Pon a prueba tu criterio",
+                quizSubtitle: "Cuestionario de Autoevaluación Práctica",
+                quizScoreTitle: "¡Cuestionario Completado!",
+                quizRestartBtn: "Repetir test",
+                footerProjectDesc: "Proyecto AFRONTA (PID2022-139502OB-I00). Departamento de Antropología Social y Cultural, Universitat Autònoma de Barcelona (UAB).",
+                footerContactTitle: "Contacto e Información",
+                footerAddress: "Edificio B, Facultad de Filosofía y Letras, UAB. 08193 Bellaterra, Barcelona",
+                footerLegalTitle: "Institución",
+                footerUabDesc: "Universitat Autònoma de Barcelona. Investigación y transferencia social frente a la desinformación."
+            },
+            ca: {
+                officialWeb: "Web Oficial AFRONTA",
+                heroBadge: "Projecte de Recerca AFRONTA (PID2022-139502OB-I00)",
+                heroTitle: "Recursos per a la Prevenció de la Desinformació i \"Fakes\"",
+                heroSubtitle: "Repositori interactiu d'eines, guies, verificadors, marcs regulatoris i recursos didàctics elaborats i recopilats per detectar, verificar i frenar les notícies falses.",
+                searchPlaceholder: "Cercar eines, verificadors, guies, informes...",
+                workflowTitle: "Tens una notícia o imatge dubtosa?",
+                workflowDesc: "Utilitza la nostra guia de verificació ràpida o posa a prova el teu criteri crític.",
+                btnOpenGuide: "Guia \"Verifica-ho\"",
+                btnOpenQuiz: "Posa a prova el teu criteri",
+                categoriesLabel: "Categories de Recursos",
+                noResults: "No s'han trobat recursos que coincideixin amb la cerca.",
+                allCategories: "Tots els Recursos",
+                visitResource: "Accedir al recurs",
+                keyTakeawaysTitle: "Punts Clau",
+                externalLinkTooltip: "Enllaç Extern",
+                internalLinkTooltip: "Portal AFRONTA / UAB",
+                copyLinkTooltip: "Copiar enllaç directe",
+                linkCopiedToast: "¡Enllaç del recurs copiat al porta-retalls!",
+                modalGuideTitle: "Guia Interactiva \"Verifica-ho\"",
+                modalGuideSubtitle: "Passos metodològics recomanats per AFRONTA UAB",
+                modalClose: "Entès",
+                quizTitle: "Posa a prova el teu criteri",
+                quizSubtitle: "Qüestionari d'Autoavaluació Pràctica",
+                quizScoreTitle: "¡Qüestionari Completat!",
+                quizRestartBtn: "Repetir test",
+                footerProjectDesc: "Projecte AFRONTA (PID2022-139502OB-I00). Departament d'Antropologia Social i Cultural, Universitat Autònoma de Barcelona (UAB).",
+                footerContactTitle: "Contacte i Informació",
+                footerAddress: "Edifici B, Facultat de Filosofia i Lletres, UAB. 08193 Bellaterra, Barcelona",
+                footerLegalTitle: "Institució",
+                footerUabDesc: "Universitat Autònoma de Barcelona. Recerca i transferència social davant la desinformació."
+            },
+            en: {
+                officialWeb: "AFRONTA Official Web",
+                heroBadge: "AFRONTA Research Project (PID2022-139502OB-I00)",
+                heroTitle: "Resources for Disinformation and \"Fake News\" Prevention",
+                heroSubtitle: "Interactive repository of tools, guides, fact-checkers, regulatory frameworks, and educational materials compiled to detect, verify, and counter fake news.",
+                searchPlaceholder: "Search tools, fact-checkers, guides, reports...",
+                workflowTitle: "Unsure about a news claim or image?",
+                workflowDesc: "Use our quick verification guide or test your critical criteria.",
+                btnOpenGuide: "Guide \"Verify-it\"",
+                btnOpenQuiz: "Test Your Criteria",
+                categoriesLabel: "Resource Categories",
+                noResults: "No resources matched your search criteria.",
+                allCategories: "All Resources",
+                visitResource: "Access resource",
+                keyTakeawaysTitle: "Key Takeaways",
+                externalLinkTooltip: "External Link",
+                internalLinkTooltip: "AFRONTA / UAB Portal",
+                copyLinkTooltip: "Copy direct link",
+                linkCopiedToast: "Resource link copied to clipboard!",
+                modalGuideTitle: "Interactive \"Verify It\" Guide",
+                modalGuideSubtitle: "Methodological steps recommended by AFRONTA UAB",
+                modalClose: "Understood",
+                quizTitle: "Test Your Criteria",
+                quizSubtitle: "Interactive Self-Assessment Quiz",
+                quizScoreTitle: "Quiz Completed!",
+                quizRestartBtn: "Restart quiz",
+                footerProjectDesc: "AFRONTA Project (PID2022-139502OB-I00). Department of Social and Cultural Anthropology, Universitat Autònoma de Barcelona (UAB).",
+                footerContactTitle: "Contact & Information",
+                footerAddress: "Building B, Faculty of Philosophy and Arts, UAB. 08193 Bellaterra, Barcelona",
+                footerLegalTitle: "Institution",
+                footerUabDesc: "Universitat Autònoma de Barcelona. Academic research and societal transfer against disinformation."
+            }
+        };
+
+        // Categorías traducidas
+        const categoryNames = {
+            frameworks: { es: "Marcos Normativos", ca: "Marcs Normatius", en: "Regulatory Frameworks" },
+            verification: { es: "Herramientas de Verificación", ca: "Eines de Verificació", en: "Verification Tools" },
+            factcheckers: { es: "Verificadores", ca: "Verificadors", en: "Fact-Checkers" },
+            databases: { es: "Bases de Datos", ca: "Bases de Dades", en: "Databases" },
+            antirumor: { es: "Iniciativas Antirrumores", ca: "Iniciatives AntiRumors", en: "Anti-Rumor Initiatives" },
+            reports: { es: "Estudios e Informes", ca: "Estudis i Informes", en: "Reports & Research" },
+            interactive: { es: "Recursos Interactivos y Formación", ca: "Recursos Interactius i Formació", en: "Interactive & Training Tools" }
+        };
+
+        // BASE DE DATOS DE RECURSOS CON MEJORAS INFORMATIVAS Y DE FORMATO
+        const resourcesData = [
+            {
+                id: "code-practice-eu",
+                category: "frameworks",
+                icon: "fa-scale-balanced",
+                langBadge: "EN",
+                format: { es: "Plataforma Web / Marco Regulatorio", ca: "Plataforma Web / Marc Regulatori", en: "Web Platform / Regulatory Framework" },
+                url: "https://digital-strategy.ec.europa.eu/en/policies/code-practice-disinformation",
+                title: {
+                    es: "Código de Buenas Prácticas sobre Desinformación (UE)",
+                    ca: "Codi de Bones Pràctiques sobre Desinformació (UE)",
+                    en: "EU Code of Practice on Disinformation"
+                },
+                desc: {
+                    es: "Marco autorregulador pionero a nivel mundial suscrito por plataformas tecnológicas, redes sociales y actores publicitarios para combatir la desinformación en la Unión Europea.",
+                    ca: "Marc autoregulador capdavanter a nivell mundial subscrit per plataformes tecnològiques, xarxes socials i actors publicitaris per combatre la desinformació a la Unió Europea.",
+                    en: "World-first self-regulatory framework signed by tech platforms, social networks, and advertising players to counter online disinformation in the EU."
+                },
+                tag: { es: "Unión Europea", ca: "Unió Europea", en: "European Union" },
+                keyTakeaways: {
+                    es: [
+                        "Establece compromisos para desmonetizar la difusión de desinformación y garantizar la transparencia de los anuncios políticos.",
+                        "Obliga a las grandes plataformas (Meta, Google, TikTok, etc.) a aportar datos a investigadores independientes.",
+                        "Refuerza la colaboración continua con la red europea de fact-checkers (EDMO)."
+                    ],
+                    ca: [
+                        "Estableix compromisos per desmonetitzar la difusió de desinformació i garantir la transparència dels anuncis polítics.",
+                        "Obliga les grans plataformes (Meta, Google, TikTok, etc.) a aportar dades a investigadors independents.",
+                        "Reforça la col·laboració contínua amb la xarxa europea de fact-checkers (EDMO)."
+                    ],
+                    en: [
+                        "Sets commitments to demonetize disinformation and enforce political ad transparency.",
+                        "Requires major tech platforms to share data with independent researchers.",
+                        "Strengthens continuous cooperation with the European Fact-Checking Network (EDMO)."
+                    ]
+                }
+            },
+            {
+                id: "democracy-action-plan",
+                category: "frameworks",
+                icon: "fa-landmark",
+                langBadge: "ES/EN",
+                format: { es: "Documento de Política Pública", ca: "Document de Política Pública", en: "Public Policy Document" },
+                url: "https://commission.europa.eu/strategy-and-policy/priorities-2019-2024/new-push-european-democracy/european-democracy-action-plan_es",
+                title: {
+                    es: "Plan de Acción por la Democracia",
+                    ca: "Pla d'Acció per la Democràcia",
+                    en: "European Democracy Action Plan"
+                },
+                desc: {
+                    es: "Estrategia europea orientada a capacitar a la ciudadanía, reforzar la resiliencia de las democracias, proteger la integridad electoral y responder a la desinformación.",
+                    ca: "Estratègia europea orientada a capacitar la ciutadania, reforçar la resiliència de les democràcies, protegir l'integritat electoral i respondre a la desinformació.",
+                    en: "European strategy designed to empower citizens, build democratic resilience, protect electoral integrity, and counter foreign interference and disinformation."
+                },
+                tag: { es: "Política Pública", ca: "Política Pública", en: "Public Policy" },
+                keyTakeaways: {
+                    es: [
+                        "Promueve elecciones libres y limpias regulando la publicidad política en línea.",
+                        "Fortalece la libertad de los medios de comunicación y combate el acoso a periodistas.",
+                        "Despliega medidas específicas de alfabetización mediática en entornos escolares y comunitarios."
+                    ],
+                    ca: [
+                        "Promou eleccions lliures i netes regulant la publicitat política en línia.",
+                        "Enforteix la llibertat dels mitjans de comunicació i combat l'assetjament a periodistes.",
+                        "Desplega mesures específiques d'alfabetització mediàtica en entorns escolars i comunitaris."
+                    ],
+                    en: [
+                        "Promotes free and fair elections through online political advertising transparency.",
+                        "Strengthens media freedom and combats strategic lawsuits against journalists.",
+                        "Deploys targeted media literacy actions in schools and civil society."
+                    ]
+                }
+            },
+            {
+                id: "verifica-ho-cat",
+                category: "verification",
+                icon: "fa-square-check",
+                langBadge: "ES/CA",
+                format: { es: "Guía Interactiva Paso a Paso", ca: "Guia Interactiva Pas a Pas", en: "Step-by-Step Interactive Guide" },
+                url: {
+                    es: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verificalo-es/",
+                    ca: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verifica-ho/",
+                    en: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verificalo-es/"
+                },
+                title: {
+                    es: "Verifícalo (Texto y Noticias)",
+                    ca: "Verifica-ho! (Text i Notícies)",
+                    en: "Verify-it! (Text & News)"
+                },
+                desc: {
+                    es: "Guía metodológica paso a paso desarrollada para contrastar la veracidad de titulares, contenidos textuales, afirmaciones públicas y fuentes informativas en el entorno digital.",
+                    ca: "Guia metodològica pas a pas desenvolupada per contrastar la veracitat de titulars, continguts textuals, afirmacions públiques i fonts informatives en l'entorn digital.",
+                    en: "Step-by-step methodological guide to cross-check text claims, news headlines, public statements, and digital sources."
+                },
+                tag: { es: "Guía Práctica", ca: "Guia Pràctica", en: "Practical Guide" }
+            },
+            {
+                id: "verifica-ho-imatges",
+                category: "verification",
+                icon: "fa-image",
+                langBadge: "ES/CA",
+                format: { es: "Herramienta Visual & Metodología", ca: "Eina Visual & Metodologia", en: "Visual Tool & Methodology" },
+                url: {
+                    es: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verificalo-imagenes-es/",
+                    ca: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verifica-ho-imatges/",
+                    en: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verificalo-imagenes-es/"
+                },
+                title: {
+                    es: "Verifícalo – Imágenes",
+                    ca: "Verifica-ho! Imatges",
+                    en: "Verify-it! Images"
+                },
+                desc: {
+                    es: "Herramienta y guía orientada al análisis de verificación visual, búsqueda inversa de imágenes, detección de manipulación digital y metadatos EXIF.",
+                    ca: "Eina i guia orientada a l'anàlisi de verificació visual, cerca inversa d'imatges, detecció de manipulació digital i metadades EXIF.",
+                    en: "Verification workflow for visual analysis, reverse image searching, digital tampering detection, and EXIF metadata extraction."
+                },
+                tag: { es: "Verificación Visual", ca: "Verificació Visual", en: "Visual Verification" }
+            },
+            {
+                id: "verificadores",
+                category: "factcheckers",
+                icon: "fa-user-shield",
+                langBadge: "ES/CA",
+                format: { es: "Directorio Web Interactivo", ca: "Directori Web Interactiu", en: "Interactive Web Directory" },
+                url: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/verificadores/",
+                title: {
+                    es: "Plataformas Verificadoras de Información",
+                    ca: "Plataformes Verificadores d'Informació",
+                    en: "Fact-Checking Agencies & Platforms"
+                },
+                desc: {
+                    es: "Directorio de agencias e iniciativas independientes de verificación avaladas por el IFCN (Maldita.es, Newtral, EFE Verifica, Verificat, entre otras).",
+                    ca: "Directori d'agències i iniciatives independents de verificació avalades per l'IFCN (Maldita.es, Newtral, EFE Verifica, Verificat, entre d'altres).",
+                    en: "Directory of independent fact-checking organizations accredited by the IFCN (e.g., Maldita.es, Newtral, EFE Verifica, Verificat)."
+                },
+                tag: { es: "Fact-Checking", ca: "Fact-Checking", en: "Fact-Checking" }
+            },
+            {
+                id: "database-known-fakes",
+                category: "databases",
+                icon: "fa-database",
+                langBadge: "ES/EN",
+                format: { es: "Base de Datos de Consulta", ca: "Base de Dades de Consulta", en: "Queryable Database" },
+                url: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/bases-de-datos-de-noticias-falsas/",
+                title: {
+                    es: "Bases de Datos de Noticias Falsas y Desmentidos",
+                    ca: "Bases de Dades de Notícies Falses i Desmentiments",
+                    en: "Databases of Known Fakes & Debunked Claims"
+                },
+                desc: {
+                    es: "Repositorios globales y bases de datos consultables donde comprobar si una afirmación, imagen o vídeo ya ha sido desmentido oficialmente por verificadores aprobados por la IFCN.",
+                    ca: "Repositoris globals i bases de dades consultables on comprovar si una afirmació, imatge o vídeo ja ha estat desmentit oficialment per verificadors aprovats per la IFCN.",
+                    en: "Searchable global repositories and databases to check if a statement, picture, or video has already been formally debunked by IFCN-approved signatories."
+                },
+                tag: { es: "Base de Datos", ca: "Base de Dades", en: "Database" }
+            },
+            {
+                id: "euvsdisinfo",
+                category: "databases",
+                icon: "fa-shield-cat",
+                langBadge: "EN",
+                format: { es: "Base de Datos & Plataforma Internacional", ca: "Base de Dades & Plataforma Internacional", en: "Database & International Platform" },
+                url: "https://euvsdisinfo.eu/",
+                title: {
+                    es: "EUvsDisinfo (Grupo East StratCom)",
+                    ca: "EUvsDisinfo (Grup East StratCom)",
+                    en: "EUvsDisinfo (East StratCom Task Force)"
+                },
+                desc: {
+                    es: "Proyecto insignia del Servicio Europeo de Acción Exterior para identificar, rastrear y concientizar sobre la desinformación internacional y operaciones de manipulación.",
+                    ca: "Projecte insígnia del Servei Europeu d'Acció Exterior per identificar, rastrejar i conscienciar sobre la desinformació internacional i operacions de manipulació.",
+                    en: "Flagship project of the European External Action Service designed to monitor, analyze, and raise awareness of international disinformation operations."
+                },
+                tag: { es: "Internacional / UE", ca: "Internacional / UE", en: "International / EU" },
+                keyTakeaways: {
+                    es: [
+                        "Monitoriza activamente más de 15.000 casos documentados de desinformación en más de 15 idiomas.",
+                        "Proporciona análisis geopolíticos sobre campañas coordinadas de manipulación de información extranjera (FIMI).",
+                        "Ofrece resúmenes semanales y herramientas de búsqueda directa de bulos geolocalizados."
+                    ],
+                    ca: [
+                        "Monitoritza activament més de 15.000 casos documentats de desinformació en més de 15 idiomes.",
+                        "Proporciona anàlisis geopolítics sobre campanyes coordinades de manipulació d'informació estrangera (FIMI).",
+                        "Ofereix resums setmanals i eines de cerca directa de rumors geolocalitzats."
+                    ],
+                    en: [
+                        "Actively tracks over 15,000 documented cases of foreign disinformation in 15+ languages.",
+                        "Provides geopolitical analysis on Foreign Information Manipulation and Interference (FIMI).",
+                        "Offers weekly newsletters and searchable debunk repositories."
+                    ]
+                }
+            },
+            {
+                id: "iniciativas-antirrumores",
+                category: "antirumor",
+                icon: "fa-people-group",
+                langBadge: "ES/CA",
+                format: { es: "Guías & Red Comunitaria", ca: "Guies & Xarxa Comunitària", en: "Guides & Community Network" },
+                url: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/iniciativas-antirrumores/",
+                title: {
+                    es: "Iniciativas y Redes AntiRumores",
+                    ca: "Iniciatives i Xarxes AntiRumors",
+                    en: "Anti-Rumor Networks and Initiatives"
+                },
+                desc: {
+                    es: "Estrategias de sensibilización social, guías comunitarias y herramientas para desmontar estereotipos, falsas narrativas y rumores discriminatorios sobre la diversidad.",
+                    ca: "Estratègies de sensibilització social, guies comunitàries i eines per desmuntar estereotips, falses narratives i rumors discriminatoris sobre la diversitat.",
+                    en: "Social awareness strategies, community toolkits, and frameworks aimed at dismantling stereotypes, hate speech, and discriminatory rumors."
+                },
+                tag: { es: "Inclusión Social", ca: "Inclusió Social", en: "Social Inclusion" }
+            },
+            {
+                id: "estudios-informes",
+                category: "reports",
+                icon: "fa-book-open-reader",
+                langBadge: "ES/CA/EN",
+                format: { es: "Informe / Guía Académica PDF", ca: "Informe / Guia Acadèmica PDF", en: "Report / Academic PDF Guide" },
+                url: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/estudios-e-informes-divulgativos/",
+                title: {
+                    es: "Estudios e Informes Divulgativos",
+                    ca: "Estudis i Informes Divulgatius",
+                    en: "Research Studies & Analytical Reports"
+                },
+                desc: {
+                    es: "Investigaciones académicas, informes del Reuters Institute y diagnósticos sobre hábitos de consumo informativo, sesgos cognitivos y percepción de veracidad.",
+                    ca: "Investigacions acadèmiques, informes del Reuters Institute i diagnòstics sobre hàbits de consum informatiu, biaixos cognitius i percepció de veracitat.",
+                    en: "Academic studies, Reuters Institute publications, and empirical research analyzing news consumption habits, cognitive biases, and truth perception."
+                },
+                tag: { es: "Investigación UAB", ca: "Recerca UAB", en: "UAB Research" },
+                keyTakeaways: {
+                    es: [
+                        "Analiza el impacto del sesgo de confirmación y el consumo incidental de noticias a través de redes sociales.",
+                        "Aporta datos empíricos sobre la efectividad de las alfabetizaciones mediáticas en colectivos vulnerables.",
+                        "Examina el nivel de confianza de la ciudadanía en medios tradicionales versus plataformas digitales."
+                    ],
+                    ca: [
+                        "Analitza l'impacte del biaix de confirmació i el consum incidental de notícies a través de xarxes socials.",
+                        "Aporta dades empíriques sobre l'efectivitat de les alfabetitzacions mediàtiques en col·lectius vulnerables.",
+                        "Examina el nivell de confiança de la ciutadania en mitjans tradicionals enfront de plataformes digitals."
+                    ],
+                    en: [
+                        "Analyzes the effect of confirmation bias and incidental social media news consumption.",
+                        "Provides empirical evidence on media literacy effectiveness among vulnerable communities.",
+                        "Examines public trust levels in traditional news outlets versus digital platforms."
+                    ]
+                }
+            },
+            {
+                id: "recursos-interactivos",
+                category: "interactive",
+                icon: "fa-laptop-code",
+                langBadge: "ES/CA",
+                format: { es: "Plataforma / Módulo Interactivo", ca: "Plataforma / Mòdul Interactiu", en: "Platform / Interactive Module" },
+                url: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/recursos-interactivos/",
+                title: {
+                    es: "Recursos Interactivos y Módulos de Autoaprendizaje",
+                    ca: "Recursos Interactius i Mòduls d'Autoaprenentatge",
+                    en: "Interactive Tools & Self-Learning Modules"
+                },
+                desc: {
+                    es: "Cápsulas formativas, dinámicas de juego formativo (gamificación) y vídeos para entrenar las competencias digitales de alfabetización mediática.",
+                    ca: "Càpsules formatives, dinàmiques de joc formatiu (gamificació) i vídeos per entrenar les competències digitals d'alfabetització mediàtica.",
+                    en: "Gamified activities, self-learning modules, video capsules, and interactive exercises to build digital media literacy skills."
+                },
+                tag: { es: "Formación Activa", ca: "Formació Activa", en: "Active Learning" }
+            }
+        ];
+
+        // PASOS GUÍA INTERACTIVA "VERIFÍCALO"
+        const guideSteps = {
+            es: [
+                { title: "1. Comprueba la Fuente Original", text: "Verifica quién publica la noticia. ¿Es un medio reconocido con autoría clara? Revisa cuidadosamente la URL (dominios engañosos suelen imitar diarios reales)." },
+                { title: "2. Realiza Búsqueda Inversa de Imágenes", text: "Si el contenido incluye una foto o vídeo impactante, haz clic derecho para buscar la imagen en Google Images, TinEye o InVID para verificar su fecha y contexto original." },
+                { title: "3. Consulta a la Red de Verificadores (IFCN)", text: "Comprueba si agencias acreditadas como Maldita.es, Newtral, Verificat o la base de datos de la red IFCN ya han desmentido la afirmación." },
+                { title: "4. Desconfía de la Urgencia y el Impacto Emocional", text: "Si el titular o la cadena genera indignación inmediata, miedo o prisa por reenviar, tómate una pausa antes de compartir. La desinformación explota el sesgo emocional." }
+            ],
+            ca: [
+                { title: "1. Comprova la Font Original", text: "Verifica qui publica la notícia. És un mitjà reconegut amb autoria clara? Revisa acuradament la URL (dominis enganyosos acostumen a imitar diaris reals)." },
+                { title: "2. Fes una Cerca Inversa d'Imatges", text: "Si el contingut inclou una foto o vídeo xocant, fes clic dret per cercar la imatge a Google Images, TinEye o InVID per verificar la seva data i context original." },
+                { title: "3. Consulta la Xarxa de Verificadors (IFCN)", text: "Comprova si agències meves com Verificat, Maldita.es, Newtral o la base de dades IFCN ja han publicat un desmentiment oficial." },
+                { title: "4. Desconfia de l'Urgència i l'Impacte Emocional", text: "Si el titular o la cadena genera indignació immediata, por o pressa per reexpedir, feu una pausa abans de compartir. La desinformació explota el biaix emocional." }
+            ],
+            en: [
+                { title: "1. Check the Original Source", text: "Identify who published the content. Is it a reputable news outlet with clear bylines? Inspect the domain URL closely for fake duplicates." },
+                { title: "2. Perform a Reverse Image Search", text: "For shocking photos or video stills, right-click to search via Google Images, TinEye, or InVID to trace the original context and date." },
+                { title: "3. Cross-Check with Certified Fact-Checkers", text: "Look up verified databases like IFCN, Maldita.es, Newtral, or Verificat to see if the claim has already been debunked." },
+                { title: "4. Beware of Emotional Triggers & Urgency", text: "Disinformation thrives on rage, fear, and urgent calls to action. Pause and analyze objectively before forwarding." }
+            ]
+        };
+
+        // PREGUNTAS DEL CUESTIONARIO / MINIJUEGO DE AUTOEVALUACIÓN ("Pon a prueba tu criterio")
+        const quizQuestions = {
+            es: [
+                {
+                    q: "Recibes una imagen impactante por WhatsApp sobre un supuesto suceso violento reciente. ¿Cuál es el primer paso metodológico más eficaz?",
+                    options: [
+                        "Reenviarla de inmediato a tus grupos para alertar a tus familiares.",
+                        "Realizar una búsqueda inversa de imagen en Google Images o TinEye para verificar cuándo y dónde fue tomada originalmente.",
+                        "Buscar en redes sociales si la gente está hablando sobre ello.",
+                        "Creer la imagen porque las fotografías no se pueden manipular."
+                    ],
+                    correct: 1,
+                    explanation: "La búsqueda inversa de imágenes permite descubrir el origen real de una fotografía, detectando si ha sido sacada de contexto o corresponde a años anteriores."
+                },
+                {
+                    q: "¿Qué indicador debe hacerte sospechar de que un enlace web puede ser un portal desinformativo engañoso?",
+                    options: [
+                        "Utiliza el protocolo seguro HTTPS.",
+                        "El nombre del dominio imita a un diario real con un sufijo extraño (ej.: elpais-noticias.tk o lavanguardia-real.biz).",
+                        "Incluye la fecha de publicación y el nombre del autor.",
+                        "Ofrece una versión traducida al catalán y al inglés."
+                    ],
+                    correct: 1,
+                    explanation: "El 'cybersquatting' o suplantación de dominios busca engañar visualmente usando variaciones sutiles de nombres de medios reconocidos."
+                },
+                {
+                    q: "Ves una titular con lenguaje alarmista que provoca indignación visceral. ¿Por qué la desinformación utiliza este recurso?",
+                    options: [
+                        "Porque busca neutralidad periodística rigurosa.",
+                        "Porque el contenido emocional apela a sesgos cognitivos directos, desactivando el pensamiento crítico y acelerando el reenvío compulsivo.",
+                        "Para mejorar la accesibilidad de la página.",
+                        "Porque los algoritmos prohíben los titulares pausados."
+                    ],
+                    correct: 1,
+                    explanation: "Las noticias falsas apelan intencionadamente a la ira o el miedo porque las emociones intensas reducen el análisis analítico y fomentan la compartición impulsiva."
+                },
+                {
+                    q: "¿Qué garantía aporta que un medio de verificación esté acreditado por la red internacional IFCN (International Fact-Checking Network)?",
+                    options: [
+                        "Es una red dependiente de un gobierno específico.",
+                        "Garantiza el cumplimiento de un código de principios de imparcialidad, transparencia de fuentes, corrección abierta y neutralidad política.",
+                        "Impide que cualquier usuario publique comentarios en internet.",
+                        "Solo analiza contenidos emitidos en televisión tradicional."
+                    ],
+                    correct: 1,
+                    explanation: "La acreditación IFCN exige a los verificadores altos estándares internacionales de metodología independiente, transparencia financiera y neutralidad."
+                }
+            ],
+            ca: [
+                {
+                    q: "Reps una imatge xocant per WhatsApp sobre un supòsit succés violent recent. Quin és el primer pas metodològic més eficaç?",
+                    options: [
+                        "Reexpedir-la immediatament als teus grups per alertar els teus familiars.",
+                        "Realitzar una cerca inversa d'imatge a Google Images o TinEye per verificar quan i on va ser presa originalment.",
+                        "Cercar a xarxes socials si la gent en parla.",
+                        "Creure la imatge perquè les fotografies no es poden manipular."
+                    ],
+                    correct: 1,
+                    explanation: "La cerca inversa d'imatges permet descobrir l'origen real d'una fotografia, detectant si ha estat basada fora de context o correspon a anys anteriors."
+                },
+                {
+                    q: "Quin indicador ha de fer-te sospitar que un enllaç web pot ser un portal desinformatiu enganyós?",
+                    options: [
+                        "Utilitza el protocol segur HTTPS.",
+                        "El nom del domini imita un diari real amb un sufix estrany (ex.: elpais-noticias.tk o lavanguardia-real.biz).",
+                        "Inclou la data de publicació i el nom de l'autor.",
+                        "Ofereix una versió traduïda al català i a l'anglès."
+                    ],
+                    correct: 1,
+                    explanation: "La suplantació de dominis busca enganyar visualment utilitzant variacions subtils de noms de mitjans reconeguts."
+                },
+                {
+                    q: "Veus un titular amb llenguatge alarmista que provoca indignació visceral. Per què la desinformació utilitza aquest recurs?",
+                    options: [
+                        "Perquè cerca la neutralitat periodística rigorosa.",
+                        "Perquè el contingut emocional apel·la a biaixos cognitius directes, desactivant el pensament crític i accelerant el reexpediment compulsiu.",
+                        "Per millorar l'accessibilitat de la pàgina.",
+                        "Perquè els algorismes prohibeixen els titulars pausats."
+                    ],
+                    correct: 1,
+                    explanation: "Les notícies falses apel·len intencionadament a la ira o la por perquè les emocions intenses redueixen l'anàlisi analítica i fomentar la compartició impulsiva."
+                },
+                {
+                    q: "Quina garantia aporta que un mitjà de verificació estigui acreditat per la xarxa internacional IFCN?",
+                    options: [
+                        "És una xarxa dependent d'un govern específic.",
+                        "Garanteix el compliment d'un codi de principis d'imparcialitat, transparència de fonts, correcció oberta i neutralitat política.",
+                        "Impideix que qualsevol usuari publiqui comentaris a internet.",
+                        "Només analitza continguts emesos en televisió tradicional."
+                    ],
+                    correct: 1,
+                    explanation: "L'acreditació IFCN exigeix als verificadors alts estàndards internacionals de metodologia independent, transparència financera i neutralitat."
+                }
+            ],
+            en: [
+                {
+                    q: "You receive a shocking photo on WhatsApp about a violent event. What is the most effective initial verification step?",
+                    options: [
+                        "Forward it immediately to family groups to warn them.",
+                        "Perform a reverse image search on Google Images or TinEye to verify when and where it was originally taken.",
+                        "Check social media trends to see if people are talking about it.",
+                        "Believe it unconditionally because photographs cannot be altered."
+                    ],
+                    correct: 1,
+                    explanation: "Reverse image searching reveals a photo's original publication history, exposing out-of-context or recycled imagery."
+                },
+                {
+                    q: "Which indicator should make you suspect that a web link might be a deceptive fake news domain?",
+                    options: [
+                        "It uses HTTPS secure protocol.",
+                        "The domain name mimics a real newspaper with an unusual suffix (e.g., elpais-noticias.tk or lavanguardia-real.biz).",
+                        "It lists the publication date and author name.",
+                        "It offers a translated version in English and Catalan."
+                    ],
+                    correct: 1,
+                    explanation: "Typosquatting and domain spoofing use subtle variations of established media names to trick readers."
+                },
+                {
+                    q: "You spot a headline using sensationalist language triggering instant rage. Why does disinformation rely on this?",
+                    options: [
+                        "To uphold strict journalistic neutrality.",
+                        "Because emotional triggers exploit cognitive biases, shutting down critical thinking and speeding up viral sharing.",
+                        "To improve search engine web accessibility.",
+                        "Because algorithms ban calm headlines."
+                    ],
+                    correct: 1,
+                    explanation: "Fake news deliberate triggers fear or anger because intense emotions bypass critical evaluation and prompt impulsive shares."
+                },
+                {
+                    q: "What guarantee does IFCN (International Fact-Checking Network) accreditation provide?",
+                    options: [
+                        "It is controlled by a specific national government.",
+                        "It mandates compliance with a strict code of principles on non-partisanship, source transparency, and methodology.",
+                        "It prevents users from posting comments online.",
+                        "It only monitors traditional TV broadcasts."
+                    ],
+                    correct: 1,
+                    explanation: "IFCN signatories adhere to rigorous global standards of non-partisanship, open corrections, and source disclosure."
+                }
+            ]
+        };
+
+        // ESTADO DEL QUIZ
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // INICIALIZACIÓN
+        function initApp() {
+            renderCategoryFilters();
+            renderResources();
+            updateStaticUIText();
+            checkDeepLinkHash();
+        }
+
+        // CAMBIO DE IDIOMA
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            renderCategoryFilters();
+            renderResources();
+            updateStaticUIText();
+        }
+
+        // ACTUALIZACIÓN DE TEXTOS ESTÁTICOS
+        function updateStaticUIText() {
+            const t = uiTranslations[currentLang];
+            document.getElementById('txt-official-web').innerText = t.officialWeb;
+            document.getElementById('txt-hero-badge').innerText = t.heroBadge;
+            document.getElementById('txt-hero-title').innerText = t.heroTitle;
+            document.getElementById('txt-hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('txt-workflow-title').innerText = t.workflowTitle;
+            document.getElementById('txt-workflow-desc').innerText = t.workflowDesc;
+            document.getElementById('btn-open-guide').innerText = t.btnOpenGuide;
+            document.getElementById('btn-open-quiz').innerText = t.btnOpenQuiz;
+            document.getElementById('txt-categories-label').innerText = t.categoriesLabel;
+            document.getElementById('txt-no-results').innerText = t.noResults;
+            document.getElementById('modal-guide-title').innerText = t.modalGuideTitle;
+            document.getElementById('modal-guide-subtitle').innerText = t.modalGuideSubtitle;
+            document.getElementById('btn-modal-close').innerText = t.modalClose;
+            document.getElementById('quiz-modal-title').innerText = t.quizTitle;
+            document.getElementById('quiz-modal-subtitle').innerText = t.quizSubtitle;
+            document.getElementById('footer-project-desc').innerText = t.footerProjectDesc;
+            document.getElementById('footer-contact-title').innerText = t.footerContactTitle;
+            document.getElementById('footer-address').innerText = t.footerAddress;
+            document.getElementById('footer-legal-title').innerText = t.footerLegalTitle;
+            document.getElementById('footer-uab-desc').innerText = t.footerUabDesc;
+        }
+
+        // RENDER DE BOTONES DE FILTRO DE CATEGORÍA
+        function renderCategoryFilters() {
+            const container = document.getElementById('category-filters');
+            const t = uiTranslations[currentLang];
+
+            let html = `
+                <button onclick="selectCategory('all')" 
+                        role="tab"
+                        aria-selected="${currentCategory === 'all'}"
+                        aria-label="Mostrar todos los recursos"
+                        class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition border border-slate-300 bg-white text-slate-700 hover:border-emerald-600 ${currentCategory === 'all' ? 'active' : ''}">
+                    <i class="fa-solid fa-layer-group mr-1.5" aria-hidden="true"></i>${t.allCategories}
+                </button>
+            `;
+
+            Object.keys(categoryNames).forEach(catKey => {
+                const name = categoryNames[catKey][currentLang];
+                const isActive = currentCategory === catKey ? 'active' : '';
+                html += `
+                    <button onclick="selectCategory('${catKey}')" 
+                            role="tab"
+                            aria-selected="${currentCategory === catKey}"
+                            aria-label="Filtrar por ${name}"
+                            class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition border border-slate-300 bg-white text-slate-700 hover:border-emerald-600 ${isActive}">
+                        ${name}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectCategory(catKey) {
+            currentCategory = catKey;
+            renderCategoryFilters();
+            renderResources();
+        }
+
+        // RENDERIZADO DINÁMICO DE TARJETAS DE RECURSOS
+        function renderResources() {
+            const grid = document.getElementById('resources-grid');
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+            const noResults = document.getElementById('no-results');
+
+            const filtered = resourcesData.filter(res => {
+                const matchesCat = currentCategory === 'all' || res.category === currentCategory;
+                const titleText = res.title[currentLang].toLowerCase();
+                const descText = res.desc[currentLang].toLowerCase();
+                const tagText = res.tag[currentLang].toLowerCase();
+                const formatText = (res.format[currentLang] || '').toLowerCase();
+                
+                const matchesSearch = titleText.includes(searchVal) || descText.includes(searchVal) || tagText.includes(searchVal) || formatText.includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            const t = uiTranslations[currentLang];
+
+            grid.innerHTML = filtered.map(item => {
+                const targetUrl = typeof item.url === 'object' ? item.url[currentLang] : item.url;
+                const isInternal = targetUrl.includes('webs.uab.cat');
+                
+                // Iconos y badges diferenciados
+                const linkIcon = isInternal ? 'fa-house-laptop' : 'fa-arrow-up-right-from-square';
+                const linkTooltip = isInternal ? t.internalLinkTooltip : t.externalLinkTooltip;
+
+                // Key takeaways resumen ejecutivo para estudios o normas complejas
+                let takeawaysHtml = '';
+                if (item.keyTakeaways && item.keyTakeaways[currentLang]) {
+                    takeawaysHtml = `
+                        <div class="mt-3 pt-3 border-t border-slate-100 bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+                            <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2 flex items-center">
+                                <i class="fa-solid fa-list-check text-uab-green mr-1.5" aria-hidden="true"></i> ${t.keyTakeawaysTitle}:
+                            </h4>
+                            <ul class="space-y-1.5 text-xs text-slate-700">
+                                ${item.keyTakeaways[currentLang].map(pt => `<li class="flex items-start"><i class="fa-solid fa-circle-dot text-[10px] text-emerald-600 mr-2 mt-1 shrink-0" aria-hidden="true"></i><span>${pt}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                return `
+                <div id="${item.id}" class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group relative">
+                    <div>
+                        <!-- Header de Tarjeta: Tags, Formato e Idioma -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-extrabold bg-emerald-100 text-uab-darkGreen">
+                                    ${item.tag[currentLang]}
+                                </span>
+                            </div>
+                            
+                            <!-- Insignia de Idioma original [EN], [ES/CA] y Formato -->
+                            <div class="flex items-center space-x-1.5">
+                                <span class="px-2 py-0.5 text-xs font-extrabold bg-slate-200 text-slate-800 rounded border border-slate-300" title="Idioma del recurso original">
+                                    [${item.langBadge}]
+                                </span>
+                                <button onclick="copyDeepLink('${item.id}')" 
+                                        aria-label="${t.copyLinkTooltip}: ${item.title[currentLang]}" 
+                                        title="${t.copyLinkTooltip}"
+                                        class="p-1.5 text-slate-400 hover:text-uab-green rounded-lg hover:bg-slate-100 transition">
+                                    <i class="fa-solid fa-link text-sm" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Indicador de tipo de formato -->
+                        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center">
+                            <i class="fa-solid fa-file-lines mr-1.5 text-slate-400" aria-hidden="true"></i> ${item.format[currentLang]}
+                        </div>
+
+                        <!-- Título e Icono principal -->
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <h3 class="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-uab-green transition leading-snug">
+                                ${item.title[currentLang]}
+                            </h3>
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 text-uab-green flex items-center justify-center text-lg shrink-0 group-hover:bg-uab-green group-hover:text-white transition shadow-sm" aria-hidden="true">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed mb-3">
+                            ${item.desc[currentLang]}
+                        </p>
+
+                        <!-- Puntos clave si corresponde -->
+                        ${takeawaysHtml}
+                    </div>
+
+                    <!-- Footer de Tarjeta con Diferenciación de Enlace Interno/Externo -->
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" 
+                           aria-label="${t.visitResource}: ${item.title[currentLang]} (${linkTooltip})"
+                           class="inline-flex items-center justify-center w-full bg-slate-900 hover:bg-uab-green text-white font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl transition space-x-2 shadow-sm">
+                            <span>${t.visitResource}</span>
+                            <i class="fa-solid ${linkIcon} text-xs ml-1" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // COPIAR ENLACE PERMANENTE (DEEP LINKING)
+        function copyDeepLink(id) {
+            const baseUrl = window.location.href.split('#')[0];
+            const fullUrl = `${baseUrl}#${id}`;
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                showToast(uiTranslations[currentLang].linkCopiedToast);
+            }).catch(err => {
+                console.error('Error al copiar el enlace:', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // COMPROBAR HASH AL CARGAR LA PÁGINA (DEEP LINKING)
+        function checkDeepLinkHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                setTimeout(() => {
+                    const targetCard = document.getElementById(hash);
+                    if (targetCard) {
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetCard.classList.add('highlight-target');
+                    }
+                }, 400);
+            }
+        }
+
+        // FILTRO DE BÚSQUEDA
+        function filterResources() {
+            renderResources();
+        }
+
+        // MODAL 1: GUÍA INTERACTIVA
+        function openVerificationGuideModal() {
+            const container = document.getElementById('modal-steps-container');
+            const steps = guideSteps[currentLang];
+
+            container.innerHTML = steps.map((s, idx) => `
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base mb-1 text-uab-green flex items-center">
+                        <i class="fa-solid fa-circle-check mr-2 text-emerald-600" aria-hidden="true"></i>${s.title}
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-6">${s.text}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('guide-modal').classList.remove('hidden');
+        }
+
+        function closeVerificationGuideModal() {
+            document.getElementById('guide-modal').classList.add('hidden');
+        }
+
+        // MODAL 2: CUESTIONARIO / MINIJUEGO DE AUTOEVALUACIÓN ("Pon a prueba tu criterio")
+        function openQuizModal() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+        }
+
+        function renderQuizQuestion() {
+            const container = document.getElementById('quiz-body');
+            const questions = quizQuestions[currentLang];
+            const t = uiTranslations[currentLang];
+
+            if (currentQuizIndex >= questions.length) {
+                // Pantalla final del quiz
+                container.innerHTML = `
+                    <div class="text-center py-6 space-y-4">
+                        <div class="w-16 h-16 bg-emerald-100 text-uab-green rounded-full flex items-center justify-center mx-auto text-3xl font-bold shadow-sm">
+                            <i class="fa-solid fa-trophy text-amber-500" aria-hidden="true"></i>
+                        </div>
+                        <h4 class="text-xl font-extrabold text-slate-900">${t.quizScoreTitle}</h4>
+                        <p class="text-sm text-slate-700">Has acertado <span class="font-extrabold text-uab-green text-lg">${quizScore}</span> de <span class="font-bold">${questions.length}</span> preguntas de verificación práctica.</p>
+                        <p class="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
+                            ¡Buen trabajo! La alfabetización mediática y el análisis sistemático de fuentes son tus mejores aliados para frenar los fakes en entornos digitales.
+                        </p>
+                        <div class="pt-3">
+                            <button onclick="openQuizModal()" class="bg-uab-green hover:bg-uab-greenHover text-white px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition shadow">
+                                <i class="fa-solid fa-rotate-right mr-2" aria-hidden="true"></i>${t.quizRestartBtn}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('quiz-progress').innerText = `${t.quizScoreTitle}`;
+                return;
+            }
+
+            const q = questions[currentQuizIndex];
+            document.getElementById('quiz-progress').innerText = `Pregunta ${currentQuizIndex + 1} de ${questions.length}`;
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">
+                        ${currentQuizIndex + 1}. ${q.q}
+                    </h4>
+                    <div class="space-y-2.5">
+                        ${q.options.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" 
+                                    aria-label="Opción ${idx + 1}:${opt}"
+                                    class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-uab-green text-xs sm:text-sm font-medium text-slate-800 transition flex items-start space-x-2.5 group">
+                                <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 group-hover:bg-uab-green group-hover:text-white transition">${idx + 1}</span>
+                                <span class="leading-relaxed">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl text-xs sm:text-sm leading-relaxed mt-4"></div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(selectedIndex) {
+            const questions = quizQuestions[currentLang];
+            const q = questions[currentQuizIndex];
+            const feedbackEl = document.getElementById('quiz-feedback');
+
+            const isCorrect = selectedIndex === q.correct;
+            if (isCorrect) quizScore++;
+
+            feedbackEl.classList.remove('hidden', 'bg-red-50', 'text-red-900', 'border-red-200', 'bg-emerald-50', 'text-emerald-900', 'border-emerald-200');
+
+            if (isCorrect) {
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-950', 'border', 'border-emerald-300');
+                feedbackEl.innerHTML = `
+                    <p class="font-bold mb-1 flex items-center text-emerald-800"><i class="fa-solid fa-circle-check mr-2" aria-hidden="true"></i>¡Correcto!</p>
+                    <p>${q.explanation}</p>
+                    <button onclick="nextQuizQuestion()" class="mt-3 bg-uab-green hover:bg-uab-greenHover text-white px-4 py-1.5 rounded-lg text-xs font-bold transition">Siguiente pregunta &rarr;</button>
+                `;
+            } else {
+                feedbackEl.classList.add('bg-rose-50', 'text-rose-950', 'border', 'border-rose-300');
+                feedbackEl.innerHTML = `
+                    <p class="font-bold mb-1 flex items-center text-rose-800"><i class="fa-solid fa-circle-xmark mr-2" aria-hidden="true"></i>Opción incorrecta</p>
+                    <p>${q.explanation}</p>
+                    <button onclick="nextQuizQuestion()" class="mt-3 bg-slate-900 hover:bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition">Continuar &rarr;</button>
+                `;
+            }
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            renderQuizQuestion();
+        }
+
+        // INICIALIZAR AL CARGAR EL DOM
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

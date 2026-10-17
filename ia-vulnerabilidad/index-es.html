@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="ca" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">IA i Vulnerabilitat | Projecte AFRONTA - UAB</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        uab: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            600: '#008559', /* UAB Green */
+                            700: '#006b47',
+                            800: '#005237',
+                        },
+                        afronta: {
+                            blue: '#1e3a8a',
+                            teal: '#0d9488',
+                            purple: '#6b21a8',
+                            amber: '#d97706'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(17, 24, 39, 0.85);
+            border: 1px solid rgba(55, 65, 81, 0.6);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #008559 0%, #1e3a8a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #34d399 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+  <!-- Estils del fil d'Ariadna -->
+  <style>
+    .breadcrumb-nav {
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.9rem;
+    }
+    .breadcrumb {
+      display: flex !important;
+      flex-wrap: wrap;
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .breadcrumb-item {
+      display: inline-flex;
+      align-items: center;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "›";
+      padding: 0 0.5rem;
+      color: #6c757d;
+    }
+    .breadcrumb-item a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-item.active {
+      color: #495057;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- Hilo de Ariadna -->
+  <nav aria-label="Hilo de Ariadna" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="../index-es.html">Inicio</a></li>
+      <li class="breadcrumb-item active" aria-current="page">IA y vulnerabilidad</li>
+    </ol>
+  </nav>
+
+  <!-- Continua el contingut de la pàgina -->
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Top Accessibility Banner with Language Selector -->
+    <div class="bg-uab-700 text-white text-xs py-1.5 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span class="flex items-center gap-2 text-center sm:text-left" id="topBannerText">
+                <i class="fa-solid fa-graduation-cap"></i> Projecte de Recerca AFRONTA (PID2022-139502OB-I00) | GRAFO - Universitat Autònoma de Barcelona
+            </span>
+            <div class="flex items-center gap-4 shrink-0">
+                <!-- Language Menu Selector -->
+                <div class="flex items-center bg-uab-800 rounded-lg p-0.5 text-xs font-semibold border border-uab-600">
+                    <button id="langBtnCa" onclick="switchLanguage('ca')" class="px-2.5 py-0.5 rounded bg-white text-uab-800 transition-all font-bold">CA</button>
+                    <button id="langBtnEs" onclick="switchLanguage('es')" class="px-2.5 py-0.5 rounded text-white hover:text-uab-100 transition-all font-medium">ES</button>
+                    <button id="langBtnEn" onclick="switchLanguage('en')" class="px-2.5 py-0.5 rounded text-white hover:text-uab-100 transition-all font-medium">EN</button>
+                </div>
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="hover:underline flex items-center gap-1 focus:outline-none" aria-label="Canviar tema">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:inline"></i>
+                    <span class="hidden sm:inline" id="themeLabel">Tema</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 glass-card shadow-sm border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo Display Section with specified Logo image before AFRONTA GRAFO UAB -->
+                <div class="flex items-center gap-3">
+                    <a href="#" class="flex items-center gap-3 focus:outline-none group">
+                        <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" 
+                             alt="Logos AFRONTA GRAFO UAB" 
+                             class="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-[1.02]">
+                        <span class="font-bold text-lg sm:text-xl text-uab-700 dark:text-uab-100 hidden md:inline tracking-tight">AFRONTA GRAFO UAB</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                    <a href="#eixos" class="hover:text-uab-600 dark:hover:text-uab-50 transition-colors" id="navAxes">Eixos Temàtics</a>
+                    <a href="#simulador" class="hover:text-uab-600 dark:hover:text-uab-50 transition-colors" id="navSimulator">Simulador de Biaix</a>
+                    <a href="#avaluador" class="hover:text-uab-600 dark:hover:text-uab-50 transition-colors" id="navEvaluator">Avaluador d'Eines</a>
+                    <a href="#recursos" class="hover:text-uab-600 dark:hover:text-uab-50 transition-colors" id="navResources">Recursos i Guies</a>
+                    <a href="#faq" class="hover:text-uab-600 dark:hover:text-uab-50 transition-colors" id="navFaq">Preguntes Freqüents</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <a href="#avaluador" class="bg-uab-600 hover:bg-uab-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        <span id="navEthicTest">Test d'Impacte Ètic</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-2">
+            <a href="#eixos" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-uab-600" id="mNavAxes">Eixos Temàtics</a>
+            <a href="#simulador" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-uab-600" id="mNavSimulator">Simulador de Biaix</a>
+            <a href="#avaluador" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-uab-600" id="mNavEvaluator">Avaluador d'Eines</a>
+            <a href="#recursos" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-uab-600" id="mNavResources">Recursos i Guies</a>
+            <a href="#faq" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-uab-600" id="mNavFaq">Preguntes Freqüents</a>
+            <a href="#avaluador" class="w-full text-center bg-uab-600 text-white py-2 rounded-lg font-medium block mt-2" id="mNavEthicTest">Test d'Impacte Ètic</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-uab-100 dark:bg-uab-900/50 text-uab-800 dark:text-uab-100 text-xs font-semibold border border-uab-200 dark:border-uab-700">
+                            <span class="w-2 h-2 rounded-full bg-uab-600 animate-pulse"></span>
+                            <span id="heroBadgeText">Recerca Social i Tecnologia Responsable</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight" id="heroTitle">
+                            Intel·ligència Artificial i <span class="gradient-text">Vulnerabilitat Social</span>
+                        </h1>
+
+                        <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed" id="heroDesc">
+                            Com impacten els algorismes, la bretxa digital i la IA generativa en els col·lectius en situació de risc? Una visió crítica, ètica i inclusiva impulsada pel grup <strong>GRAFO-UAB</strong>.
+                        </p>
+
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#eixos" class="px-6 py-3.5 rounded-xl bg-uab-600 hover:bg-uab-700 text-white font-semibold text-sm transition-all shadow-md hover:shadow-xl flex items-center gap-2">
+                                <i class="fa-solid fa-compass"></i>
+                                <span id="heroBtnAxes">Explorar Eixos de Recerca</span>
+                            </a>
+                            <a href="#simulador" class="px-6 py-3.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-flask"></i>
+                                <span id="heroBtnSim">Provar Simulador</span>
+                            </a>
+                        </div>
+
+                        <!-- Stats Strip -->
+                        <div class="pt-8 border-t border-slate-200 dark:border-slate-800 grid grid-cols-3 gap-4 text-center lg:text-left">
+                            <div>
+                                <div class="text-2xl font-bold text-uab-600 dark:text-uab-400">5+</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" id="stat1Label">Eixos d'Impacte Analitzats</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-afronta-blue dark:text-blue-400">100%</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" id="stat2Label">Enfocament Inclusiu i Ètic</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-afronta-purple dark:text-purple-400">UAB</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400" id="stat3Label">Grup de Recerca GRAFO</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Hero Illustration/Card -->
+                    <div class="lg:col-span-5">
+                        <div class="glass-card rounded-2xl p-6 shadow-xl relative overflow-hidden border border-slate-200 dark:border-slate-700">
+                            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-4 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-uab-100 dark:bg-uab-900/60 text-uab-700 dark:text-uab-300 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-brain"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-sm" id="heroCardHeaderTitle">Algorisme i Equitat</h3>
+                                        <p class="text-xs text-slate-500" id="heroCardHeaderSub">Avaluador de Riscos Socials</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 px-2.5 py-1 rounded-full font-medium" id="heroCardActive">Actiu</span>
+                            </div>
+
+                            <div class="space-y-4 text-xs">
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800">
+                                    <div class="flex justify-between font-medium mb-1">
+                                        <span id="cardItem1Title">Biaix en Tramitació de Prestacions</span>
+                                        <span class="text-amber-600 font-bold" id="cardItem1Badge">Risc Alt</span>
+                                    </div>
+                                    <p class="text-slate-500 dark:text-slate-400 text-[11px]" id="cardItem1Desc">Sistemes automatitzats que penalitzen sol·licitants per patrons geogràfics o d'edat.</p>
+                                </div>
+
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800">
+                                    <div class="flex justify-between font-medium mb-1">
+                                        <span id="cardItem2Title">Exclusió per Bretxa d'Alfabetització</span>
+                                        <span class="text-red-600 font-bold" id="cardItem2Badge">Crític</span>
+                                    </div>
+                                    <p class="text-slate-500 dark:text-slate-400 text-[11px]" id="cardItem2Desc">Dificultat d'accés a eines d'IA generativa en entorns vulnerables.</p>
+                                </div>
+
+                                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800">
+                                    <div class="flex justify-between font-medium mb-1">
+                                        <span id="cardItem3Title">Protecció i Llenguatge Inclusiu</span>
+                                        <span class="text-emerald-600 font-bold" id="cardItem3Badge">Oportunitat</span>
+                                    </div>
+                                    <p class="text-slate-500 dark:text-slate-400 text-[11px]" id="cardItem3Desc">Modelat lingüístic per reduir l'estigmatització i millorar l'atenció.</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs">
+                                <span class="text-slate-500" id="cardFooterText">Monitorització AFRONTA</span>
+                                <a href="#simulador" class="text-uab-600 hover:underline font-semibold flex items-center gap-1">
+                                    <span id="cardFooterLink">Provar simulació</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Axes Interactive Section -->
+        <section id="eixos" class="py-16 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white" id="axesSectionTitle">
+                        Eixos de Vulnerabilitat en l'Era de la IA
+                    </h2>
+                    <p class="mt-3 text-slate-600 dark:text-slate-400" id="axesSectionDesc">
+                        Explora les diferents dimensions a través de les quals la intel·ligència artificial afecta, condiciona o pot protegir els col·lectius vulnerables.
+                    </p>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <div class="flex flex-wrap justify-center gap-2 mb-8" id="axesTabs">
+                    <button data-axis="biaix" class="axis-tab active px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-uab-600 text-white shadow">
+                        <i class="fa-solid fa-scale-unbalanced mr-2"></i><span id="tabBiaix">Biaixos Algorítmics</span>
+                    </button>
+                    <button data-axis="bretxa" class="axis-tab px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200">
+                        <i class="fa-solid fa-wifi mr-2"></i><span id="tabBretxa">Bretxa Digital</span>
+                    </button>
+                    <button data-axis="fakes" class="axis-tab px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i><span id="tabFakes">Fake News i Manipulació</span>
+                    </button>
+                    <button data-axis="privacitat" class="axis-tab px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200">
+                        <i class="fa-solid fa-user-shield mr-2"></i><span id="tabPrivacitat">Privacitat i Vigilància</span>
+                    </button>
+                    <button data-axis="inclusiva" class="axis-tab px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200">
+                        <i class="fa-solid fa-heart mr-2"></i><span id="tabInclusiva">IA Inclusiva i Ètica</span>
+                    </button>
+                </div>
+
+                <!-- Tab Panels Container -->
+                <div class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-lg min-h-[320px]" id="axesContent">
+                    <!-- Dynamic Content Loaded via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Bias Simulator Section -->
+        <section id="simulador" class="py-16 bg-slate-50 dark:bg-slate-950">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-uab-600 dark:text-uab-400" id="simBadge">Demostració Pràctica</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1" id="simTitle">
+                        Simulador de Biaix Algorítmic en Ajuts Socials
+                    </h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 text-sm" id="simDesc">
+                        Comprova com l'acumulació de diferents biaixos en els paràmetres d'un algorisme pot excloure injustament persones en situació de vulnerabilitat.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Controls Panel -->
+                    <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-md space-y-5">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-uab-600"></i> <span id="simPanelTitle">Paràmetres i Biaixos del Model</span>
+                        </h3>
+
+                        <!-- Slider 1 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span id="labelSlider1">1. Biaix Històric de Renda / Barri</span>
+                                <span id="weightRendaVal" class="text-uab-600">70%</span>
+                            </div>
+                            <input type="range" id="weightRenda" min="0" max="100" value="70" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-uab-600">
+                            <p class="text-[11px] text-slate-500 mt-1" id="subSlider1">Penalitza sol·licitants de barris o zones de menor renda històrica.</p>
+                        </div>
+
+                        <!-- Slider 2 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span id="labelSlider2">2. Requisit de Tramitació Digital</span>
+                                <span id="weightDigitalVal" class="text-uab-600">60%</span>
+                            </div>
+                            <input type="range" id="weightDigital" min="0" max="100" value="60" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-uab-600">
+                            <p class="text-[11px] text-slate-500 mt-1" id="subSlider2">Exigeix tràmits exclusivament en línia sense assistència presencial.</p>
+                        </div>
+
+                        <!-- Slider 3 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span id="labelSlider3">3. Biaix d'Edat i Bretxa Generacional</span>
+                                <span id="weightEdatVal" class="text-uab-600">50%</span>
+                            </div>
+                            <input type="range" id="weightEdat" min="0" max="100" value="50" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-uab-600">
+                            <p class="text-[11px] text-slate-500 mt-1" id="subSlider3">Penalitza sol·licitants d'edat avançada per perfils d'activitat digital.</p>
+                        </div>
+
+                        <!-- Slider 4 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span id="labelSlider4">4. Rigidesa en Documentació / Origen</span>
+                                <span id="weightDocVal" class="text-uab-600">40%</span>
+                            </div>
+                            <input type="range" id="weightDoc" min="0" max="100" value="40" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-uab-600">
+                            <p class="text-[11px] text-slate-500 mt-1" id="subSlider4">Rebutja sol·licituds no estandarditzades o d'origen recent.</p>
+                        </div>
+
+                        <button id="runSimBtn" class="w-full py-3 bg-uab-600 hover:bg-uab-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-play"></i> <span id="btnRunSim">Executar Avaluació d'Exclusió</span>
+                        </button>
+                    </div>
+
+                    <!-- Visual Results Panel -->
+                    <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-md">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="simResultsHeader">Resultat de Sol·licituds Simulades (100 Persones)</h3>
+                            <span id="simStatusBadge" class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold">Biaix Detectat</span>
+                        </div>
+
+                        <!-- Grid of Applicant Dots -->
+                        <div class="grid grid-cols-10 gap-2 mb-6 p-4 bg-slate-50 dark:bg-slate-950 rounded-xl min-h-[160px] items-center justify-center" id="applicantGrid">
+                            <!-- Dots generated dynamically via JS -->
+                        </div>
+
+                        <!-- Metrics Summary -->
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                                <div class="text-xl font-bold text-emerald-700 dark:text-emerald-400" id="approvedCount">45</div>
+                                <div class="text-xs text-slate-600 dark:text-slate-400" id="labelApproved">Aprovats</div>
+                            </div>
+                            <div class="p-3 bg-red-50 dark:bg-red-950/40 rounded-xl border border-red-200 dark:border-red-800">
+                                <div class="text-xl font-bold text-red-700 dark:text-red-400" id="rejectedCount">55</div>
+                                <div class="text-xs text-slate-600 dark:text-slate-400" id="labelRejected">Rebutjats</div>
+                            </div>
+                            <div class="p-3 bg-purple-50 dark:bg-purple-950/40 rounded-xl border border-purple-200 dark:border-purple-800">
+                                <div class="text-xl font-bold text-purple-700 dark:text-purple-400" id="vulnerableBiasCount">55%</div>
+                                <div class="text-xs text-slate-600 dark:text-slate-400" id="labelExclusionRate">Taxa de Rebuig / Biaix</div>
+                            </div>
+                        </div>
+
+                        <!-- Explanatory Alert -->
+                        <div class="mt-4 p-3 rounded-xl text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300" id="simExplanation">
+                            <i class="fa-solid fa-circle-info text-uab-600 mr-1"></i> Quan es dona un pes elevat als criteris històrics sense correcció ètica, les persones en vulnerabilitat tenen un pes elevat d'exclusió.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Ethics Assessment Tool -->
+        <section id="avaluador" class="py-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-wider text-uab-600 dark:text-uab-400" id="quizBadge">Eina Diagnòstica</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1" id="quizTitle">
+                        Test d'Avaluació d'Impacte Ètic i Vulnerabilitat
+                    </h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 text-sm" id="quizDesc">
+                        Desenvolupat com a guia d'autoaprenentatge per a desenvolupadors, serveis socials i entitats públiques/privades.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 sm:p-10 shadow-xl border border-slate-200 dark:border-slate-800">
+                    <!-- Progress Bar (Starts at 0% completed for Step 1) -->
+                    <div class="mb-8">
+                        <div class="flex justify-between text-xs font-semibold text-slate-500 mb-2">
+                            <span id="quizStepText">Pas 1 de 4</span>
+                            <span id="quizPercentText">0% completat</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2.5">
+                            <div id="quizProgressBar" class="bg-uab-600 h-2.5 rounded-full transition-all duration-300 w-0"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Wizard Container -->
+                    <div id="quizContainer" class="space-y-6">
+                        <!-- Step 1 -->
+                        <div class="quiz-step active" data-step="1">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3" id="q1Title">1. Quin és el públic objectiu o els afectats pel sistema d'IA?</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q1" value="low" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q1o1">Ús intern d'eficiència sense impacte directe en drets de persones.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q1" value="high" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q1o2">Col·lectius especialment vulnerables (gent gran, infants, persones en risc d'exclusió, migrants).</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q1" value="medium" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q1o3">Població general amb possible afectació en accés a serveis bàsics.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="quiz-step hidden" data-step="2">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3" id="q2Title">2. Com s'han recollit i auditat les dades d'entrenament?</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q2" value="medium" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q2o1">Dades genèriques disponibles sense auditoria de representativitat de minories.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q2" value="high" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q2o2">S'utilitzen dades històriques d'expedients administratius sense neteja de biaix.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q2" value="low" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q2o3">S'han auditat explícitament els biaixos històrics i es compta amb representació diversa.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="quiz-step hidden" data-step="3">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3" id="q3Title">3. Quin grau de transparència i explicabilitat ofereix la solució?</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q3" value="high" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q3o1">És un model de "caixa negra" on no es poden justificar les decisions.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q3" value="low" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q3o2">L'usuari o ciutadà pot conèixer els motius de la decisió en un llenguatge clar i accessible.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q3" value="medium" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q3o3">Es dona una explicació tècnica complexa no adaptada a la capacitat de l'usuari.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="quiz-step hidden" data-step="4">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-3" id="q4Title">4. Existeix supervisió humana i canal de reclamació accessible?</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q4" value="medium" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q4o1">Només es pot demanar revisió a través d'un formulari digital complex.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q4" value="low" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q4o2">Sí, hi ha un professional humà que valida la decisió i assistència presencial/telefònica.</span>
+                                </label>
+                                <label class="flex items-center p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                                    <input type="radio" name="q4" value="high" class="text-uab-600 focus:ring-uab-500">
+                                    <span class="ml-3 text-sm" id="q4o3">La decisió és 100% automatitzada sense opció fàcil de recursos o apel·lació.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Result Display -->
+                        <div id="quizResult" class="hidden text-center py-6 space-y-4">
+                            <div id="resultBadge" class="inline-block px-4 py-2 rounded-full text-sm font-bold bg-amber-100 text-amber-800">
+                                Diagnòstic de Risc Moderat
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white" id="resultTitle">Nivell de Risc Ètic de Vulnerabilitat</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-300 max-w-lg mx-auto" id="resultDesc">
+                                El sistema presenta àrees de millora importants en l'accessibilitat i la revisió de biaixos algorítmics.
+                            </p>
+                            
+                            <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl text-left text-xs space-y-2 border border-slate-200 dark:border-slate-700">
+                                <h4 class="font-bold text-uab-700 dark:text-uab-300" id="resultRecHeader">Recomanacions del Projecte AFRONTA:</h4>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-slate-300" id="resultRecs">
+                                    <li>Implementar auditories periòdiques d'equitat algorítmica.</li>
+                                    <li>Garantir canals d'atenció no digitals per evitar l'exclusió per bretxa d'alfabetització.</li>
+                                </ul>
+                            </div>
+
+                            <button id="restartQuizBtn" class="px-5 py-2.5 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold rounded-xl text-sm hover:bg-slate-300 transition-all">
+                                Torna a realitzar el test
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Buttons -->
+                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-between" id="quizNav">
+                        <button id="prevQuizBtn" class="px-4 py-2 text-slate-500 hover:text-slate-800 dark:hover:text-white font-medium text-sm disabled:opacity-50" disabled>
+                            Anterior
+                        </button>
+                        <button id="nextQuizBtn" class="px-6 py-2.5 bg-uab-600 hover:bg-uab-700 text-white font-semibold rounded-xl text-sm transition-all shadow">
+                            Següent
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources & Educational Materials -->
+        <section id="recursos" class="py-16 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-uab-600 dark:text-uab-400" id="resBadge">Material de Sensibilització</span>
+                        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1" id="resTitle">
+                            Recursos Didàctics i Informes
+                        </h2>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mt-1" id="resDesc">
+                            Explora les seccions de recursos del projecte AFRONTA: infografies, guies, càpsules formatives i informes de recerca.
+                        </p>
+                    </div>
+
+                    <!-- Search and Filter Controls -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="relative">
+                            <input type="text" id="resourceSearch" placeholder="Cercar recurs..." class="pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-uab-500 w-48 sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
+                        <select id="resourceTypeFilter" class="py-2 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-uab-500">
+                            <option value="all" id="optAllTypes">Tots els tipus</option>
+                            <option value="infografia" id="optInfografia">Infografies</option>
+                            <option value="guia" id="optGuia">Guies i Documents</option>
+                            <option value="video" id="optVideo">Videocàpsules</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="resourcesGrid">
+                    <!-- Cards rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-16 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white" id="faqTitle">
+                        Preguntes Freqüents sobre IA i Vulnerabilitat
+                    </h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 text-sm" id="faqSub">
+                        Respostes clau basades en el coneixement generat pel projecte AFRONTA.
+                    </p>
+                </div>
+
+                <div class="space-y-4" id="faqAccordion">
+                    <!-- Dynamic FAQs via JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Institutional Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pb-8 border-b border-slate-800">
+                <!-- Branding & Logo -->
+                <div class="flex flex-wrap items-center gap-4">
+                    <img src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png" alt="Logo AFRONTA GRAFO UAB" class="h-10 w-auto bg-white/10 p-1.5 rounded-lg object-contain">
+                    <div>
+                        <span class="font-bold text-white text-sm block" id="footerTitle">Projecte AFRONTA</span>
+                        <span class="text-slate-400 text-[11px]" id="footerSub">GRAFO - Grup d'Estudis d'Antropologia i Socials UAB</span>
+                    </div>
+                    <!-- CC BY-NC-ND Logo -->
+                    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer" class="ml-2 inline-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Cc_by-nc-nd_icon.svg" 
+                             alt="Llicència Creative Commons CC BY-NC-ND" 
+                             class="h-7 w-auto bg-white/10 p-1 rounded hover:opacity-80 transition-opacity">
+                    </a>
+                </div>
+
+                <!-- Footer Nav -->
+                <div class="flex flex-wrap justify-center gap-6 text-slate-300">
+                    <a href="#eixos" class="hover:text-white" id="fNavAxes">Eixos Temàtics</a>
+                    <a href="#simulador" class="hover:text-white" id="fNavSimulator">Simulador de Biaix</a>
+                    <a href="#avaluador" class="hover:text-white" id="fNavEvaluator">Avaluador d'Eines</a>
+                    <a href="#recursos" class="hover:text-white" id="fNavResources">Recursos</a>
+                    <a href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener" class="hover:text-white flex items-center gap-1">
+                        <span id="fNavOfficial">Web Oficial UAB</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left text-slate-500">
+                <p id="footerCopy">© 2026 Projecte AFRONTA (PID2022-139502OB-I00). Universitat Autònoma de Barcelona (UAB). Tots els drets reservats.</p>
+                <p id="footerTagline">Dissenyat per a la promoció de la IA ètica i la sensibilització sobre la vulnerabilitat sociocultural.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alert Modal for user feedback -->
+    <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 text-center space-y-4">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white" id="modalTitle">Notificació</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300" id="modalMsg">Detalls del missatge.</p>
+            <button onclick="closeModal()" class="w-full py-2.5 bg-uab-600 hover:bg-uab-700 text-white font-semibold rounded-xl text-sm transition-all" id="modalBtn">
+                D'acord
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic & i18n Translations -->
+    <script>
+        // Current active language state
+        let currentLang = 'ca';
+
+        const i18n = {
+            ca: {
+                pageTitle: "IA i Vulnerabilitat | Projecte AFRONTA - UAB",
+                topBannerText: '<i class="fa-solid fa-graduation-cap"></i> Projecte de Recerca AFRONTA (PID2022-139502OB-I00) | GRAFO - Universitat Autònoma de Barcelona',
+                themeLabel: "Tema",
+                navAxes: "Eixos Temàtics",
+                navSimulator: "Simulador de Biaix",
+                navEvaluator: "Avaluador d'Eines",
+                navResources: "Recursos i Guies",
+                navFaq: "Preguntes Freqüents",
+                navEthicTest: "Test d'Impacte Ètic",
+                heroBadgeText: "Recerca Social i Tecnologia Responsable",
+                heroTitle: 'Intel·ligència Artificial i <span class="gradient-text">Vulnerabilitat Social</span>',
+                heroDesc: "Com impacten els algorismes, la bretxa digital i la IA generativa en els col·lectius en situació de risc? Una visió crítica, ètica i inclusiva impulsada pel grup <strong>GRAFO-UAB</strong>.",
+                heroBtnAxes: "Explorar Eixos de Recerca",
+                heroBtnSim: "Provar Simulador",
+                stat1Label: "Eixos d'Impacte Analitzats",
+                stat2Label: "Enfocament Inclusiu i Ètic",
+                stat3Label: "Grup de Recerca GRAFO",
+                heroCardHeaderTitle: "Algorisme i Equitat",
+                heroCardHeaderSub: "Avaluador de Riscos Socials",
+                heroCardActive: "Actiu",
+                cardItem1Title: "Biaix en Tramitació de Prestacions",
+                cardItem1Badge: "Risc Alt",
+                cardItem1Desc: "Sistemes automatitzats que penalitzen sol·licitants per patrons geogràfics o d'edat.",
+                cardItem2Title: "Exclusió per Bretxa d'Alfabetització",
+                cardItem2Badge: "Crític",
+                cardItem2Desc: "Dificultat d'accés a eines d'IA generativa en entorns vulnerables.",
+                cardItem3Title: "Protecció i Llenguatge Inclusiu",
+                cardItem3Badge: "Oportunitat",
+                cardItem3Desc: "Modelat lingüístic per reduir l'estigmatització i millorar l'atenció.",
+                cardFooterText: "Monitorització AFRONTA",
+                cardFooterLink: "Provar simulació",
+                axesSectionTitle: "Eixos de Vulnerabilitat en l'Era de la IA",
+                axesSectionDesc: "Explora les diferents dimensions a través de les quals la intel·ligència artificial afecta, condiciona o pot protegir els col·lectius vulnerables.",
+                tabBiaix: "Biaixos Algorítmics",
+                tabBretxa: "Bretxa Digital",
+                tabFakes: "Fake News i Manipulació",
+                tabPrivacitat: "Privacitat i Vigilància",
+                tabInclusiva: "IA Inclusiva i Ètica",
+                simBadge: "Demostració Pràctica",
+                simTitle: "Simulador de Biaix Algorítmic en Ajuts Socials",
+                simDesc: "Comprova com l'acumulació de diferents biaixos en els paràmetres d'un algorisme pot excloure injustament persones en situació de vulnerabilitat.",
+                simPanelTitle: "Paràmetres i Biaixos del Model",
+                labelSlider1: "1. Biaix Històric de Renda / Barri",
+                subSlider1: "Penalitza sol·licitants de barris o zones de menor renda històrica.",
+                labelSlider2: "2. Requisit de Tramitació Digital",
+                subSlider2: "Exigeix tràmits exclusivament en línia sense assistència presencial.",
+                labelSlider3: "3. Biaix d'Edat i Bretxa Generacional",
+                subSlider3: "Penalitza sol·licitants d'edat avançada per perfils d'activitat digital.",
+                labelSlider4: "4. Rigidesa en Documentació / Origen",
+                subSlider4: "Rebutja sol·licituds no estandarditzades o d'origen recent.",
+                btnRunSim: "Executar Avaluació d'Exclusió",
+                simResultsHeader: "Resultat de Sol·licituds Simulades (100 Persones)",
+                labelApproved: "Aprovats",
+                labelRejected: "Rebutjats",
+                labelExclusionRate: "Taxa de Rebuig / Biaix",
+                quizBadge: "Eina Diagnòstica",
+                quizTitle: "Test d'Avaluació d'Impacte Ètic i Vulnerabilitat",
+                quizDesc: "Desenvolupat com a guia d'autoaprenentatge per a desenvolupadors, serveis socials i entitats públiques/privades.",
+                q1Title: "1. Quin és el públic objectiu o els afectats pel sistema d'IA?",
+                q1o1: "Ús intern d'eficiència sense impacte directe en drets de persones.",
+                q1o2: "Col·lectius especialment vulnerables (gent gran, infants, persones en risc d'exclusió, migrants).",
+                q1o3: "Població general amb possible afectació en accés a serveis bàsics.",
+                q2Title: "2. Com s'han recollit i auditat les dades d'entrenament?",
+                q2o1: "Dades genèriques disponibles sense auditoria de representativitat de minories.",
+                q2o2: "S'utilitzen dades històriques d'expedients administratius sense neteja de biaix.",
+                q2o3: "S'han auditat explícitament els biaixos històrics i es compta amb representació diversa.",
+                q3Title: "3. Quin grau de transparència i explicabilitat ofereix la solució?",
+                q3o1: "És un model de \"caixa negra\" on no es poden justificar les decisions.",
+                q3o2: "L'usuari o ciutadà pot conèixer els motius de la decisió en un llenguatge clar i accessible.",
+                q3o3: "Es dona una explicació tècnica complexa no adaptada a la capacitat de l'usuari.",
+                q4Title: "4. Existeix supervisió humana i canal de reclamació accessible?",
+                q4o1: "Només es pot demanar revisió a través d'un formulari digital complex.",
+                q4o2: "Sí, hi ha un professional humà que valida la decisió i assistència presencial/telefònica.",
+                q4o3: "La decisió és 100% automatitzada sense opció fàcil de recursos o apel·lació.",
+                quizPrevBtn: "Anterior",
+                quizNextBtn: "Següent",
+                quizResultBtn: "Veure Resultats",
+                quizRestartBtn: "Torna a realitzar el test",
+                resBadge: "Material de Sensibilització",
+                resTitle: "Recursos Didàctics i Informes",
+                resDesc: "Explora les seccions de recursos del projecte AFRONTA: infografies, guies, càpsules formatives i informes de recerca.",
+                searchPlaceholder: "Cercar recurs...",
+                optAllTypes: "Tots els tipus",
+                optInfografia: "Infografies",
+                optGuia: "Guies i Documents",
+                optVideo: "Videocàpsules",
+                faqTitle: "Preguntes Freqüents sobre IA i Vulnerabilitat",
+                faqSub: "Respostes clau basades en el coneixement generat pel projecte AFRONTA.",
+                footerTitle: "Projecte AFRONTA",
+                footerSub: "GRAFO - Grup d'Estudis d'Antropologia i Socials UAB",
+                fNavOfficial: "Web Oficial UAB",
+                footerCopy: "© 2026 Projecte AFRONTA (PID2022-139502OB-I00). Universitat Autònoma de Barcelona (UAB). Tots els drets reservats.",
+                footerTagline: "Dissenyat per a la promoció de la IA ètica i la sensibilització sobre la vulnerabilitat sociocultural.",
+                modalBtn: "D'acord"
+            },
+            es: {
+                pageTitle: "IA y Vulnerabilidad | Proyecto AFRONTA - UAB",
+                topBannerText: '<i class="fa-solid fa-graduation-cap"></i> Proyecto de Investigación AFRONTA (PID2022-139502OB-I00) | GRAFO - Universitat Autònoma de Barcelona',
+                themeLabel: "Tema",
+                navAxes: "Ejes Temáticos",
+                navSimulator: "Simulador de Sesgo",
+                navEvaluator: "Evaluador de Herramientas",
+                navResources: "Recursos y Guías",
+                navFaq: "Preguntas Frecuentes",
+                navEthicTest: "Test de Impacto Ético",
+                heroBadgeText: "Investigación Social y Tecnología Responsable",
+                heroTitle: 'Inteligencia Artificial y <span class="gradient-text">Vulnerabilidad Social</span>',
+                heroDesc: "¿Cómo impactan los algoritmos, la brecha digital y la IA generativa en los colectivos en situación de riesgo? Una visión crítica, ética e inclusiva impulsada por el grupo <strong>GRAFO-UAB</strong>.",
+                heroBtnAxes: "Explorar Ejes de Investigación",
+                heroBtnSim: "Probar Simulador",
+                stat1Label: "Ejes de Impacto Analizados",
+                stat2Label: "Enfoque Inclusivo y Ético",
+                stat3Label: "Grupo de Investigación GRAFO",
+                heroCardHeaderTitle: "Algoritmo y Equidad",
+                heroCardHeaderSub: "Evaluador de Riesgos Sociales",
+                heroCardActive: "Activo",
+                cardItem1Title: "Sesgo en Tramitación de Prestaciones",
+                cardItem1Badge: "Riesgo Alto",
+                cardItem1Desc: "Sistemas automatizados que penalizan a solicitantes por patrones geográficos o de edad.",
+                cardItem2Title: "Exclusión por Brecha de Alfabetización",
+                cardItem2Badge: "Crítico",
+                cardItem2Desc: "Dificultad de acceso a herramientas de IA generativa en entornos vulnerables.",
+                cardItem3Title: "Protección y Lenguaje Inclusivo",
+                cardItem3Badge: "Oportunidad",
+                cardItem3Desc: "Modelado lingüístico para reducir la estigmatización y mejorar la atención.",
+                cardFooterText: "Monitorización AFRONTA",
+                cardFooterLink: "Probar simulación",
+                axesSectionTitle: "Ejes de Vulnerabilidad en la Era de la IA",
+                axesSectionDesc: "Explora las diferentes dimensiones a través de las cuales la inteligencia artificial afecta, condiciona o puede proteger a los colectivos vulnerables.",
+                tabBiaix: "Sesgos Algorítmicos",
+                tabBretxa: "Brecha Digital",
+                tabFakes: "Fake News y Manipulación",
+                tabPrivacitat: "Privacidad y Vigilancia",
+                tabInclusiva: "IA Inclusiva y Ética",
+                simBadge: "Demostración Práctica",
+                simTitle: "Simulador de Sesgo Algorítmico en Ayudas Sociales",
+                simDesc: "Comprueba cómo la acumulación de diferentes sesgos en los parámetros de un algoritmo puede excluir injustamente a personas en situación de vulnerabilidad.",
+                simPanelTitle: "Parámetros y Sesgos del Modelo",
+                labelSlider1: "1. Sesgo Histórico de Renta / Barrio",
+                subSlider1: "Penaliza a solicitantes de barrios o zonas de menor renta histórica.",
+                labelSlider2: "2. Requisito de Tramitación Digital",
+                subSlider2: "Exige trámites exclusivamente en línea sin asistencia presencial.",
+                labelSlider3: "3. Sesgo de Edad y Brecha Generacional",
+                subSlider3: "Penaliza a solicitantes de edad avanzada por perfiles de actividad digital.",
+                labelSlider4: "4. Rigidez en Documentación / Origen",
+                subSlider4: "Rechaza solicitudes no estandarizadas o de origen reciente.",
+                btnRunSim: "Ejecutar Evaluación de Exclusión",
+                simResultsHeader: "Resultado de Solicitudes Simuladas (100 Personas)",
+                labelApproved: "Aprobados",
+                labelRejected: "Rechazados",
+                labelExclusionRate: "Tasa de Rechazo / Sesgo",
+                quizBadge: "Herramienta Diagnóstica",
+                quizTitle: "Test de Evaluación de Impacto Ético y Vulnerabilidad",
+                quizDesc: "Desarrollado como guía de autoaprendizaje para desarrolladores, servicios sociales y entidades públicas/privadas.",
+                q1Title: "1. ¿Cuál es el público objetivo o los afectados por el sistema de IA?",
+                q1o1: "Uso interno de eficiencia sin impacto directo en derechos de personas.",
+                q1o2: "Colectivos especialmente vulnerables (personas mayores, infancia, personas en riesgo de exclusión, migrantes).",
+                q1o3: "Población general con posible afectación en acceso a servicios básicos.",
+                q2Title: "2. ¿Cómo se han recogido y auditado los datos de entrenamiento?",
+                q2o1: "Datos genéricos disponibles sin auditoría de representatividad de minorías.",
+                q2o2: "Se utilizan datos históricos de expedientes administrativos sin limpieza de sesgo.",
+                q2o3: "Se han auditado explícitamente los sesgos históricos y se cuenta con representación diversa.",
+                q3Title: "3. ¿Qué grado de transparencia y explicabilidad ofrece la solución?",
+                q3o1: "Es un modelo de \"caja negra\" donde no se pueden justificar las decisiones.",
+                q3o2: "El usuario o ciudadano puede conocer los motivos de la decisión en un lenguaje claro y accesible.",
+                q3o3: "Se da una explicación técnica compleja no adaptada a la capacidad del usuario.",
+                q4Title: "4. ¿Existe supervisión humana y canal de reclamación accesible?",
+                q4o1: "Solo se puede solicitar revisión a través de un formulario digital complejo.",
+                q4o2: "Sí, hay un profesional humano que valida la decisión y asistencia presencial/telefónica.",
+                q4o3: "La decisión es 100% automatizada sin opción fácil de recursos o apelación.",
+                quizPrevBtn: "Anterior",
+                quizNextBtn: "Siguiente",
+                quizResultBtn: "Ver Resultados",
+                quizRestartBtn: "Volver a realizar el test",
+                resBadge: "Material de Sensibilización",
+                resTitle: "Recursos Didácticos e Informes",
+                resDesc: "Explora las secciones de recursos del proyecto AFRONTA: infografías, guías, cápsulas formativas e informes de investigación.",
+                searchPlaceholder: "Buscar recurso...",
+                optAllTypes: "Todos los tipos",
+                optInfografia: "Infografías",
+                optGuia: "Guías y Documentos",
+                optVideo: "Videocápsulas",
+                faqTitle: "Preguntas Frecuentes sobre IA y Vulnerabilidad",
+                faqSub: "Respuestas clave basadas en el conocimiento generado por el proyecto AFRONTA.",
+                footerTitle: "Proyecto AFRONTA",
+                footerSub: "GRAFO - Grupo de Estudios de Antropología y Sociales UAB",
+                fNavOfficial: "Web Oficial UAB",
+                footerCopy: "© 2026 Proyecto AFRONTA (PID2022-139502OB-I00). Universitat Autònoma de Barcelona (UAB). Todos los derechos reservados.",
+                footerTagline: "Diseñado para la promoción de la IA ética y la sensibilización sobre la vulnerabilidad sociocultural.",
+                modalBtn: "Aceptar"
+            },
+            en: {
+                pageTitle: "AI and Vulnerability | AFRONTA Project - UAB",
+                topBannerText: '<i class="fa-solid fa-graduation-cap"></i> AFRONTA Research Project (PID2022-139502OB-I00) | GRAFO - Autonomous University of Barcelona',
+                themeLabel: "Theme",
+                navAxes: "Thematic Axes",
+                navSimulator: "Bias Simulator",
+                navEvaluator: "Tool Evaluator",
+                navResources: "Resources & Guides",
+                navFaq: "Frequently Asked Questions",
+                navEthicTest: "Ethical Impact Test",
+                heroBadgeText: "Social Research & Responsible Technology",
+                heroTitle: 'Artificial Intelligence and <span class="gradient-text">Social Vulnerability</span>',
+                heroDesc: "How do algorithms, the digital divide, and generative AI impact groups at risk? A critical, ethical, and inclusive perspective led by the <strong>GRAFO-UAB</strong> research group.",
+                heroBtnAxes: "Explore Research Axes",
+                heroBtnSim: "Try Simulator",
+                stat1Label: "Impact Axes Analyzed",
+                stat2Label: "Inclusive & Ethical Approach",
+                stat3Label: "GRAFO Research Group",
+                heroCardHeaderTitle: "Algorithm & Equity",
+                heroCardHeaderSub: "Social Risk Evaluator",
+                heroCardActive: "Active",
+                cardItem1Title: "Bias in Social Benefits Processing",
+                cardItem1Badge: "High Risk",
+                cardItem1Desc: "Automated systems penalizing applicants based on age or geographic patterns.",
+                cardItem2Title: "Exclusion due to Digital Literacy Divide",
+                cardItem2Badge: "Critical",
+                cardItem2Desc: "Difficulty accessing generative AI tools in vulnerable social settings.",
+                cardItem3Title: "Protection & Inclusive Language",
+                cardItem3Badge: "Opportunity",
+                cardItem3Desc: "Linguistic modeling to reduce stigmatization and enhance assistance.",
+                cardFooterText: "AFRONTA Monitoring",
+                cardFooterLink: "Try simulation",
+                axesSectionTitle: "Axes of Vulnerability in the AI Era",
+                axesSectionDesc: "Explore the different dimensions through which artificial intelligence affects, conditions, or can protect vulnerable populations.",
+                tabBiaix: "Algorithmic Biases",
+                tabBretxa: "Digital Divide",
+                tabFakes: "Fake News & Manipulation",
+                tabPrivacitat: "Privacy & Surveillance",
+                tabInclusiva: "Inclusive & Ethical AI",
+                simBadge: "Practical Demonstration",
+                simTitle: "Algorithmic Bias Simulator in Social Welfare",
+                simDesc: "See how accumulating various biases across algorithm parameters can unfairly exclude people in vulnerable situations.",
+                simPanelTitle: "Model Parameters and Biases",
+                labelSlider1: "1. Historical Income / Neighborhood Bias",
+                subSlider1: "Penalizes applicants from historically lower-income neighborhoods or areas.",
+                labelSlider2: "2. Digital Application Requirement",
+                subSlider2: "Requires online-only processing without in-person assistance.",
+                labelSlider3: "3. Age Bias & Generational Divide",
+                subSlider3: "Penalizes elderly applicants based on digital activity profiles.",
+                labelSlider4: "4. Documentation / Origin Rigidity",
+                subSlider4: "Rejects non-standardized or recently originated applications.",
+                btnRunSim: "Run Exclusion Assessment",
+                simResultsHeader: "Simulated Applications Outcome (100 People)",
+                labelApproved: "Approved",
+                labelRejected: "Rejected",
+                labelExclusionRate: "Rejection / Bias Rate",
+                quizBadge: "Diagnostic Tool",
+                quizTitle: "Ethical Impact & Vulnerability Assessment Test",
+                quizDesc: "Developed as a self-learning guide for software developers, social services, and public/private entities.",
+                q1Title: "1. Who is the target audience or group affected by the AI system?",
+                q1o1: "Internal efficiency use with no direct impact on individual rights.",
+                q1o2: "Particularly vulnerable groups (elderly, children, people at risk of exclusion, migrants).",
+                q1o3: "General population with potential impact on access to basic services.",
+                q2Title: "2. How was the training data collected and audited?",
+                q2o1: "Generic dataset used without auditing minority representation.",
+                q2o2: "Historical administrative record data used without bias cleansing.",
+                q2o3: "Historical biases explicitly audited with guaranteed diverse representation.",
+                q3Title: "3. What degree of transparency and explainability does the system offer?",
+                q3o1: "It is a \"black box\" model where decisions cannot be justified.",
+                q3o2: "Users or citizens can understand decision rationale in clear, accessible language.",
+                q3o3: "Complex technical explanation provided without adaptation to user comprehension.",
+                q4Title: "4. Is human oversight and an accessible appeal channel available?",
+                q4o1: "Reviews can only be requested through a complex digital web form.",
+                q4o2: "Yes, a human professional validates decisions alongside in-person/phone support.",
+                q4o3: "100% automated decision with no simple appeal or recourse mechanism.",
+                quizPrevBtn: "Previous",
+                quizNextBtn: "Next",
+                quizResultBtn: "View Results",
+                quizRestartBtn: "Retake assessment test",
+                resBadge: "Awareness Material",
+                resTitle: "Educational Resources & Reports",
+                resDesc: "Explore AFRONTA project resource sections: infographics, guides, educational video clips, and research reports.",
+                searchPlaceholder: "Search resource...",
+                optAllTypes: "All Types",
+                optInfografia: "Infographics",
+                optGuia: "Guides & Documents",
+                optVideo: "Video Capsules",
+                faqTitle: "Frequently Asked Questions on AI & Vulnerability",
+                faqSub: "Key answers grounded in research generated by the AFRONTA project.",
+                footerTitle: "AFRONTA Project",
+                footerSub: "GRAFO - Social & Anthropological Studies Group UAB",
+                fNavOfficial: "UAB Official Website",
+                footerCopy: "© 2026 AFRONTA Project (PID2022-139502OB-I00). Autonomous University of Barcelona (UAB). All rights reserved.",
+                footerTagline: "Designed for promoting ethical AI and raising awareness of sociocultural vulnerability.",
+                modalBtn: "OK"
+            }
+        };
+
+        const axesData = {
+            ca: {
+                biaix: {
+                    title: "Biaixos Algorítmics i Discriminació Automatitzada",
+                    icon: "fa-scale-unbalanced",
+                    color: "text-amber-500",
+                    desc: "Els sistemes de decisió automatitzada aprenen de dades històriques que sovint reflecteixen desigualtats i prejudicis estructurals. Quan aquests algorismes s'utilitzen sense visió crítica en la concessió d'ajuts, selecció de personal o assignació de recursos socials, poden perpetuar o amplificar la discriminació vers col·lectius vulnerables.",
+                    points: [
+                        "Biaix de representació en els conjunts de dades d'entrenament.",
+                        "Falta de transparència en els criteris de ponderació (efecte caixa negra).",
+                        "Risc de perfileig estigmatitzant segons codi postal o origen."
+                    ],
+                    cas: "Un algorisme d'avaluació de risc social que penalitza sol·licitants pel simple fet de residir en barris amb menors ingressos mitjans."
+                },
+                bretxa: {
+                    title: "Bretxa Digital i Barreres d'Accés Tecnològic",
+                    icon: "fa-wifi",
+                    color: "text-blue-500",
+                    desc: "L'acceleració de la IA generativa i la digitalització de les administracions públiques crea una nova forma de vulnerabilitat: l'exclusió per manca d'alfabetització digital, dispositius adequats o connexió d'alta velocitat.",
+                    points: [
+                        "Dificultat per realitzar tràmits essencials sense assistència presencial.",
+                        "Asimetria de coneixement entre la ciutadania i les grans plataformes tecnològiques.",
+                        "Agraujament de la solitud no desitjada en la gent gran davant assistents robòtics inaccessibles."
+                    ],
+                    cas: "Persones grans o migrants amb dificultats lingüístiques que no poden completar sol·licituds d'ajut que requereixen assistents de veu o chatbots exclusivament digitals."
+                },
+                fakes: {
+                    title: "Fake News, Deepfakes i Manipulació d'Informació",
+                    icon: "fa-triangle-exclamation",
+                    color: "text-red-500",
+                    desc: "La capacitat de la IA generativa per crear imatges, àudios i textos fidedignes augmenta l'exposició dels col·lectius vulnerables a estafes, discursos d'odi i campanyes de desinformació dirigides.",
+                    points: [
+                        "Creació de continguts enganyosos dirigits a la manipulació d'opinió pública.",
+                        "Clonació de veu per a estafes telefòniques dirigides a gent gran.",
+                        "Difusió de rumors estigmatitzants sobre col·lectius de nouvinguts."
+                    ],
+                    cas: "Campanyes de rumors a xarxes socials generades per IA que atribueixen falsament beneficis socials exclusius a determinats col·lectius."
+                },
+                privacitat: {
+                    title: "Privacitat, Dades Sensibles i Vigilància Algorítmica",
+                    icon: "fa-user-shield",
+                    color: "text-purple-500",
+                    desc: "Els grups en situació de vulnerabilitat estan sovint hiper-monitoritzats pels sistemes d'assistència social, salut o control de fronteres, cedint dades personalíssimes sense un consentiment informat real.",
+                    points: [
+                        "Recollida massiva de dades biomètriques i de comportament.",
+                        "Vulnerabilitat de dades de salut mental o prestacions socials.",
+                        "Manca de mecanismes fàcils d'oposició o esborrat de dades."
+                    ],
+                    cas: "Ús de sistemes de reconeixement facial o creuament de dades d'activitat digital per condicionar la recepció de subsidis."
+                },
+                inclusiva: {
+                    title: "IA Inclusiva, Ètica i al Servei del Bé Social",
+                    icon: "fa-heart",
+                    color: "text-emerald-500",
+                    desc: "La IA també ofereix oportunitats extraordinàries si es dissenya des de l'ètica i la inclusió: des de la millora del llenguatge inclusiu fins a l'adaptació de continguts per a persones amb diversitat funcional.",
+                    points: [
+                        "Eines de simplificació de textos administratius a llenguatge clar.",
+                        "Desenvolupament d'assistents accessibles per a la diversitat funcional.",
+                        "Modelatge predictiu per anticipar situacions de pobresa energètica o climàtica."
+                    ],
+                    cas: "Sistemes d'IA que adapten automàticament documents legals complexos a lectura fàcil per a persones amb discapacitats cognitives o poca comprensió lectora."
+                }
+            },
+            es: {
+                biaix: {
+                    title: "Sesgos Algorítmicos y Discriminación Automatizada",
+                    icon: "fa-scale-unbalanced",
+                    color: "text-amber-500",
+                    desc: "Los sistemas de decisión automatizada aprenden de datos históricos que a menudo reflejan desigualdades y prejuicios estructurales. Cuando estos algoritmos se utilizan sin visión crítica en la concesión de ayudas, selección de personal o asignación de recursos sociales, pueden perpetuar o amplificar la discriminación hacia colectivos vulnerables.",
+                    points: [
+                        "Sesgo de representación en los conjuntos de datos de entrenamiento.",
+                        "Falta de transparencia en los criterios de ponderación (efecto caja negra).",
+                        "Riesgo de perfilado estigmatizante según código postal u origen."
+                    ],
+                    cas: "Un algoritmo de evaluación de riesgo social que penaliza a solicitantes por el simple hecho de residir en barrios con menores ingresos medios."
+                },
+                bretxa: {
+                    title: "Brecha Digital y Barreras de Acceso Tecnológico",
+                    icon: "fa-wifi",
+                    color: "text-blue-500",
+                    desc: "La aceleración de la IA generativa y la digitalización de las administraciones públicas crea una nueva forma de vulnerabilidad: la exclusión por falta de alfabetización digital, dispositivos adecuados o conexión de alta velocidad.",
+                    points: [
+                        "Dificultad para realizar trámites esenciales sin asistencia presencial.",
+                        "Asimetría de conocimiento entre la ciudadanía y las grandes plataformas tecnológicas.",
+                        "Agravamiento de la soledad no deseada en las personas mayores ante asistentes robóticos inaccesibles."
+                    ],
+                    cas: "Personas mayores o migrantes con dificultades lingüísticas que no pueden completar solicitudes de ayuda que requieren asistentes de voz o chatbots exclusivamente digitales."
+                },
+                fakes: {
+                    title: "Fake News, Deepfakes y Manipulación de Información",
+                    icon: "fa-triangle-exclamation",
+                    color: "text-red-500",
+                    desc: "La capacidad de la IA generativa para crear imágenes, audios y textos fidedignos aumenta la exposición de los colectivos vulnerables a estafas, discursos de odio y campañas de desinformación dirigidas.",
+                    points: [
+                        "Creación de contenidos engañosos dirigidos a la manipulación de la opinión pública.",
+                        "Clonación de voz para estafas telefónicas dirigidas a personas mayores.",
+                        "Difusión de rumores estigmatizantes sobre colectivos de recién llegados."
+                    ],
+                    cas: "Campañas de rumores en redes sociales generadas por IA que atribuyen falsamente beneficios sociales exclusivos a determinados colectivos."
+                },
+                privacitat: {
+                    title: "Privacidad, Datos Sensibles y Vigilancia Algorítmica",
+                    icon: "fa-user-shield",
+                    color: "text-purple-500",
+                    desc: "Los grupos en situación de vulnerabilidad están a menudo hipermonitorizados por los sistemas de asistencia social, salud o control de fronteras, cediendo datos personalísimos sin un consentimiento informado real.",
+                    points: [
+                        "Recogida masiva de datos biométricos y de comportamiento.",
+                        "Vulnerabilidad de datos de salud mental o prestaciones sociales.",
+                        "Falta de mecanismos fáciles de oposición o borrado de datos."
+                    ],
+                    cas: "Uso de sistemas de reconocimiento facial o cruce de datos de actividad digital para condicionar la recepción de subsidios."
+                },
+                inclusiva: {
+                    title: "IA Inclusiva, Ética y al Servicio del Bien Social",
+                    icon: "fa-heart",
+                    color: "text-emerald-500",
+                    desc: "La IA también ofrece oportunidades extraordinarias si se diseña desde la ética y la inclusión: desde la mejora del lenguaje inclusivo hasta la adaptación de contenidos para personas con diversidad funcional.",
+                    points: [
+                        "Herramientas de simplificación de textos administrativos a lenguaje claro.",
+                        "Desarrollo de asistentes accesibles para la diversidad funcional.",
+                        "Modelado predictivo para anticipar situaciones de pobreza energética o climática."
+                    ],
+                    cas: "Sistemas de IA que adaptan automáticamente documentos legales complejos a lectura fácil para personas con discapacidades cognitivas o baja comprensión lectora."
+                }
+            },
+            en: {
+                biaix: {
+                    title: "Algorithmic Biases and Automated Discrimination",
+                    icon: "fa-scale-unbalanced",
+                    color: "text-amber-500",
+                    desc: "Automated decision systems learn from historical datasets that often reflect structural inequalities and biases. When these algorithms are used uncritically in granting welfare aid, hiring, or allocating social resources, they can perpetuate or amplify discrimination against vulnerable groups.",
+                    points: [
+                        "Representation bias in machine learning training datasets.",
+                        "Lack of transparency in weighting criteria (black box effect).",
+                        "Risk of stigmatizing profiling based on postal code or background."
+                    ],
+                    cas: "A social risk evaluation algorithm penalizing applicants simply for residing in lower median-income neighborhoods."
+                },
+                bretxa: {
+                    title: "Digital Divide and Technology Access Barriers",
+                    icon: "fa-wifi",
+                    color: "text-blue-500",
+                    desc: "The acceleration of generative AI and public administration digitalization creates a new vulnerability: exclusion due to lack of digital literacy, adequate devices, or high-speed connectivity.",
+                    points: [
+                        "Difficulty carrying out essential procedures without in-person assistance.",
+                        "Knowledge asymmetry between citizens and major tech platforms.",
+                        "Exacerbation of unwanted isolation in seniors facing inaccessible robotic assistants."
+                    ],
+                    cas: "Elderly citizens or migrants facing language barriers who cannot complete welfare aid applications requiring digital-only chatbots."
+                },
+                fakes: {
+                    title: "Fake News, Deepfakes, and Information Manipulation",
+                    icon: "fa-triangle-exclamation",
+                    color: "text-red-500",
+                    desc: "Generative AI's ability to create realistic images, voice clones, and text increases vulnerable groups' exposure to scams, hate speech, and targeted disinformation campaigns.",
+                    points: [
+                        "Deceptive content creation aimed at public opinion manipulation.",
+                        "Voice cloning used for phone scams targeting senior citizens.",
+                        "Spread of stigmatizing rumors regarding newcomer communities."
+                    ],
+                    cas: "AI-generated social media rumor campaigns falsely attributing exclusive welfare subsidies to specific demographic groups."
+                },
+                privacitat: {
+                    title: "Privacy, Sensitive Data, and Algorithmic Surveillance",
+                    icon: "fa-user-shield",
+                    color: "text-purple-500",
+                    desc: "Vulnerable groups are frequently hyper-monitored by social assistance, health, or border control systems, relinquishing sensitive personal data without genuine informed consent.",
+                    points: [
+                        "Massive collection of biometric and behavioral data.",
+                        "Vulnerability of mental health or social support record data.",
+                        "Lack of accessible mechanisms to opt out or request data erasure."
+                    ],
+                    cas: "Facial recognition or digital footprint cross-referencing used to condition welfare benefit eligibility."
+                },
+                inclusiva: {
+                    title: "Inclusive, Ethical AI Serving the Public Good",
+                    icon: "fa-heart",
+                    color: "text-emerald-500",
+                    desc: "AI also offers extraordinary opportunities if designed with ethics and inclusion: from improving plain inclusive language to adapting content for individuals with functional diversity.",
+                    points: [
+                        "Tools simplifying administrative legal text into clear, plain language.",
+                        "Development of accessible assistants for functional diversity needs.",
+                        "Predictive modeling to anticipate energy or climate poverty situations."
+                    ],
+                    cas: "AI systems that automatically adapt complex legal documents into easy-to-read formats for people with cognitive disabilities."
+                }
+            }
+        };
+
+        const faqData = {
+            ca: [
+                {
+                    q: "Què s'entén per vulnerabilitat sociocultural en el context de la IA?",
+                    a: "La vulnerabilitat sociocultural fa referència a la situació de desavantatge, risc o exclusió que pateixen determinats col·lectius (gent gran, persones en precarietat econòmica, minories, etc.) a causa de condicions estructurals. Quan s'aplica la IA, aquesta vulnerabilitat es pot veure agreujada si els sistemes de decisió no tenen en compte les seves circumstàncies particulars."
+                },
+                {
+                    q: "Com actua la bretxa digital com a font d'exclusió algorítmica?",
+                    a: "La bretxa digital no és només no tenir accés a internet, sinó la manca de competències o mitjans per interactuar amb eines digitals complexes. Quan els tràmits públics o les sol·licituds d'ajut requereixen interactuar exclusivament amb chatbots o plataformes amb IA, les persones amb baixa alfabetització digital queden automàticament desateses."
+                },
+                {
+                    q: "Quines estratègies proposa AFRONTA per reduir el biaix en la IA?",
+                    a: "AFRONTA proposa la incorporació de metodologies d'antropologia aplicada, la participació ciutadana en el disseny tecnològic, l'auditoria ètica de les dades d'entrenament, la garantia de canals d'atenció híbrids (humans i digitals) i la promoció del llenguatge inclusiu i la transparència explicativa."
+                },
+                {
+                    q: "Què diu l'AI Act europeu sobre la protecció de col·lectius vulnerables?",
+                    a: "El Reglament d'IA de la Unió Europea classifica com de \"Alt Risc\" la majoria de sistemes d'IA utilitzats en la gestió de beneficis socials, ocupació i serveis públics bàsics, exigint avaluar l'impacte en drets fonamentals i evitar la manipulació d'individus a causa de la seva edat o situació de vulnerabilitat."
+                }
+            ],
+            es: [
+                {
+                    q: "¿Qué se entiende por vulnerabilidad sociocultural en el contexto de la IA?",
+                    a: "La vulnerabilidad sociocultural hace referencia a la situación de desventaja, riesgo o exclusión que sufren determinados colectivos (personas mayores, personas en precariedad económica, minorías, etc.) debido a condiciones estructurales. Cuando se aplica la IA, esta vulnerabilidad se puede ver agravada si los sistemas de decisión no tienen en cuenta sus circunstancias particulares."
+                },
+                {
+                    q: "¿Cómo actúa la brecha digital como fuente de exclusión algorítmica?",
+                    a: "La brecha digital no es solo no tener acceso a internet, sino la falta de competencias o medios para interactuar con herramientas digitales complejas. Cuando los trámites públicos o las solicitudes de ayuda requieren interactuar exclusivamente con chatbots o plataformas con IA, las personas con baja alfabetización digital quedan automáticamente desatendidas."
+                },
+                {
+                    q: "¿Qué estrategias propone AFRONTA para reducir el sesgo en la IA?",
+                    a: "AFRONTA propone la incorporación de metodologías de antropología aplicada, la participación ciudadana en el diseño tecnológico, la auditoría ética de los datos de entrenamiento, la garantía de canales de atención híbridos (humanos y digitales) y la promoción del lenguaje inclusivo y la transparencia explicativa."
+                },
+                {
+                    q: "¿Qué dice el AI Act europeo sobre la protección de colectivos vulnerables?",
+                    a: "El Reglamento de IA de la Unión Europea clasifica como de \"Alto Riesgo\" la mayoría de sistemas de IA utilizados en la gestión de beneficios sociales, empleo y servicios públicos básicos, exigiendo evaluar el impacto en derechos fundamentales y evitar la manipulación de individuos debido a su edad o situación de vulnerabilidad."
+                }
+            ],
+            en: [
+                {
+                    q: "What is meant by sociocultural vulnerability in the context of AI?",
+                    a: "Sociocultural vulnerability refers to the disadvantaged, at-risk, or excluded status experienced by specific population groups (elderly, economically precarious individuals, minorities, etc.) due to structural conditions. When AI is deployed, this vulnerability can worsen if decision systems fail to account for their specific circumstances."
+                },
+                {
+                    q: "How does the digital divide act as a source of algorithmic exclusion?",
+                    a: "The digital divide is not merely lacking internet access, but lacking skills or means to navigate complex digital tools. When public procedures or welfare requests mandate interaction exclusively with chatbots or AI platforms, individuals with lower digital literacy are automatically underserved."
+                },
+                {
+                    q: "What strategies does AFRONTA propose to mitigate AI bias?",
+                    a: "AFRONTA proposes integrating applied anthropology methodologies, citizen participation in tech design, ethical auditing of training data, guaranteed hybrid service channels (human and digital), and promoting inclusive language and explainability."
+                },
+                {
+                    q: "What does the European AI Act state regarding vulnerable group protection?",
+                    a: "The European Union AI Act classifies most AI systems used in welfare benefits management, employment, and essential public services as 'High Risk', requiring impact assessments on fundamental rights and prohibiting manipulative practices targeting age or vulnerability."
+                }
+            ]
+        };
+
+        const resourcesData = {
+            ca: [
+                {
+                    title: "Infografies i Materials Formatius",
+                    type: "infografia",
+                    desc: "Accés al portal d'infografies sobre factors de vulnerabilitat, llenguatge inclusiu i disseny d'IA ètica.",
+                    badge: "Portal d'Infografies",
+                    icon: "fa-file-image",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                },
+                {
+                    title: "Guies i Iniciatives Antirumors",
+                    type: "guia",
+                    desc: "Recull de guies pràctiques per a la prevenció de notícies falses, desinformació i discursos d'odi vers col·lectius vulnerables.",
+                    badge: "Secció de Prevenció",
+                    icon: "fa-book-open",
+                    link: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/iniciativas-antirumores/"
+                },
+                {
+                    title: "Videocàpsules Formatives i Audiovisuals",
+                    type: "video",
+                    desc: "Càpsules en format vídeo que analitzen la bretxa digital, els efectes dels algorismes i la vulnerabilitat sociocultural.",
+                    badge: "Secció Audiovisual",
+                    icon: "fa-video",
+                    link: "https://webs.uab.cat/afronta/recursos/produccion-audiovisual-del-proyecto/videocapsulas-formativas/"
+                },
+                {
+                    title: "Informes Tècnics i Publicacions de Recerca",
+                    type: "guia",
+                    desc: "Documents de treball i estudis elaborats pel grup GRAFO UAB sobre l'impacte de la IA i l'AI Act europeu.",
+                    badge: "Publicacions Recerca",
+                    icon: "fa-file-lines",
+                    link: "https://webs.uab.cat/afronta/recursos/ia-y-vulnerabilidad/"
+                },
+                {
+                    title: "Guies sobre Llenguatge Inclusiu i Comunicació Ètica",
+                    type: "guia",
+                    desc: "Estratègies per evitar l'estigmatització i el biaix lingüístic en la redacció de continguts i prompts d'IA.",
+                    badge: "Guies Comunicació",
+                    icon: "fa-heart",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                }
+            ],
+            es: [
+                {
+                    title: "Infografías y Materiales Formativos",
+                    type: "infografia",
+                    desc: "Acceso al portal de infografías sobre factores de vulnerabilidad, lenguaje inclusivo y diseño de IA ética.",
+                    badge: "Portal de Infografías",
+                    icon: "fa-file-image",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                },
+                {
+                    title: "Guías e Iniciativas Antirrumores",
+                    type: "guia",
+                    desc: "Recopilación de guías prácticas para la prevención de noticias falsas, desinformación y discursos de odio hacia colectivos vulnerables.",
+                    badge: "Sección de Prevención",
+                    icon: "fa-book-open",
+                    link: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/iniciativas-antirrumores/"
+                },
+                {
+                    title: "Videocápsulas Formativas y Audiovisuales",
+                    type: "video",
+                    desc: "Cápsulas en formato vídeo que analizan la brecha digital, los efectos de los algoritmos y la vulnerabilidad sociocultural.",
+                    badge: "Sección Audiovisual",
+                    icon: "fa-video",
+                    link: "https://webs.uab.cat/afronta/recursos/produccion-audiovisual-del-proyecto/videocapsulas-formativas/"
+                },
+                {
+                    title: "Informes Técnicos y Publicaciones de Investigación",
+                    type: "guia",
+                    desc: "Documentos de trabajo y estudios elaborados por el grupo GRAFO UAB sobre el impacto de la IA y el AI Act europeo.",
+                    badge: "Publicaciones Investigación",
+                    icon: "fa-file-lines",
+                    link: "https://webs.uab.cat/afronta/recursos/ia-y-vulnerabilidad/"
+                },
+                {
+                    title: "Guías sobre Lenguaje Inclusivo y Comunicación Ética",
+                    type: "guia",
+                    desc: "Estrategias para evitar la estigmatización y el sesgo lingüístico en la redacción de contenidos y prompts de IA.",
+                    badge: "Guías Comunicación",
+                    icon: "fa-heart",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                }
+            ],
+            en: [
+                {
+                    title: "Infographics and Training Materials",
+                    type: "infografia",
+                    desc: "Access the portal for infographics on vulnerability factors, inclusive language, and ethical AI design.",
+                    badge: "Infographics Portal",
+                    icon: "fa-file-image",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                },
+                {
+                    title: "Anti-Rumor Guides and Initiatives",
+                    type: "guia",
+                    desc: "Collection of practical guides for preventing fake news, disinformation, and hate speech targeting vulnerable groups.",
+                    badge: "Prevention Section",
+                    icon: "fa-book-open",
+                    link: "https://webs.uab.cat/afronta/recursos/prevencion-de-fakes/iniciativas-antirumores/"
+                },
+                {
+                    title: "Educational Video Capsules",
+                    type: "video",
+                    desc: "Video capsules analyzing the digital divide, algorithm impacts, and sociocultural vulnerability.",
+                    badge: "Audiovisual Section",
+                    icon: "fa-video",
+                    link: "https://webs.uab.cat/afronta/recursos/produccion-audiovisual-del-proyecto/videocapsulas-formativas/"
+                },
+                {
+                    title: "Technical Reports & Research Publications",
+                    type: "guia",
+                    desc: "Working papers and research produced by GRAFO UAB on AI impact and the European AI Act.",
+                    badge: "Research Publications",
+                    icon: "fa-file-lines",
+                    link: "https://webs.uab.cat/afronta/recursos/ia-y-vulnerabilidad/"
+                },
+                {
+                    title: "Guides on Inclusive Language & Ethical Communication",
+                    type: "guia",
+                    desc: "Strategies to prevent stigmatization and linguistic bias when drafting content and AI prompts.",
+                    badge: "Communication Guides",
+                    icon: "fa-heart",
+                    link: "https://webs.uab.cat/afronta/recursos/materiales-formativos/infografias/"
+                }
+            ]
+        };
+
+        // Function to switch active language
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const btnCa = document.getElementById('langBtnCa');
+            const btnEs = document.getElementById('langBtnEs');
+            const btnEn = document.getElementById('langBtnEn');
+
+            [btnCa, btnEs, btnEn].forEach(btn => {
+                if (btn) {
+                    btn.className = "px-2.5 py-0.5 rounded text-white hover:text-uab-100 transition-all font-medium";
+                }
+            });
+
+            if (lang === 'ca') {
+                if (btnCa) btnCa.className = "px-2.5 py-0.5 rounded bg-white text-uab-800 transition-all font-bold";
+                document.documentElement.lang = "ca";
+            } else if (lang === 'es') {
+                if (btnEs) btnEs.className = "px-2.5 py-0.5 rounded bg-white text-uab-800 transition-all font-bold";
+                document.documentElement.lang = "es";
+            } else {
+                if (btnEn) btnEn.className = "px-2.5 py-0.5 rounded bg-white text-uab-800 transition-all font-bold";
+                document.documentElement.lang = "en";
+            }
+
+            // Apply static text translations
+            const dict = i18n[lang];
+            document.getElementById('pageTitle').textContent = dict.pageTitle;
+            document.getElementById('topBannerText').innerHTML = dict.topBannerText;
+            document.getElementById('themeLabel').textContent = dict.themeLabel;
+            
+            // Header & Nav
+            document.getElementById('navAxes').textContent = dict.navAxes;
+            document.getElementById('navSimulator').textContent = dict.navSimulator;
+            document.getElementById('navEvaluator').textContent = dict.navEvaluator;
+            document.getElementById('navResources').textContent = dict.navResources;
+            document.getElementById('navFaq').textContent = dict.navFaq;
+            document.getElementById('navEthicTest').textContent = dict.navEthicTest;
+
+            document.getElementById('mNavAxes').textContent = dict.navAxes;
+            document.getElementById('mNavSimulator').textContent = dict.navSimulator;
+            document.getElementById('mNavEvaluator').textContent = dict.navEvaluator;
+            document.getElementById('mNavResources').textContent = dict.navResources;
+            document.getElementById('mNavFaq').textContent = dict.navFaq;
+            document.getElementById('mNavEthicTest').textContent = dict.mNavEthicTest || dict.navEthicTest;
+
+            // Hero
+            document.getElementById('heroBadgeText').textContent = dict.heroBadgeText;
+            document.getElementById('heroTitle').innerHTML = dict.heroTitle;
+            document.getElementById('heroDesc').innerHTML = dict.heroDesc;
+            document.getElementById('heroBtnAxes').textContent = dict.heroBtnAxes;
+            document.getElementById('heroBtnSim').textContent = dict.heroBtnSim;
+            document.getElementById('stat1Label').textContent = dict.stat1Label;
+            document.getElementById('stat2Label').textContent = dict.stat2Label;
+            document.getElementById('stat3Label').textContent = dict.stat3Label;
+
+            document.getElementById('heroCardHeaderTitle').textContent = dict.heroCardHeaderTitle;
+            document.getElementById('heroCardHeaderSub').textContent = dict.heroCardHeaderSub;
+            document.getElementById('heroCardActive').textContent = dict.heroCardActive;
+            document.getElementById('cardItem1Title').textContent = dict.cardItem1Title;
+            document.getElementById('cardItem1Badge').textContent = dict.cardItem1Badge;
+            document.getElementById('cardItem1Desc').textContent = dict.cardItem1Desc;
+            document.getElementById('cardItem2Title').textContent = dict.cardItem2Title;
+            document.getElementById('cardItem2Badge').textContent = dict.cardItem2Badge;
+            document.getElementById('cardItem2Desc').textContent = dict.cardItem2Desc;
+            document.getElementById('cardItem3Title').textContent = dict.cardItem3Title;
+            document.getElementById('cardItem3Badge').textContent = dict.cardItem3Badge;
+            document.getElementById('cardItem3Desc').textContent = dict.cardItem3Desc;
+            document.getElementById('cardFooterText').textContent = dict.cardFooterText;
+            document.getElementById('cardFooterLink').textContent = dict.cardFooterLink;
+
+            // Axes Section
+            document.getElementById('axesSectionTitle').textContent = dict.axesSectionTitle;
+            document.getElementById('axesSectionDesc').textContent = dict.axesSectionDesc;
+            document.getElementById('tabBiaix').textContent = dict.tabBiaix;
+            document.getElementById('tabBretxa').textContent = dict.tabBretxa;
+            document.getElementById('tabFakes').textContent = dict.tabFakes;
+            document.getElementById('tabPrivacitat').textContent = dict.tabPrivacitat;
+            document.getElementById('tabInclusiva').textContent = dict.tabInclusiva;
+
+            // Simulator
+            document.getElementById('simBadge').textContent = dict.simBadge;
+            document.getElementById('simTitle').textContent = dict.simTitle;
+            document.getElementById('simDesc').textContent = dict.simDesc;
+            document.getElementById('simPanelTitle').textContent = dict.simPanelTitle;
+            document.getElementById('labelSlider1').textContent = dict.labelSlider1;
+            document.getElementById('subSlider1').textContent = dict.subSlider1;
+            document.getElementById('labelSlider2').textContent = dict.labelSlider2;
+            document.getElementById('subSlider2').textContent = dict.subSlider2;
+            document.getElementById('labelSlider3').textContent = dict.labelSlider3;
+            document.getElementById('subSlider3').textContent = dict.subSlider3;
+            document.getElementById('labelSlider4').textContent = dict.labelSlider4;
+            document.getElementById('subSlider4').textContent = dict.subSlider4;
+            document.getElementById('btnRunSim').textContent = dict.btnRunSim;
+            document.getElementById('simResultsHeader').textContent = dict.simResultsHeader;
+            document.getElementById('labelApproved').textContent = dict.labelApproved;
+            document.getElementById('labelRejected').textContent = dict.labelRejected;
+            document.getElementById('labelExclusionRate').textContent = dict.labelExclusionRate;
+
+            // Quiz
+            document.getElementById('quizBadge').textContent = dict.quizBadge;
+            document.getElementById('quizTitle').textContent = dict.quizTitle;
+            document.getElementById('quizDesc').textContent = dict.quizDesc;
+            document.getElementById('q1Title').textContent = dict.q1Title;
+            document.getElementById('q1o1').textContent = dict.q1o1;
+            document.getElementById('q1o2').textContent = dict.q1o2;
+            document.getElementById('q1o3').textContent = dict.q1o3;
+            document.getElementById('q2Title').textContent = dict.q2Title;
+            document.getElementById('q2o1').textContent = dict.q2o1;
+            document.getElementById('q2o2').textContent = dict.q2o2;
+            document.getElementById('q2o3').textContent = dict.q2o3;
+            document.getElementById('q3Title').textContent = dict.q3Title;
+            document.getElementById('q3o1').textContent = dict.q3o1;
+            document.getElementById('q3o2').textContent = dict.q3o2;
+            document.getElementById('q3o3').textContent = dict.q3o3;
+            document.getElementById('q4Title').textContent = dict.q4Title;
+            document.getElementById('q4o1').textContent = dict.q4o1;
+            document.getElementById('q4o2').textContent = dict.q4o2;
+            document.getElementById('q4o3').textContent = dict.q4o3;
+            document.getElementById('prevQuizBtn').textContent = dict.quizPrevBtn;
+            
+            const activeStep = currentQuizStep;
+            updateQuizStep(activeStep);
+
+            // Resources
+            document.getElementById('resBadge').textContent = dict.resBadge;
+            document.getElementById('resTitle').textContent = dict.resTitle;
+            document.getElementById('resDesc').textContent = dict.resDesc;
+            document.getElementById('resourceSearch').placeholder = dict.searchPlaceholder;
+            document.getElementById('optAllTypes').textContent = dict.optAllTypes;
+            document.getElementById('optInfografia').textContent = dict.optInfografia;
+            document.getElementById('optGuia').textContent = dict.optGuia;
+            document.getElementById('optVideo').textContent = dict.optVideo;
+
+            // FAQ & Footer
+            document.getElementById('faqTitle').textContent = dict.faqTitle;
+            document.getElementById('faqSub').textContent = dict.faqSub;
+            document.getElementById('footerTitle').textContent = dict.footerTitle;
+            document.getElementById('footerSub').textContent = dict.footerSub;
+            document.getElementById('fNavAxes').textContent = dict.navAxes;
+            document.getElementById('fNavSimulator').textContent = dict.navSimulator;
+            document.getElementById('fNavEvaluator').textContent = dict.navEvaluator;
+            document.getElementById('fNavResources').textContent = dict.navResources;
+            document.getElementById('fNavOfficial').textContent = dict.fNavOfficial;
+            document.getElementById('footerCopy').textContent = dict.footerCopy;
+            document.getElementById('footerTagline').textContent = dict.footerTagline;
+            document.getElementById('modalBtn').textContent = dict.modalBtn;
+
+            // Re-render active dynamic panels
+            const activeTab = document.querySelector('.axis-tab.active')?.dataset.axis || 'biaix';
+            renderAxisContent(activeTab);
+            runSimulation();
+            renderResources();
+            renderFaq();
+        }
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Modal Handler
+        function alertModal(title, msg) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMsg').textContent = msg;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        // Render Axis Content
+        function renderAxisContent(key) {
+            const data = axesData[currentLang][key];
+            const container = document.getElementById('axesContent');
+            
+            let factorHeader = 'Factors Clau a Considerar:';
+            let exampleHeader = 'Exemple Pràctic';
+            if (currentLang === 'es') {
+                factorHeader = 'Factores Clave a Considerar:';
+                exampleHeader = 'Ejemplo Práctico';
+            } else if (currentLang === 'en') {
+                factorHeader = 'Key Factors to Consider:';
+                exampleHeader = 'Practical Example';
+            }
+
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-8 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid ${data.icon} text-2xl ${data.color}"></i>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">${data.title}</h3>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">${data.desc}</p>
+                        
+                        <div class="space-y-2 pt-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500">${factorHeader}</h4>
+                            <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                ${data.points.map(p => `<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-uab-600 mt-1"></i><span>${p}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-4 bg-slate-100 dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-uab-600 dark:text-uab-400 block mb-2"><i class="fa-solid fa-lightbulb mr-1"></i>${exampleHeader}</span>
+                        <p class="text-xs text-slate-700 dark:text-slate-200 italic leading-relaxed font-medium">"${data.cas}"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Tabs Click Listener
+        document.querySelectorAll('.axis-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.axis-tab').forEach(b => {
+                    b.classList.remove('active', 'bg-uab-600', 'text-white', 'shadow');
+                    b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                });
+                btn.classList.add('active', 'bg-uab-600', 'text-white', 'shadow');
+                btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                renderAxisContent(btn.dataset.axis);
+            });
+        });
+
+        // Bias Simulator Logic
+        const weightRenda = document.getElementById('weightRenda');
+        const weightDigital = document.getElementById('weightDigital');
+        const weightEdat = document.getElementById('weightEdat');
+        const weightDoc = document.getElementById('weightDoc');
+        const runSimBtn = document.getElementById('runSimBtn');
+
+        weightRenda.addEventListener('input', (e) => {
+            document.getElementById('weightRendaVal').textContent = `${e.target.value}%`;
+            runSimulation();
+        });
+        weightDigital.addEventListener('input', (e) => {
+            document.getElementById('weightDigitalVal').textContent = `${e.target.value}%`;
+            runSimulation();
+        });
+        weightEdat.addEventListener('input', (e) => {
+            document.getElementById('weightEdatVal').textContent = `${e.target.value}%`;
+            runSimulation();
+        });
+        weightDoc.addEventListener('input', (e) => {
+            document.getElementById('weightDocVal').textContent = `${e.target.value}%`;
+            runSimulation();
+        });
+
+        function runSimulation() {
+            const grid = document.getElementById('applicantGrid');
+            grid.innerHTML = '';
+
+            const wR = parseInt(weightRenda.value);
+            const wD = parseInt(weightDigital.value);
+            const wE = parseInt(weightEdat.value);
+            const wDoc = parseInt(weightDoc.value);
+
+            const avgBiasPercentage = Math.round((wR + wD + wE + wDoc) / 4);
+            const redDotsCount = Math.min(100, Math.max(0, avgBiasPercentage));
+            const greenDotsCount = 100 - redDotsCount;
+
+            for (let i = 0; i < 100; i++) {
+                const isRejected = i < redDotsCount;
+                const dot = document.createElement('div');
+                dot.className = `w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${isRejected ? 'bg-red-500' : 'bg-emerald-500'}`;
+                
+                let statusText;
+                let personText;
+                if (currentLang === 'ca') {
+                    statusText = isRejected ? 'Rebutjat per Biaix' : 'Aprovat';
+                    personText = `Sol·licitant ${i+1}`;
+                } else if (currentLang === 'es') {
+                    statusText = isRejected ? 'Rechazado por Sesgo' : 'Aprobado';
+                    personText = `Solicitante ${i+1}`;
+                } else {
+                    statusText = isRejected ? 'Rejected by Bias' : 'Approved';
+                    personText = `Applicant ${i+1}`;
+                }
+                dot.title = `${personText}: ${statusText}`;
+                
+                grid.appendChild(dot);
+            }
+
+            document.getElementById('approvedCount').textContent = greenDotsCount;
+            document.getElementById('rejectedCount').textContent = redDotsCount;
+            document.getElementById('vulnerableBiasCount').textContent = `${redDotsCount}%`;
+
+            const badge = document.getElementById('simStatusBadge');
+            const explanation = document.getElementById('simExplanation');
+
+            if (currentLang === 'ca') {
+                if (redDotsCount === 100) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "Exclusió Total (100%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>Exclusió Total:</strong> Amb tots els paràmetres al 100%, totes les 100 sol·licituds han estat rebutjades per l'acumulació de biaixos.`;
+                } else if (redDotsCount === 0) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Sense Biaix (0%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Sense Exclusió:</strong> Amb tots els paràmetres al 0%, la totalitat de les 100 sol·licituds és aprovada equitativament.`;
+                } else if (redDotsCount > 50) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "Biaix d'Exclusió Alt";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>Risc d'Exclusió Elevat:</strong> El ${redDotsCount}% de les sol·licituds queda exclòs a causa dels paràmetres de biaix seleccionats.`;
+                } else if (redDotsCount > 25) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold";
+                    badge.textContent = "Biaix Moderat";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i> <strong>Risc d'Exclusió Moderat:</strong> El ${redDotsCount}% de les persones sol·licitants pateix desavantatges en la selecció.`;
+                } else {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Biaix Baix";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Atenció Equitativa:</strong> La taxa de rebuig per biaix és baixa (${redDotsCount}%), afavorint la inclusió.`;
+                }
+            } else if (currentLang === 'es') {
+                if (redDotsCount === 100) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "Exclusión Total (100%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>Exclusión Total:</strong> Con todos los parámetros al 100%, las 100 solicitudes han sido rechazadas por la acumulación de sesgos.`;
+                } else if (redDotsCount === 0) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Sin Sesgo (0%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Sin Exclusión:</strong> Con todos los parámetros al 0%, la totalidad de las 100 solicitudes es aprobada equitativamente.`;
+                } else if (redDotsCount > 50) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "Sesgo de Exclusión Alto";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>Riesgo de Exclusión Elevado:</strong> El ${redDotsCount}% de las solicitudes queda excluido debido a los parámetros de sesgo seleccionados.`;
+                } else if (redDotsCount > 25) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold";
+                    badge.textContent = "Sesgo Moderado";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i> <strong>Riesgo de Exclusión Moderado:</strong> El ${redDotsCount}% de las personas solicitantes sufre desventajas en la selección.`;
+                } else {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Sesgo Bajo";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Atención Equitativa:</strong> La tasa de rechazo por sesgo es baja (${redDotsCount}%), favoreciendo la inclusión.`;
+                }
+            } else {
+                if (redDotsCount === 100) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "Total Exclusion (100%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>Total Exclusion:</strong> With all parameters set to 100%, all 100 applicants are rejected due to accumulated biases.`;
+                } else if (redDotsCount === 0) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Zero Bias (0%)";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Zero Exclusion:</strong> With all parameters set to 0%, all 100 applications are approved equitably.`;
+                } else if (redDotsCount > 50) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-800 font-semibold";
+                    badge.textContent = "High Exclusion Bias";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-600 mr-1"></i> <strong>High Exclusion Risk:</strong> ${redDotsCount}% of applicants are excluded due to selected bias parameter weights.`;
+                } else if (redDotsCount > 25) {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-semibold";
+                    badge.textContent = "Moderate Bias";
+                    explanation.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i> <strong>Moderate Exclusion Risk:</strong> ${redDotsCount}% of applicants experience algorithmic disadvantage.`;
+                } else {
+                    badge.className = "text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold";
+                    badge.textContent = "Low Bias";
+                    explanation.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Equitable Service:</strong> Rejection due to bias is low (${redDotsCount}%), supporting social inclusion.`;
+                }
+            }
+        }
+
+        runSimBtn.addEventListener('click', runSimulation);
+
+        // Ethics Assessment Quiz Logic
+        let currentQuizStep = 1;
+        const totalQuizSteps = 4;
+        const quizAnswers = {};
+
+        const prevQuizBtn = document.getElementById('prevQuizBtn');
+        const nextQuizBtn = document.getElementById('nextQuizBtn');
+        const quizStepText = document.getElementById('quizStepText');
+        const quizPercentText = document.getElementById('quizPercentText');
+        const quizProgressBar = document.getElementById('quizProgressBar');
+        const quizResult = document.getElementById('quizResult');
+        const quizNav = document.getElementById('quizNav');
+        const restartQuizBtn = document.getElementById('restartQuizBtn');
+
+        function updateQuizStep(step) {
+            document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+            
+            const currentEl = document.querySelector(`.quiz-step[data-step="${step}"]`);
+            if (currentEl) {
+                currentEl.classList.remove('hidden');
+            }
+
+            const completedPercent = (step - 1) * 25;
+
+            let stepLabel = `Pas ${step} de ${totalQuizSteps}`;
+            let percentLabel = `${completedPercent}% completat`;
+
+            if (currentLang === 'es') {
+                stepLabel = `Paso ${step} de ${totalQuizSteps}`;
+                percentLabel = `${completedPercent}% completado`;
+            } else if (currentLang === 'en') {
+                stepLabel = `Step ${step} of ${totalQuizSteps}`;
+                percentLabel = `${completedPercent}% completed`;
+            }
+
+            if (quizStepText) quizStepText.textContent = stepLabel;
+            if (quizPercentText) quizPercentText.textContent = percentLabel;
+            if (quizProgressBar) quizProgressBar.style.width = `${completedPercent}%`;
+
+            if (prevQuizBtn) prevQuizBtn.disabled = (step === 1);
+            if (nextQuizBtn) {
+                const nextLabel = (step === totalQuizSteps) ? i18n[currentLang].quizResultBtn : i18n[currentLang].quizNextBtn;
+                nextQuizBtn.textContent = nextLabel;
+            }
+        }
+
+        if (nextQuizBtn) {
+            nextQuizBtn.addEventListener('click', () => {
+                const selected = document.querySelector(`input[name="q${currentQuizStep}"]:checked`);
+                if (!selected) {
+                    let alertTitle = "Atenció";
+                    let alertMsg = "Siusplau, selecciona una opció abans de continuar.";
+                    if (currentLang === 'es') {
+                        alertTitle = "Atención";
+                        alertMsg = "Por favor, selecciona una opción antes de continuar.";
+                    } else if (currentLang === 'en') {
+                        alertTitle = "Attention";
+                        alertMsg = "Please select an option before continuing.";
+                    }
+                    alertModal(alertTitle, alertMsg);
+                    return;
+                }
+                quizAnswers[`q${currentQuizStep}`] = selected.value;
+
+                if (currentQuizStep < totalQuizSteps) {
+                    currentQuizStep++;
+                    updateQuizStep(currentQuizStep);
+                } else {
+                    showQuizResults();
+                }
+            });
+        }
+
+        if (prevQuizBtn) {
+            prevQuizBtn.addEventListener('click', () => {
+                if (currentQuizStep > 1) {
+                    currentQuizStep--;
+                    updateQuizStep(currentQuizStep);
+                }
+            });
+        }
+
+        function showQuizResults() {
+            document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+            if (quizNav) quizNav.classList.add('hidden');
+            if (quizResult) quizResult.classList.remove('hidden');
+
+            if (quizStepText) quizStepText.textContent = currentLang === 'ca' ? "Completat" : (currentLang === 'es' ? "Completado" : "Completed");
+            if (quizPercentText) quizPercentText.textContent = currentLang === 'ca' ? "100% completat" : (currentLang === 'es' ? "100% completado" : "100% completed");
+            if (quizProgressBar) quizProgressBar.style.width = "100%";
+
+            let highCount = 0;
+            let medCount = 0;
+            Object.values(quizAnswers).forEach(val => {
+                if (val === 'high') highCount++;
+                if (val === 'medium') medCount++;
+            });
+
+            const badge = document.getElementById('resultBadge');
+            const title = document.getElementById('resultTitle');
+            const desc = document.getElementById('resultDesc');
+            const recHeader = document.getElementById('resultRecHeader');
+            const recs = document.getElementById('resultRecs');
+
+            if (recHeader) {
+                if (currentLang === 'ca') recHeader.textContent = "Recomanacions del Projecte AFRONTA:";
+                else if (currentLang === 'es') recHeader.textContent = "Recomendaciones del Proyecto AFRONTA:";
+                else recHeader.textContent = "AFRONTA Project Recommendations:";
+            }
+
+            if (highCount >= 2) {
+                if (badge) {
+                    badge.className = "inline-block px-4 py-2 rounded-full text-sm font-bold bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300";
+                    badge.textContent = currentLang === 'ca' ? "Diagnòstic de Risc Alt d'Exclusió" : (currentLang === 'es' ? "Diagnóstico de Riesgo Alto de Exclusión" : "High Exclusion Risk Diagnosis");
+                }
+                if (title) title.textContent = currentLang === 'ca' ? "Nivell de Risc Ètic Elevat" : (currentLang === 'es' ? "Nivel de Riesgo Ético Elevado" : "Elevated Ethical Risk Level");
+                if (desc) desc.textContent = currentLang === 'ca' ? "El sistema actual presenta mancances crítiques en l'avaluació de biaixos, la transparència i l'atenció a col·lectius vulnerables." : (currentLang === 'es' ? "El sistema actual presenta carencias críticas en la evaluación de sesgos, la transparencia y la atención a colectivos vulnerables." : "The current system displays critical gaps in bias auditing, transparency, and care for vulnerable groups.");
+                if (recs) {
+                    if (currentLang === 'ca') {
+                        recs.innerHTML = `
+                            <li>Establir un protocol urgent d'auditoria de dades d'entrenament.</li>
+                            <li>Garantir opcions d'atenció presencial i alternativa no digital.</li>
+                            <li>Implementar canals de revisió humana obligatòria per a decisions desfavorables.</li>
+                        `;
+                    } else if (currentLang === 'es') {
+                        recs.innerHTML = `
+                            <li>Establecer un protocolo urgente de auditoría de datos de entrenamiento.</li>
+                            <li>Garantizar opciones de atención presencial y alternativa no digital.</li>
+                            <li>Implementar canales de revisión humana obligatoria para decisiones desfavorables.</li>
+                        `;
+                    } else {
+                        recs.innerHTML = `
+                            <li>Establish an urgent training data auditing protocol.</li>
+                            <li>Guarantee in-person and non-digital service support options.</li>
+                            <li>Implement mandatory human review channels for unfavorable automated outcomes.</li>
+                        `;
+                    }
+                }
+            } else if (highCount === 1 || medCount >= 2) {
+                if (badge) {
+                    badge.className = "inline-block px-4 py-2 rounded-full text-sm font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300";
+                    badge.textContent = currentLang === 'ca' ? "Diagnòstic de Risc Moderat" : (currentLang === 'es' ? "Diagnóstico de Riesgo Moderado" : "Moderate Risk Diagnosis");
+                }
+                if (title) title.textContent = currentLang === 'ca' ? "Nivell de Risc Ètic Moderat" : (currentLang === 'es' ? "Nivel de Riesgo Ético Moderado" : "Moderate Ethical Risk Level");
+                if (desc) desc.textContent = currentLang === 'ca' ? "El sistema compta amb algunes garanties, però requereix millores en accessibilitat i explicabilitat." : (currentLang === 'es' ? "El sistema cuenta con algunas garantías, pero requiere mejoras en accesibilidad y explicabilidad." : "The system provides basic safeguards but requires enhancements in accessibility and explainability.");
+                if (recs) {
+                    if (currentLang === 'ca') {
+                        recs.innerHTML = `
+                            <li>Implementar avaluacions de biaixos periòdics en els serveis o eines utilitzades.</li>
+                            <li>Simplificar el llenguatge de les explicacions algorítmiques.</li>
+                            <li>Oferir canals de reclamació més accessibles i intuïtius.</li>
+                        `;
+                    } else if (currentLang === 'es') {
+                        recs.innerHTML = `
+                            <li>Implementar evaluaciones de sesgos periódicas en los servicios o herramientas utilizadas.</li>
+                            <li>Simplificar el lenguaje de las explicaciones algorítmicas.</li>
+                            <li>Ofrecer canales de reclamación más accesibles e intuitivos.</li>
+                        `;
+                    } else {
+                        recs.innerHTML = `
+                            <li>Conduct periodic bias evaluations on tools and algorithms used.</li>
+                            <li>Simplify algorithmic decision explanation language for the public.</li>
+                            <li>Provide intuitive and easily accessible recourse channels.</li>
+                        `;
+                    }
+                }
+            } else {
+                if (badge) {
+                    badge.className = "inline-block px-4 py-2 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300";
+                    badge.textContent = currentLang === 'ca' ? "Diagnòstic de Baix Risc Ètic" : (currentLang === 'es' ? "Diagnóstico de Bajo Riesgo Ético" : "Low Ethical Risk Diagnosis");
+                }
+                if (title) title.textContent = currentLang === 'ca' ? "Bones Pràctiques d'Inclusió" : (currentLang === 'es' ? "Buenas Prácticas de Inclusión" : "Inclusion Good Practices");
+                if (desc) desc.textContent = currentLang === 'ca' ? "El projecte demostra un alt compromís amb l'equitat, la transparència i la protecció dels drets fonamentals." : (currentLang === 'es' ? "El proyecto demuestra un alto compromiso con la equidad, la transparencia y la protección de los derechos fundamentales." : "The project demonstrates strong commitment to fairness, transparency, and protecting fundamental rights.");
+                if (recs) {
+                    if (currentLang === 'ca') {
+                        recs.innerHTML = `
+                            <li>Mantenir el seguiment continu i l'actualització de les auditories dels models d'IA.</li>
+                            <li>Compartir les bones pràctiques amb altres departaments o entitats relacionades.</li>
+                        `;
+                    } else if (currentLang === 'es') {
+                        recs.innerHTML = `
+                            <li>Mantener el seguimiento continuo y la actualización de las auditorías de los modelos de IA.</li>
+                            <li>Compartir las buenas prácticas con otros departamentos o entidades relacionadas.</li>
+                        `;
+                    } else {
+                        recs.innerHTML = `
+                            <li>Maintain continuous monitoring and periodic AI model audits.</li>
+                            <li>Share best ethical practices with related public and private organizations.</li>
+                        `;
+                    }
+                }
+            }
+        }
+
+        if (restartQuizBtn) {
+            restartQuizBtn.addEventListener('click', () => {
+                currentQuizStep = 1;
+                Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+                document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                if (quizResult) quizResult.classList.add('hidden');
+                if (quizNav) quizNav.classList.remove('hidden');
+                updateQuizStep(1);
+            });
+        }
+
+        // Render Resources Grid
+        function renderResources() {
+            const grid = document.getElementById('resourcesGrid');
+            const searchVal = document.getElementById('resourceSearch').value.toLowerCase();
+            const filterVal = document.getElementById('resourceTypeFilter').value;
+
+            const resList = resourcesData[currentLang];
+            let exploreBtnText = 'Explorar Secció';
+            if (currentLang === 'es') exploreBtnText = 'Explorar Sección';
+            else if (currentLang === 'en') exploreBtnText = 'Explore Section';
+
+            const filtered = resList.filter(res => {
+                const matchesSearch = res.title.toLowerCase().includes(searchVal) || res.desc.toLowerCase().includes(searchVal);
+                const matchesType = filterVal === 'all' || res.type === filterVal;
+                return matchesSearch && matchesType;
+            });
+
+            grid.innerHTML = filtered.map(res => `
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-uab-50 dark:bg-uab-900/50 text-uab-700 dark:text-uab-300 border border-uab-200 dark:border-uab-800 uppercase tracking-wider">
+                                ${res.type}
+                            </span>
+                            <i class="fa-solid ${res.icon} text-slate-400"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base leading-snug">${res.title}</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${res.desc}</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                        <span class="text-[11px] text-slate-400 font-medium">${res.badge}</span>
+                        <a href="${res.link}" target="_blank" rel="noopener" class="text-xs font-semibold text-uab-600 dark:text-uab-400 hover:underline flex items-center gap-1">
+                            ${exploreBtnText} <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            if (filtered.length === 0) {
+                let noResultText = "No s'han trobat seccions de recursos amb els criteris seleccionats.";
+                if (currentLang === 'es') noResultText = "No se han encontrado secciones de recursos con los criterios seleccionados.";
+                else if (currentLang === 'en') noResultText = "No resource sections found matching the selected criteria.";
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 text-sm">${noResultText}</div>`;
+            }
+        }
+
+        document.getElementById('resourceSearch').addEventListener('input', renderResources);
+        document.getElementById('resourceTypeFilter').addEventListener('change', renderResources);
+
+        // Render FAQ Accordion
+        function renderFaq() {
+            const accordion = document.getElementById('faqAccordion');
+            const faqs = faqData[currentLang];
+
+            accordion.innerHTML = faqs.map(faq => `
+                <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full p-5 text-left font-bold text-slate-900 dark:text-white flex justify-between items-center hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                        <span>${faq.q}</span>
+                        <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                    </button>
+                    <div class="faq-content hidden p-5 pt-0 text-sm text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800/50">
+                        ${faq.a}
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.faq-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('i');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+        }
+
+        // Initial setup on DOM ready
+        switchLanguage('es');
+    </script>
+</body>
+</html>
