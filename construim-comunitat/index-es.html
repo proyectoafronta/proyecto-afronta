@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="ca">
+<html lang="es">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -209,15 +209,12 @@ dialog{border:none;border-radius:16px;padding:24px;max-width:420px;width:90%;box
 </style>
 
 <!-- HTML del fil d'Ariadna -->
-<nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+<nav id="bc-nav" aria-label="Miga de pan" class="breadcrumb-nav">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="../index.html">Inici</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Construïm Comunitat</li>
+    <li class="breadcrumb-item"><a id="bc-home" href="../index-es.html">Inicio</a></li>
+    <li id="bc-current" class="breadcrumb-item active" aria-current="page">Construyamos Comunidad</li>
   </ol>
 </nav>
-  <!-- Resta del contingut de Construïm Comunitat -->
-  ...
-</main>
 <div class="container">
 <!-- SELECTOR D'IDIOMA (damunt del cronòmetre) -->
 <div class="lang-bar">
@@ -703,7 +700,7 @@ const CARDS=[];
 
 // ===== IDIOMES I TEXTOS DE BOTÓ =====
 const LS_STATE='construim_comunitat_state',LS_LANG='construim_lang',LI={ca:0,es:1,en:2};
-let LANG='ca';
+let LANG='es';
 const M={
 ca:{title:'Construïm Comunitat® - Simulador Interactiu',projAria:'Mode projector',navAria:'Menú principal',langGroup:'Idioma',customTeamsAria:"Nombre d'equips (de 2 a 20)",phSearch:'🔍 Cerca cartes per nom o paraula clau (ex: digital, pensió, veïnal...)...',searchAria:'Cerca de cartes',phAnswer:'Escriviu la resposta aquí...',phMin:'Min',minAria:'Minuts del cronòmetre personalitzat',close:'Tanca',
  ccAlt:'Llicència Creative Commons Reconeixement – No Comercial – Sense Obres Derivades 4.0',logoAlt:'Logotip de la Universitat Autònoma de Barcelona, Projecte AFRONTA i GRAFO',
@@ -814,7 +811,22 @@ function cardTx(c){return c.tx[LANG]||c.tx.ca;}
 function typeLabel(c){return (c.type && TYPES[c.cat] && TYPES[c.cat][c.type])?TYPES[c.cat][c.type][LI[LANG]]:'';}
 
 function setLang(l){if(!LI.hasOwnProperty(l))return;LANG=l;try{localStorage.setItem(LS_LANG,l);}catch(e){}applyLang();}
+function updateBreadcrumb(){
+  const bcTexts = {
+    ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", cur: "Construïm Comunitat" },
+    es: { label: "Miga de pan", home: "Inicio", href: "../index-es.html", cur: "Construyamos Comunidad" },
+    en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", cur: "Let's Build Community" }
+  };
+  const bc = bcTexts[LANG] || bcTexts.ca;
+  const bcNav = document.getElementById('bc-nav');
+  const bcHome = document.getElementById('bc-home');
+  const bcCur = document.getElementById('bc-current');
+  if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+  if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+  if (bcCur) bcCur.textContent = bc.cur;
+}
 function applyLang(){
+  updateBreadcrumb();
   document.documentElement.lang=LANG;document.title=m('title');
   document.querySelectorAll('[data-i18n]').forEach(e=>{const v=(I18N[LANG]||{})[e.dataset.i18n];if(v!==undefined)e.innerHTML=v;});
   document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.setAttribute('placeholder',m(e.dataset.i18nPh)));
@@ -1117,7 +1129,6 @@ function loadData(){
 function resetEntireSession(){askDlg(m('resetConfirm')).then(ok=>{if(ok){try{localStorage.removeItem(LS_STATE);}catch(e){}location.reload();}});}
 
 window.onload=function(){
-  try{const l=localStorage.getItem(LS_LANG);if(l&&LI.hasOwnProperty(l))LANG=l;}catch(e){}
   buildTeamOptions();setupTeams();initShown();applyLang();loadData();
 };
 </script>

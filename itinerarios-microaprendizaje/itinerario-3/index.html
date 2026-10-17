@@ -91,11 +91,11 @@
   </style>
 
   <!-- Fil d'Ariadna de 3 nivells -->
-  <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <nav id="bc-nav" aria-label="Fil d'Ariadna" class="breadcrumb-nav">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="../../index.html">Inici</a></li>
-      <li class="breadcrumb-item"><a href="../index.html">Itineraris de Microaprenentatge</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Itinerari 3</li>
+      <li class="breadcrumb-item"><a id="bc-home" href="../../index.html">Inici</a></li>
+      <li class="breadcrumb-item"><a id="bc-mid" href="../index.html">Itineraris de Microaprenentatge</a></li>
+      <li id="bc-current" class="breadcrumb-item active" aria-current="page">Itinerari 3</li>
     </ol>
   </nav>
 
@@ -1229,8 +1229,27 @@
             }
         };
 
+        /* Fil d'Ariadna segons l'idioma */
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+                ca: { label: "Fil d'Ariadna", home: "Inici", homeHref: "../../index.html", mid: "Itineraris de Microaprenentatge", midHref: "../index.html", cur: "Itinerari 3" },
+                es: { label: "Miga de pan", home: "Inicio", homeHref: "../../index-es.html", mid: "Itinerarios de Microaprendizaje", midHref: "../index-es.html", cur: "Itinerario 3" },
+                en: { label: "Breadcrumb", home: "Home", homeHref: "../../index-en.html", mid: "Microlearning Pathways", midHref: "../index-en.html", cur: "Pathway 3" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcMid = document.getElementById('bc-mid');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.homeHref); }
+            if (bcMid) { bcMid.textContent = bc.mid; bcMid.setAttribute('href', bc.midHref); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         function setLanguage(lang) {
             currentLang = lang;
+            updateBreadcrumb(lang);
             const t = translations[lang];
 
             ['ca', 'es', 'en'].forEach(l => {

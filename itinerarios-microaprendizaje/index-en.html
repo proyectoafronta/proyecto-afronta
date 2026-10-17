@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microlearning Pathways - Proyecto Afronta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #12224a;
+      --navy-2: #1c3374;
+      --paper: #f4f7fb;
+      --card: #ffffff;
+      --ink: #1d2740;
+      --muted: #55627f;
+      --line: #dbe3f0;
+      --amber: #f2b441;
+
+      /* Un color por itinerario */
+      --c-1: #2f855a;
+      --c-2: #1d6fb8;
+      --c-3: #5b4bc4;
+
+      --font-head: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+      --font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    /* ---------- Cabecera ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(1000px 460px at 85% -10%, #2a4a9c 0%, transparent 60%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+      color: #fff;
+      padding: 1.5rem 1.5rem clamp(5rem, 9vw, 7rem);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: clamp(2rem, 5vw, 3.5rem);
+      padding: 0.35rem 0.8rem 0.35rem 0.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: #e3ebff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .back-link:focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 3px;
+    }
+
+    .back-link svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .rule {
+      width: 64px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--amber);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2.3rem, 6vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem;
+      max-width: 14em;
+    }
+
+    .hero .subtitle {
+      max-width: 32rem;
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: #c9d6f2;
+    }
+
+    /* Camino con paradas: metáfora de itinerario */
+    .path {
+      position: absolute;
+      right: -30px;
+      bottom: 30px;
+      width: min(560px, 70vw);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .path path {
+      fill: none;
+      stroke: #8fa7e0;
+      stroke-width: 2;
+      stroke-dasharray: 3 9;
+      stroke-linecap: round;
+    }
+
+    .path circle { fill: #dbe6ff; }
+    .path circle.accent { fill: var(--amber); }
+
+    /* ---------- Itinerarios ---------- */
+    main {
+      max-width: 1040px;
+      margin: -3.2rem auto 0;
+      padding: 0 1.5rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      --accent: var(--navy);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.5rem 1.5rem 1.4rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--accent);
+      border-radius: 4px 18px 4px 18px;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 10px 24px -14px rgba(18, 34, 74, 0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px -14px rgba(18, 34, 74, 0.45);
+    }
+
+    .card:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .num {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.7rem;
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--accent) 12%, white);
+      color: var(--accent);
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .card h2 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.4rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .go {
+      margin-top: auto;
+      padding-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .go svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.18s ease;
+    }
+
+    .card:hover .go svg { transform: translateX(4px); }
+
+    .c-1 { --accent: var(--c-1); }
+    .c-2 { --accent: var(--c-2); }
+    .c-3 { --accent: var(--c-3); }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .grid { animation: rise 0.6s ease-out both; }
+      @keyframes rise {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .go svg, .back-link { transition: none; }
+    }
+
+    @media (max-width: 600px) {
+      .path { opacity: 0.3; right: -140px; }
+    }
+  </style>
+</head>
+<body>
+<body>
+
+  <!-- Estils del fil d'Ariadna -->
+  <style>
+    .breadcrumb-nav {
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.9rem;
+    }
+    .breadcrumb {
+      display: flex !important;
+      flex-wrap: wrap;
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .breadcrumb-item {
+      display: inline-flex;
+      align-items: center;
+    }
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: "›";
+      padding: 0 0.5rem;
+      color: #6c757d;
+    }
+    .breadcrumb-item a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb-item.active {
+      color: #495057;
+      font-weight: 600;
+    }
+  </style>
+
+  <!-- Fil d'Ariadna -->
+  <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="../index-en.html">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Microlearning Pathways</li>
+    </ol>
+  </nav>
+
+  <!-- Continua el contingut de la pàgina -->
+
+  <header class="hero">
+    <svg class="path" viewBox="0 0 600 240" aria-hidden="true">
+      <path d="M20 190 C 120 190, 140 70, 250 80 S 400 190, 480 120 S 560 40, 585 50"/>
+      <circle cx="20" cy="190" r="9"/>
+      <circle cx="250" cy="80" r="13" class="accent"/>
+      <circle cx="480" cy="120" r="10"/>
+      <circle cx="585" cy="50" r="7"/>
+    </svg>
+
+    <div class="hero-inner">
+      <a href="../index-en.html" class="back-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        Back to Main Portal
+      </a>
+
+      <div class="rule"></div>
+      <h1>Microlearning Pathways</h1>
+      <p class="subtitle">Select the training pathway you want to access:</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <a href="./itinerario-1/index-en.html" class="card c-1">
+        <span class="num" aria-hidden="true">1</span>
+        <h2>Pathway 1</h2>
+        <p>Access the content and resources of the first pathway.</p>
+        <span class="go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a href="./itinerario-2/index-en.html" class="card c-2">
+        <span class="num" aria-hidden="true">2</span>
+        <h2>Pathway 2</h2>
+        <p>Access the content and resources of the second pathway.</p>
+        <span class="go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a href="./itinerario-3/index-en.html" class="card c-3">
+        <span class="num" aria-hidden="true">3</span>
+        <h2>Pathway 3</h2>
+        <p>Access the content and resources of the third pathway.</p>
+        <span class="go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </main>
+
+  <footer>Proyecto Afronta</footer>
+
+</body>
+</html>
