@@ -126,10 +126,10 @@
       font-weight: 600;
     }
   </style>
-<nav aria-label="Miga de pan" class="breadcrumb-nav">
+<nav id="bc-nav" aria-label="Miga de pan" class="breadcrumb-nav">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="../index-es.html">Inicio</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Indicadores de vulnerabilidad</li>
+    <li class="breadcrumb-item"><a id="bc-home" href="../index-es.html">Inicio</a></li>
+    <li id="bc-current" class="breadcrumb-item active" aria-current="page">Indicadores de vulnerabilidad</li>
   </ol>
 </nav>
 
@@ -2295,6 +2295,20 @@
 
         function setLanguage(lang) {
             currentLang = lang;
+
+            /* Fil d'Ariadna segons l'idioma */
+            const bcTexts = {
+                ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", current: "Indicadors de vulnerabilitat" },
+                es: { label: "Miga de pan", home: "Inicio", href: "../index-es.html", current: "Indicadores de vulnerabilidad" },
+                en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", current: "Vulnerability indicators" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcCurrent = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+            if (bcCurrent) bcCurrent.textContent = bc.current;
             const dict = i18nDict[lang] || i18nDict.ca;
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -2795,6 +2809,7 @@
                 document.body.classList.add('embed-mode');
             }
             calcularVulnerabilidad(false);
+            if (currentLang !== 'ca') { setLanguage(currentLang); }
         });
     </script>
 </body>

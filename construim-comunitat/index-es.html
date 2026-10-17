@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+
+<html lang="ca">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Construïm Comunitat® - Simulador Interactiu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+<style>
+:root{--color-marca-primari:#008037;--color-marca-primari-b:#004d21;--color-marca-primari-e:#d8f3e3;--color-negre:#16211b;--color-gris-5:#f3f6f4;--color-gris-15:#d9e0dc;--color-blanc:#fff;--color-enllac:#2258c3;--color-enllac-hover:#0f388a;--color-focus:#ffea61;--color-positiu-text:#006b2d;--color-positiu-fons:#d8f3e3;--color-alerta-text:#b13200;--color-alerta-fons:#feecd7;--font-family-base:Inter,'Segoe UI','Helvetica Neue',Arial,sans-serif;--sh:0 6px 24px rgba(0,77,33,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:linear-gradient(180deg,#e6f4ec 0,#f6f9f7 340px);color:var(--color-negre);font-family:var(--font-family-base);line-height:1.6;padding:16px;min-height:100vh}
+.container{max-width:980px;margin:0 auto}
+.global-timer-bar{position:sticky;top:8px;z-index:900;background:rgba(0,77,33,.96);backdrop-filter:blur(6px);color:#fff;padding:10px 16px;border-radius:14px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.timer-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.timer-display{font-size:1.4rem;font-weight:800;background:#fff;color:var(--color-marca-primari-b);padding:2px 12px;border-radius:8px;min-width:80px;text-align:center;font-variant-numeric:tabular-nums}
+header{background:#fff;border-radius:20px;padding:26px 28px;margin-bottom:18px;box-shadow:var(--sh);border-top:8px solid var(--color-marca-primari);background-image:radial-gradient(circle at 100% 0,#d8f3e3 0,transparent 45%)}
+.logo-uab{max-width:100%;height:auto;max-height:64px;margin-bottom:14px;display:block}
+h1{color:var(--color-marca-primari-b);font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.15;margin-bottom:8px;font-weight:800}
+.subtitle{font-size:1.02rem;color:#4a5a51;max-width:640px}
+nav.main-nav{display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.nav-btn{background:#fff;border:1px solid var(--color-gris-15);padding:9px 16px;font-size:.88rem;font-weight:600;color:var(--color-negre);border-radius:999px;cursor:pointer;transition:.2s;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.nav-btn:hover{background:var(--color-marca-primari-e);border-color:var(--color-marca-primari);transform:translateY(-1px)}
+.nav-btn.active{background:var(--color-marca-primari);color:#fff;border-color:var(--color-marca-primari);box-shadow:0 4px 12px rgba(0,128,55,.35)}
+.screen{display:none}
+.screen.active{display:block;background:#fff;border-radius:20px;padding:30px;box-shadow:var(--sh);animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2{color:var(--color-marca-primari-b);font-size:1.5rem;margin:6px 0 14px;padding-left:14px;border-left:6px solid var(--color-marca-primari);line-height:1.25}
+h3{color:var(--color-marca-primari-b);font-size:1.12rem;margin:16px 0 8px}
+p{margin-bottom:12px}
+ul,ol{margin-left:22px;margin-bottom:15px}
+li{margin-bottom:6px}
+a{color:var(--color-enllac);font-weight:600}
+a:hover{color:var(--color-enllac-hover)}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--color-focus);outline-offset:2px;box-shadow:0 0 0 5px rgba(0,0,0,.65)}
+select,input[type=number],input[type=text]{font-family:inherit;border:1px solid var(--color-gris-15);border-radius:8px;background:#fff}
+.tool-box{background:var(--color-gris-5);border:1px solid var(--color-gris-15);padding:20px;border-radius:14px;margin:16px 0}
+.highlight-box{background:var(--color-marca-primari-e);border-left:6px solid var(--color-marca-primari);padding:18px 20px;border-radius:12px;margin-bottom:16px}
+.stepper{display:flex;flex-direction:column;gap:14px;margin:20px 0}
+.step-card{display:flex;gap:16px;background:#fff;border:1px solid var(--color-gris-15);padding:16px 18px;border-radius:14px;align-items:flex-start;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:.2s}
+.step-card:hover{transform:translateX(4px);border-color:var(--color-marca-primari)}
+.step-number{background:linear-gradient(135deg,#00a047,#004d21);color:#fff;font-weight:800;font-size:1.1rem;min-width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-content h4{font-size:1.05rem;color:var(--color-marca-primari-b);margin-bottom:4px}
+.step-content p{font-size:.92rem;margin-bottom:0}
+.mode-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:20px 0}
+.mode-card{background:linear-gradient(160deg,#fff,#eefaf3);border:2px solid var(--color-marca-primari);border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+.mode-card:hover{transform:translateY(-4px);box-shadow:var(--sh)}
+.btn-action{background:var(--color-marca-primari);color:#fff;border:none;padding:10px 18px;font-size:.92rem;font-weight:700;border-radius:10px;cursor:pointer;margin-top:10px;display:inline-block;text-decoration:none;text-align:center;transition:.2s;box-shadow:0 3px 8px rgba(0,128,55,.25)}
+.btn-action:hover{background:var(--color-marca-primari-b);transform:translateY(-1px)}
+.cat-section{background:var(--color-gris-5);border:1px solid var(--color-gris-15);border-radius:14px;padding:18px;margin-bottom:20px}
+.cat-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;border-bottom:2px solid var(--color-gris-15);padding-bottom:8px;margin-bottom:12px;gap:10px}
+.cat-title{font-size:1.15rem;font-weight:800;color:var(--color-marca-primari-b)}
+.pdf-link-btn{background:#fff;color:var(--color-enllac);border:1px solid var(--color-enllac);padding:6px 12px;border-radius:999px;font-size:.8rem;font-weight:700;text-decoration:none;display:inline-flex;gap:4px}
+.pdf-link-btn:hover{background:var(--color-enllac);color:#fff}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card-box{background:#fff;border:1px solid var(--color-gris-15);border-top:6px solid var(--color-marca-primari);padding:15px;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.05);display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+.card-box:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+.badge{display:inline-block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:var(--color-marca-primari-e);color:var(--color-marca-primari-b);margin-bottom:8px;width:fit-content}
+.card-box.personatge{border-top-color:#008037}.card-box.vulnerabilitat{border-top-color:#c93700}.card-box.recurs{border-top-color:#2258c3}.card-box.dificultat{border-top-color:#f88c12}
+.card-box h4{font-size:.98rem;margin-bottom:6px}
+.card-box p{font-size:.86rem;color:#434b56;margin-bottom:10px}
+.thermometer-container{background:linear-gradient(to right,#f07070,#faae57,#52ff9d);height:30px;border-radius:15px;overflow:hidden;margin:15px 0;position:relative;border:2px solid var(--color-gris-15)}
+.thermometer-pointer{height:100%;background:var(--color-marca-primari-b);width:5px;position:absolute;top:0;transition:left .5s ease}
+.thermo-mark{position:absolute;left:75%;top:0;height:100%;border-left:3px dashed #fff}
+.progress-outer{background:var(--color-gris-15);height:26px;border-radius:13px;overflow:hidden;margin:15px 0}
+.progress-inner{height:100%;background:linear-gradient(90deg,#00a047,#006b2d);width:0;transition:width .5s ease;text-align:center;color:#fff;font-size:.85rem;line-height:26px;font-weight:700;white-space:nowrap}
+.alert-box{padding:13px 15px;border-radius:10px;margin-top:12px;font-weight:600;font-size:.92rem}
+.alert-success{background:var(--color-positiu-fons);color:var(--color-positiu-text);border:1px solid var(--color-marca-primari)}
+.alert-warning{background:var(--color-alerta-fons);color:var(--color-alerta-text);border:1px solid var(--color-alerta-text)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,30,12,.7);backdrop-filter:blur(3px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-content{background:#fff;max-width:460px;width:100%;padding:28px;border-radius:18px;border-top:8px solid var(--color-marca-primari);position:relative;animation:fade .25s}
+.modal-close{position:absolute;top:10px;right:16px;font-size:1.6rem;cursor:pointer;font-weight:700;color:#596473}
+textarea{width:100%;min-height:90px;padding:10px;margin:4px 0 14px;border:1px solid var(--color-gris-15);border-radius:10px;font-family:inherit}
+label{font-weight:600}
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0 22px}
+.glance div{background:var(--color-gris-5);border:1px solid var(--color-gris-15);border-top:5px solid var(--color-marca-primari);border-radius:12px;padding:14px;font-size:.9rem}
+.glance b{display:block;color:var(--color-marca-primari-b);margin-bottom:3px}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem;margin:8px 0;background:#fff;border-radius:10px;overflow:hidden}
+.tbl th{background:var(--color-marca-primari-b);color:#fff;text-align:left;padding:8px 10px}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--color-gris-15)}
+.site-footer{margin-top:28px;background:var(--color-marca-primari-b);color:#e8f5ee;border-radius:20px;padding:26px 28px;font-size:.88rem}
+.site-footer a{color:#fff}
+.site-footer .cc{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.site-footer .cc img{height:34px;width:auto;background:#fff;padding:4px 6px;border-radius:6px}
+.site-footer p{margin-bottom:8px}
+@media(max-width:600px){body{padding:10px}.screen.active{padding:18px}header{padding:20px}.step-card{padding:13px}}
+@media print{.global-timer-bar,nav.main-nav,.btn-action,.modal-overlay,button,select,input[type="text"],.site-footer .cc a{display:none!important}body{padding:0;background:#fff}.container{max-width:100%}.screen{display:none!important}#scForm{display:block!important;box-shadow:none}#printCoopSummary{display:block!important;margin-bottom:20px;border:1px solid var(--color-gris-15);padding:12px;border-radius:6px}textarea{border:1px solid var(--color-gris-15);min-height:100px}header{box-shadow:none}.site-footer{background:#fff;color:#000;border:1px solid #ccc}.site-footer a{color:#000}}
+
+/* ===== V6 · pulit editorial ===== */
+:root{--font-display:Fraunces,'Iowan Old Style',Georgia,serif;--ease:cubic-bezier(.22,1,.36,1)}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(900px 420px at 85% -80px,#cdeedb 0,transparent 70%),linear-gradient(180deg,#eaf6ef 0,#f7faf8 420px)}
+header{position:relative;overflow:hidden;isolation:isolate;border-top:0;padding:clamp(28px,5vw,52px) clamp(22px,4vw,44px);background:linear-gradient(135deg,#fff 0,#f2faf5 100%)}
+header>*:not(.hero-net){position:relative;z-index:1}
+.hero-net{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.85}
+header::after{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:linear-gradient(90deg,var(--color-marca-primari),#2258c3 55%,#f88c12);z-index:2}
+h1,h2{font-family:var(--font-display);letter-spacing:-.015em}
+h1{font-weight:800;font-size:clamp(2.1rem,6vw,3.6rem);line-height:1.04;text-wrap:balance}
+.subtitle{font-size:clamp(1rem,2vw,1.18rem);max-width:60ch;text-wrap:pretty}
+h2{border-left:0;padding-left:0;font-size:clamp(1.5rem,3.2vw,2rem);display:flex;align-items:center;gap:12px}
+h2::before{content:"";flex:0 0 28px;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--color-marca-primari),#2258c3)}
+.screen.active{animation:scrIn .55s var(--ease) both;box-shadow:var(--sh),0 30px 60px -40px rgba(0,77,33,.35)}
+@keyframes scrIn{from{opacity:0;transform:translateY(18px) scale(.995)}to{opacity:1;transform:none}}
+.nav-btn{transition:transform .25s var(--ease),background .2s,box-shadow .25s}
+.nav-btn:active{transform:scale(.96)}
+.card-box{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.card-box:hover{transform:translateY(-6px) rotate(-.4deg)}
+.btn-action{transition:transform .25s var(--ease),box-shadow .25s,filter .2s}
+.btn-action:hover{transform:translateY(-2px);box-shadow:0 8px 18px -6px rgba(0,77,33,.5);filter:brightness(1.05)}
+.btn-action:active{transform:translateY(0) scale(.98)}
+:focus-visible{outline:3px solid #16211b;outline-offset:3px;box-shadow:0 0 0 6px var(--color-focus);border-radius:8px}
+.scroll-bar{position:fixed;left:0;top:0;height:4px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--color-marca-primari),#2258c3,#f88c12);z-index:999;pointer-events:none}
+.lang-switch{box-shadow:0 2px 10px rgba(0,77,33,.08)}
+.req-item{transition:border-color .3s,box-shadow .3s;animation:fade .4s ease}
+.req-item.flash{animation:stamp .55s var(--ease)}
+@keyframes stamp{0%{transform:scale(1)}35%{transform:scale(1.025) rotate(-.4deg);box-shadow:0 12px 28px -10px rgba(0,77,33,.45)}100%{transform:none}}
+.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--color-gris-5);padding:4px;border-radius:999px;border:1px solid var(--color-gris-15)}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-size:.8rem;font-weight:700;cursor:pointer;color:#33423a;transition:background .2s,color .2s,transform .2s var(--ease)}
+.seg button:hover{background:#fff}
+.seg button[aria-pressed=true]{color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.seg button[data-k=pending][aria-pressed=true]{background:#596473}.seg button[data-k=granted][aria-pressed=true]{background:#006b2d}
+.seg button[data-k=conditional][aria-pressed=true]{background:#b35f00}.seg button[data-k=denied][aria-pressed=true]{background:#b13200}
+@media(max-width:600px){.screen.active{padding:20px 16px}.seg{border-radius:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.hero-net{display:none}}
+@media print{.hero-net,.scroll-bar{display:none!important}header::after{display:none}}
+.card-img{display:block;width:100%;padding:0;margin:10px 0 8px;border:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px -8px rgba(0,0,0,.45);transition:transform .35s var(--ease)}
+.card-img:hover{transform:scale(1.02)}
+.card-img img{display:block;width:100%;height:auto;background:var(--color-gris-5)}
+.img-missing{display:block;padding:14px 8px;font-size:.78rem;color:#b13200;background:var(--color-alerta-fons);border-radius:8px;word-break:break-all}
+#modalImg{display:none;max-width:100%;max-height:68vh;margin:12px auto 0;border-radius:10px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.cards-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+</style>
+<style>
+dialog{border:none;border-radius:16px;padding:24px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.35)}dialog::backdrop{background:rgba(0,30,12,.6)}dialog p{margin-bottom:12px}dialog input{width:100%;padding:9px;margin-bottom:12px}
+#projector{display:none;position:fixed;inset:0;z-index:1500;background:var(--color-marca-primari-b);color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:30px;text-align:center}#projector.on{display:flex}#pjTimer{font-size:min(22vw,14rem);font-weight:800;font-variant-numeric:tabular-nums;line-height:1}#projector .progress-outer{width:min(90%,900px);height:44px}#projector .progress-inner{line-height:44px;font-size:1.2rem}#pjDice{font-size:1.6rem;max-width:900px}
+.flash{animation:fl .5s 6 alternate}@keyframes fl{to{background:#ffea61}}
+.team-row{background:#fff;border:1px solid var(--color-gris-15);border-radius:12px;padding:12px;margin-top:10px}.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:8px}.crit-grid label{font-size:.78rem;font-weight:600}.crit-grid select{width:100%;padding:6px;margin-top:2px}.team-tot{float:right;font-weight:800;color:var(--color-marca-primari-b)}
+@media print{#projector,dialog{display:none!important}#printReqSummary{border:1px solid var(--color-gris-15);padding:12px;border-radius:6px}}
+</style>
+<style>
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lang-bar{display:flex;justify-content:flex-end;margin:0 0 10px}
+.lang-switch{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 6px 4px 10px;background:#fff;border:1px solid var(--color-gris-15);border-radius:999px}
+.req-summary{font-size:.85rem;font-weight:700;color:var(--color-marca-primari-b);margin:6px 0}
+.req-empty{color:#596473;font-style:italic;font-size:.85rem;padding:10px 0}
+.req-item{background:#fff;border:1px solid var(--color-gris-15);border-left:6px solid #a85d00;border-radius:10px;padding:10px 12px;margin-top:10px}
+.req-item.req-granted{border-left-color:#008037}.req-item.req-conditional{border-left-color:#e07b00}.req-item.req-denied{border-left-color:#c93700}.req-item.req-pending{border-left-color:#7e8a9a}
+.req-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.req-phrase{margin:6px 0 8px;font-size:.92rem}
+.req-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.req-ctrl label{font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:6px}
+.req-ctrl select,.req-ctrl input{padding:6px 8px;border-radius:6px;border:1px solid var(--color-gris-15);font-size:.85rem}
+.req-ctrl input{flex:1;min-width:200px}
+.req-del{background:none;border:none;cursor:pointer;font-size:1.1rem}
+#reqDlg{border:0;border-radius:14px;padding:20px;width:min(92%,560px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.req-form{display:grid;gap:8px;margin:10px 0}.req-form label{font-size:.85rem;font-weight:700}.req-form input{width:100%;padding:8px;border:1px solid var(--color-gris-15);border-radius:6px;margin-top:2px;font-size:.92rem}
+.lang-btn{background:#fff;border:1px solid var(--color-gris-15);padding:7px 12px;font-size:.82rem;font-weight:700;border-radius:999px;cursor:pointer;color:var(--color-negre);font-family:inherit}
+.lang-btn:hover{background:var(--color-marca-primari-e);border-color:var(--color-marca-primari)}
+.lang-btn[aria-pressed="true"]{background:var(--color-marca-primari-b);color:#fff;border-color:var(--color-marca-primari-b)}
+#projector .progress-outer{background:#fff;border:0;box-shadow:none}
+#projector .progress-inner{background:linear-gradient(90deg,#00a047,#52ff9d);color:transparent;font-size:0;line-height:0;overflow:hidden}
+#pjPct{font-size:1.6rem;font-weight:700;font-variant-numeric:tabular-nums}
+.cat-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.cat-tools select{padding:7px 8px;font-size:.85rem;min-width:170px}
+.cat-tools .btn-action{margin-top:0;padding:7px 12px;font-size:.82rem}
+.cat-tools .count{font-size:.8rem;color:#596473;margin-left:auto}
+.btn-ghost{background:#fff!important;color:var(--color-marca-primari-b)!important;border:1px solid var(--color-marca-primari)!important;box-shadow:none!important}
+.type-badge{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:6px;background:#eef1ef;color:#2b3a31;margin:0 0 8px 6px;border:1px solid var(--color-gris-15)}
+.card-new{animation:fade .5s ease}
+@media print{.lang-switch,.cat-tools{display:none!important}}
+</style>
+</head>
+<body>
+<!-- Estils directes per al fil d'Ariadna -->
+<style>
+  .breadcrumb-nav {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.9rem;
+  }
+  .breadcrumb {
+    display: flex !important;
+    flex-wrap: wrap;
+    list-style: none !important; /* Treu els números 1, 2... */
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: "›"; /* Separador entre elements */
+    padding: 0 0.5rem;
+    color: #6c757d;
+  }
+  .breadcrumb-item a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  .breadcrumb-item a:hover {
+    text-decoration: underline;
+  }
+  .breadcrumb-item.active {
+    color: #495057;
+    font-weight: 600;
+  }
+</style>
+
+<!-- HTML del fil d'Ariadna -->
+<nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="../index.html">Inici</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Construïm Comunitat</li>
+  </ol>
+</nav>
+  <!-- Resta del contingut de Construïm Comunitat -->
+  ...
+</main>
+<div class="container">
+<!-- SELECTOR D'IDIOMA (damunt del cronòmetre) -->
+<div class="lang-bar">
+<div class="lang-switch" data-i18n-aria="langGroup" role="group"><span aria-hidden="true">🌐</span><button class="lang-btn" data-i18n="t013" data-lang="ca" lang="ca" onclick="setLang('ca')" type="button">Català</button><button class="lang-btn" data-i18n="t014" data-lang="es" lang="es" onclick="setLang('es')" type="button">Castellano</button><button class="lang-btn" data-i18n="t015" data-lang="en" lang="en" onclick="setLang('en')" type="button">English</button></div>
+</div>
+<!-- CRONÒMETRE GLOBAL, INDICADOR DE DESAT I BOTO REINICI -->
+<div class="global-timer-bar">
+<div style="font-weight:600; font-size:0.9rem; display:flex; align-items:center; gap:8px;">
+<span data-i18n="t001">⏱️ Cronòmetre de l'Activitat</span>
+<!-- INDICADOR DE DESAT AUTOMÀTIC -->
+<span data-i18n="t002" id="saveStatus" style="opacity: 0; transition: opacity 0.4s ease; color: var(--color-focus); font-size: 0.8rem; font-weight: bold;">💾 Guardat</span>
+</div>
+<div class="timer-controls">
+<select id="timerMode" onchange="changeTimerMode()" style="padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;">
+<option data-i18n="t003" value="600">Fase actual (10 min)</option>
+<option data-i18n="t004" value="300">Fase breu (5 min)</option>
+<option data-i18n="t005" value="2700">Activitat Total (45 min)</option>
+<option data-i18n="t006" value="3600">Activitat Total (60 min)</option>
+<option data-i18n="t007" value="custom">Personalitzat...</option>
+</select>
+<span id="customTimerWrap" style="display:none;">
+<input data-i18n-aria="minAria" data-i18n-ph="phMin" id="customMinutesInput" max="180" min="1" placeholder="Min" style="width: 55px; padding: 3px 5px; font-size: 0.85rem; border-radius: 4px; border: 1px solid var(--color-gris-15);" type="number"/>
+<button onclick="applyCustomTimer()" style="padding: 3px 7px; font-size: 0.8rem; border-radius: 4px; background: var(--color-focus); color: var(--color-negre); border: none; cursor: pointer; font-weight: bold;">OK</button>
+</span>
+<span aria-live="off" class="timer-display" id="timerDisplay">10:00</span>
+<button class="btn-action" data-i18n="t008" onclick="toggleProjector()" style="margin-top:0;padding:4px 10px;font-size:.8rem;background:#ffea61;color:#16211b;">📺 Mode projector</button>
+<button class="btn-action" data-i18n="t009" onclick="toggleTimer()" style="margin-top:0; padding:4px 10px; font-size:0.8rem; background-color:#ffffff; color:#004d21;">Inicia/Pausa</button>
+<button class="btn-action" data-i18n="t010" onclick="resetTimer()" style="margin-top:0; padding:4px 10px; font-size:0.8rem; background-color:transparent; color:#ffffff; border:1px solid #ffffff;">Reinicia Temps</button>
+</div>
+</div>
+<header>
+<canvas class="hero-net" aria-hidden="true"></canvas>
+<img alt="Logotip de la Universitat Autònoma de Barcelona, Projecte AFRONTA i GRAFO" class="logo-uab" data-i18n-alt="logoAlt" src="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2023/07/Logos-Afronta-Grafo-UAB-2048x644.png"/>
+<h1 data-i18n="t011">Construïm Comunitat®</h1>
+<div class="subtitle" data-i18n="t012">Eina web interactiva sobre vulnerabilitat social, recursos d'afrontament i suport mutu</div>
+</header>
+<!-- NAVEGACIÓ PRINCIPAL -->
+<nav class="main-nav" data-i18n-aria="navAria">
+<button class="nav-btn active" data-i18n="t016" onclick="switchScreen('sc1')">1. Estructura</button>
+<button class="nav-btn" data-i18n="t017" onclick="switchScreen('scExemple')">2. Exemple pràctic</button>
+<button class="nav-btn" data-i18n="t018" onclick="switchScreen('sc2')">3. Modalitats</button>
+<button class="nav-btn" data-i18n="t019" onclick="switchScreen('scCards')">4. Galeria de cartes</button>
+<button class="nav-btn" data-i18n="t020" onclick="switchScreen('scCoop')">5a. Modalitat cooperativa</button>
+<button class="nav-btn" data-i18n="t021" onclick="switchScreen('scComp')">5b. Modalitat competitiva</button>
+<button class="nav-btn" data-i18n="t022" onclick="switchScreen('scForm')">6. Reflexió i resum</button>
+</nav>
+<!-- PANTALLA 1: ESTRUCTURA I INSTRUCCIONS -->
+<div class="screen active" id="sc1">
+<h2 data-i18n="t023">Presentació de la Proposta</h2>
+<div class="highlight-box">
+<p data-i18n="t024"><strong>Construïm Comunitat</strong>® és una proposta formativa que convida a reflexionar, de manera col·laborativa, sobre la vulnerabilitat social, els recursos d’afrontament i la importància del suport mutu.</p>
+<p data-i18n="t025">Mitjançant la cooperació i la reflexió compartida, les persones participants s’endinsen en diverses situacions de vulnerabilitat sociocultural, posant en pràctica el pensament crític, la capacitat d’anàlisi i el treball en equip per trobar solucions creatives, viables i sostenibles.</p>
+<p data-i18n="t026" style="margin-bottom:0;">Flexible i adaptable, <strong>Construïm Comunitat</strong>® pot viure’s com una dinàmica gamificada —amb un toc de joc i repte— o com una experiència plenament cooperativa, on allò més valuós és el procés compartit i l’aprenentatge conjunt.</p>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t027">🎭 Rols interns suggerits (opcional)</h3>
+<p data-i18n="t028" style="font-size:0.9rem;">Suggeriment opcional (no forma part de les regles oficials) per organitzar l'equip i afavorir la participació de tothom:</p>
+<ul style="font-size:0.85rem; margin-bottom:0;">
+<li data-i18n="t029"><strong>🗣️ Portaveu:</strong> Presenta la diagnosi del cas i defensa la petició argumentada de recursos davant la facilitació ("Govern").</li>
+<li data-i18n="t030"><strong>🤝 Comissionat/da de Suport Mutu:</strong> Negocia directament amb els altres equips la cessió, intercanvi o gestió compartida de recursos comunitaris.</li>
+<li data-i18n="t031"><strong>✍️ Secretari/a:</strong> Enregistra les circumstàncies consensuades, anota els acords al tauler i redigeix el formulari de reflexió final.</li>
+</ul>
+</div>
+<h2 data-i18n="t032">Així es juga, d'un cop d'ull</h2>
+<div class="glance">
+<div data-i18n="t033"><b>👥 Equips</b>Grups de preferiblement 3 persones, més un/a docent o facilitador/a que fa de «Govern».</div>
+<div data-i18n="t034"><b>🎭 Format</b>Joc de rol amb dues variants: cooperativa (sense punts) o competitiva (amb punts).</div>
+<div data-i18n="t035"><b>🃏 Materials</b>Cartes impreses o digitals i una barra de benestar col·lectiu (física o projectada).</div>
+<div data-i18n="t036"><b>🎯 Objectiu</b>Assolir entre tots un nivell òptim de benestar col·lectiu: empatia, pensament crític i acció comunitària.</div>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t037" style="margin-top:0">🃏 Els 4 tipus de carta i com es combinen</h3>
+<p data-i18n="t038" style="margin-bottom:0"><strong>Personatge</strong> (una persona que podria ser vulnerable: cal deduir el perquè) + <strong>Vulnerabilitat</strong> (dificultat social, vital o estructural) → l'equip demana <strong>Recursos d'afrontament</strong> (serveis, suports o estratègies) → el Govern hi afegeix <strong>Dificultats especials</strong> (prejudicis, estigma, manca d'informació…).</p>
+</div>
+<h2 data-i18n="t039">Com funciona l'activitat? Instruccions generals</h2>
+<div class="stepper">
+<div class="step-card">
+<div class="step-number">1</div>
+<div class="step-content">
+<h4 data-i18n="t040">Fase 1: Presentació i distribució</h4>
+<p data-i18n="t041">Es formen equips de preferiblement 3 persones, s'expliquen l'objectiu i els rols, i s'assignen els rols interns. La persona que assumeix el rol de <strong>facilitador/a ("Govern")</strong> lliura a cada grup una carta de <em>Personatge</em> i cartes de <em>Vulnerabilitat</em>.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">2</div>
+<div class="step-content">
+<h4 data-i18n="t042">Fase 2: Diagnosi i construcció de la situació</h4>
+<p data-i18n="t043">L'equip no rep una història tancada: <strong>consensua activament les circumstàncies vitals i socials concretes</strong> que envolten el personatge triat o assignat. Aquesta construcció compartida permet treballar directament a l'aula els processos i mecanismes socials de generació de la vulnerabilitat, identificant causes estructurals, necessitats urgents i fortaleses individuals.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">3</div>
+<div class="step-content">
+<h4 data-i18n="t044">Fase 3: Petició argumentada de recursos</h4>
+<p data-i18n="t045">Els equips sol·liciten <em>Recursos d'afrontament</em> al "Govern". Cal justificar la petició amb rigor. <strong>El/la facilitador/a ("Govern") té la potestat discrecional de decidir què concedeix o denega</strong>, així com d'establir condicions, facilitats o requisits addicionals segons la qualitat de l'argumentació.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">4</div>
+<div class="step-content">
+<h4 data-i18n="t046">Fase 4: Resolució de dificultats</h4>
+<p data-i18n="t047">S'introdueixen cartes de <em>Dificultat especial</em>. <strong>El/la facilitador/a ("Govern") decideix quines dificultats específiques o barreres administratives imposa en cada cas</strong>. L'equip ha de redissenyar la seva estratègia o negociar ajut amb altres equips.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">5</div>
+<div class="step-content">
+<h4 data-i18n="t048">Fase 5: Reflexió i puntuació</h4>
+<p data-i18n="t049">Valoració col·lectiva: es posen en comú les solucions, s'omple la barra de benestar (i, en la variant competitiva, es reparteixen punts) i es reflexiona sobre la vida real.</p>
+</div>
+</div>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t050">Plantilla de Guió d'Argumentació (Petició de Recursos)</h3>
+<p data-i18n="t051">Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:</p>
+<blockquote data-i18n="t052" style="background-color: var(--color-blanc); padding: 12px; border-left: 4px solid var(--color-marca-primari); margin-bottom: 0;">
+<em>"Com a equip del personatge <strong>[Nom]</strong>, demanem el recurs <strong>[Nom del recurs]</strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]</strong> mitjançant l'acció concreta de <strong>[Acció proposta]</strong>, aprofitant la fortalesa de <strong>[Fortalesa]</strong>."</em>
+</blockquote>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t053" style="margin-top:0">🏛️ El/la facilitador/a («Govern») fa quatre coses</h3>
+<ul style="margin-bottom:8px"><li data-i18n="t054">Gestiona els recursos i en controla la disponibilitat (accepta, denega o posa condicions).</li><li data-i18n="t055">Avalua les propostes i fa preguntes o posa reptes.</li><li data-i18n="t056">Pot afegir, en qualsevol moment, cartes de dificultat sobrevinguda.</li><li data-i18n="t057">Dinamitza la reflexió final.</li></ul>
+<p data-i18n="t058"><strong>Esdeveniments col·lectius opcionals</strong> (el Govern en pot activar algun, o inventar-ne d'altres):</p>
+<table class="tbl"><tr><th data-i18n="t059">Esdeveniment</th><th data-i18n="t060">Conseqüència</th></tr>
+<tr><td data-i18n="t061">Retallada pressupostària</td><td data-i18n="t062">Es redueixen o es retarden els recursos disponibles.</td></tr>
+<tr><td data-i18n="t063">Congelació d'ajuts públics</td><td data-i18n="t064">Cap equip pot obtenir nous recursos durant una ronda.</td></tr>
+<tr><td data-i18n="t065">Atac informàtic</td><td data-i18n="t066">La comunicació entre equips queda suspesa durant una ronda.</td></tr>
+<tr><td data-i18n="t067">Crisi informativa</td><td data-i18n="t068">Augmenten les fake news: tots els equips perden un punt.</td></tr></table>
+<p data-i18n="t069" style="margin-bottom:0;font-size:.88rem">🎲 També pot fer llançar un dau (p. ex. després de la fase 3): trobareu la taula d'efectes a la modalitat competitiva.</p>
+</div>
+<button class="btn-action" data-i18n="t070" onclick="switchScreen('scExemple')">Anar a l'Exemple Pràctic →</button>
+</div>
+<!-- PANTALLA: EXEMPLE PRÀCTIC -->
+<div class="screen" id="scExemple">
+<h2 data-i18n="t071">Exemple Pràctic de Joc Pas a Pas</h2>
+<p data-i18n="t072">Aquest exemple il·lustra el desenvolupament d'una partida real per entendre clarament el funcionament i les diferències entre les dues modalitats:</p>
+<div class="highlight-box">
+<h3 data-i18n="t073" style="margin-top:0;">💡 Premissa Clau: Construcció del Personatge i Rol del Govern</h3>
+<p data-i18n="t074"><strong>• La història no està prefixada:</strong> Les cartes de personatge donen només un marc general. Les característiques concretes, el context familiar, la trajectòria i el detall de les vulnerabilitats <strong>s'han de negociar i consensuar per l'equip</strong> a la Fase 2.</p>
+<p data-i18n="t075" style="margin-bottom:0;"><strong>• Potestat del/de la Facilitador/a ("Govern"):</strong> La persona dinamitzadora té el control exclusiu per decidir quins recursos concedeix o denega, així com quines facilitats o obstacles afegits posa a cada grup segons la coherència del seu discurs.</p>
+</div>
+<div style="background: var(--color-blanc); border: 1px solid var(--color-gris-15); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+<h4 data-i18n="t076" style="color: var(--color-marca-primari-b);">Cas Base de l'Exemple: Maria (72 anys)</h4>
+<p data-i18n="t077" style="font-size:0.9rem; margin-bottom:0;"><strong>Cartes inicials assignades:</strong> Personatge "Maria" + Vulnerabilitat "Pobresa energètica" + Dificultat "Escletxa digital".</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px; margin: 20px 0;">
+<div style="background: var(--color-gris-5); border: 1px solid var(--color-gris-15); border-top: 5px solid var(--color-marca-primari); padding: 18px; border-radius: 8px;">
+<h3 data-i18n="t078" style="margin-top:0; color: var(--color-marca-primari-b);">Desenvolupament en Modalitat cooperativa</h3>
+<p data-i18n="t079"><strong>Pas 1: Consens del cas i diagnosi (Fase 2)</strong><br/>
+        L'Equip 1 rep la carta "Maria". L'equip consensua les seves circumstàncies: decideixen que la Maria té una pensió de 480€, viu en un pis de lloguer antic sense aïllament i pateix artrosi. Analitzen la construcció de la seva vulnerabilitat: no és només manca de diners, sinó la pèrdua de la xarxa veïnal tradicional del barri. Identifiquen com a fortalesa la seva voluntat d'ajudar en el casal d'avis.</p>
+<p data-i18n="t080"><strong>Pas 2: Petició al Govern i Resolució del Facilitador/a (Fase 3)</strong><br/>
+        L'Equip 1 demana un ajut d'urgència social per a la calefacció. El/la <strong>facilitador/a ("Govern")</strong> avalua la petició i decideix <em>denegar temporalment el recurs econòmic directe</em> per simular el col·lapse de l'administració, però els ofereix la possibilitat de cercar alternatives comunitàries.</p>
+<p data-i18n="t081"><strong>Pas 3: Negociació de Suport Mutu (Fase 4)</strong><br/>
+        Afrontant la dificultat de l'escletxa digital, el/la <em>Comissionat/da de Suport Mutu</em> de l'Equip 1 contacta amb l'Equip 2 (que gestiona un personatge jove, l'Ahmed). Acorden que l'Ahmed tramitarà per internet la tarifa social de la Maria, i a canvi la Maria li farà d'enllaç amb el teixit associatiu del barri.</p>
+<p data-i18n="t082" style="margin-bottom:0;"><strong>Pas 4: Impacte Col·lectiu (Fase 5)</strong><br/>
+        Sense dependre exclusivament de la concessió del Govern, els equips autogestionen la solució i debaten a l'aula sobre com el suport mutu redueix la vulnerabilitat real.</p>
+</div>
+<div style="background: var(--color-gris-5); border: 1px solid var(--color-gris-15); border-top: 5px solid var(--color-alerta-text); padding: 18px; border-radius: 8px;">
+<h3 data-i18n="t083" style="margin-top:0; color: var(--color-alerta-text);">Desenvolupament en Modalitat competitiva</h3>
+<p data-i18n="t084"><strong>Pas 1: Consens del cas i Argumentació (Fases 2 i 3)</strong><br/>
+        L'Equip 1 consensua la història de la Maria i presenta una sol·licitud formal davant el Govern utilitzant la plantilla d'argumentació. Sol·liciten el recurs <em>Serveis Socials d'Atenció Primària</em>.</p>
+<p data-i18n="t085"><strong>Pas 2: Decisió del Govern i Llançament del Dau d'atzar</strong><br/>
+        El/la <strong>facilitador/a ("Govern")</strong> valora la diagnosi amb 2 punts i la identificació de recursos amb 1 punt. Després de la fase 3 llança el Dau d'atzar i surt un <strong>"1: Retallada pressupostària"</strong>: el recurs sol·licitat es reduirà o es retardarà.</p>
+<p data-i18n="t086"><strong>Pas 3: Reajustament davant l'obstacle</strong><br/>
+        L'Equip 1 ha de reaccionar ràpidament davant la dificultat imposada: demanen un recurs complementari (<em>Banc del Temps Veïnal</em>) per cobrir l'escletxa digital mentre s'eixuga la retallada. El Govern valora la creativitat de la proposta amb 1 punt, la col·laboració amb 2 i la gestió de la dificultat amb 2 (Total: 2+1+1+2+2 = 8/10 punts).</p>
+<p data-i18n="t087" style="margin-bottom:0;"><strong>Pas 4: Suma a la Calculadora i Llindar del 75%</strong><br/>
+        La puntuació de l'Equip 1 (8 pts) s'introdueix a la <em>Calculadora de Benestar Col·lectiu</em> juntament amb la dels altres equips. La suma total arriba al 80% (superant el llindar del 75%), demostrant que la comunitat se n'ha sortit malgrat els imprevistos del Govern.</p>
+</div>
+</div>
+<button class="btn-action" data-i18n="t088" onclick="switchScreen('sc2')">Anar a la Selecció de Modalitat →</button>
+</div>
+<!-- PANTALLA 2: MODALITATS -->
+<div class="screen" id="sc2">
+<h2 data-i18n="t089">Trieu la Modalitat de Joc</h2>
+<p data-i18n="t090">Totes dues modalitats exploren la mateixa realitat social, però adapten la mecànica a l'objectiu pedagògic del grup:</p>
+<div class="mode-container">
+<div class="mode-card">
+<div>
+<h3 data-i18n="t091">Modalitat cooperativa</h3>
+<p data-i18n="t092"><strong>Sense puntuació.</strong> Enfocada en l'anàlisi de casos, el suport mutu i el diàleg col·lectiu entre tots els equips.</p>
+</div>
+<button class="btn-action" data-i18n="t093" onclick="switchScreen('scCoop')">Triar Modalitat cooperativa</button>
+</div>
+<div class="mode-card">
+<div>
+<h3 data-i18n="t094">Modalitat competitiva</h3>
+<p data-i18n="t095"><strong>Amb puntuació.</strong> Incorpora avaluació de criteris, el llindar del 75% de benestar col·lectiu i esdeveniments d'atzar.</p>
+</div>
+<button class="btn-action" data-i18n="t096" onclick="switchScreen('scComp')">Triar Modalitat competitiva</button>
+</div>
+</div>
+</div>
+<!-- PANTALLA 3: GALERIA DE CARTES I CERCADOR -->
+<div class="screen" id="scCards">
+<h2 data-i18n="t097">Galeria de cartes i Descàrrega de PDF</h2>
+<p data-i18n="t098">Exploreu les cartes directament en pantalla, carregueu-ne més a l'atzar sense haver de descarregar res o baixeu els blocs complets en format PDF:</p>
+<div style="margin-bottom: 20px;">
+<input aria-label="Cerca" data-i18n-aria="searchAria" data-i18n-ph="phSearch" id="cardSearchInput" oninput="filterCards()" placeholder="🔍 Cerca cartes per nom o paraula clau (ex: digital, pensió, veïnal...)..." style="width:100%; padding: 10px; font-size:0.95rem; border: 2px solid var(--color-marca-primari); border-radius: 6px;" type="text"/>
+</div>
+<div class="tool-box" style="background: var(--color-marca-primari-e); border-color: var(--color-marca-primari);">
+<h3 data-i18n="t099">🎲 Simulador de Robar Carta a l'Atzar</h3>
+<p data-i18n="t100" style="font-size:0.9rem;">Si esteu jugant en línia sense cartes físiques impreses, podeu robar personatges, vulnerabilitats, recursos o dificultats a l'atzar durant la partida:</p>
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+<select id="drawCategory" style="flex:1; min-width:180px; padding: 8px; border-radius: 4px; border: 1px solid var(--color-gris-15);">
+<option data-i18n="t101" value="all">Totes les Categories (Vulnerabilitats, Recursos i Dificultats)</option>
+<option data-i18n="t102" value="Personatge">Personatges (perfils)</option>
+<option data-i18n="t103" value="Vulnerabilitat">Vulnerabilitats</option>
+<option data-i18n="t104" value="Recurs">Recursos d'Afrontament</option>
+<option data-i18n="t105" value="Dificultat">Dificultats Especials</option>
+</select>
+<button class="btn-action" data-i18n="t106" onclick="drawRandomCard()" style="margin-top:0;">Robar Carta</button>
+</div>
+<div id="drawnCardResult" style="margin-top: 12px;"></div>
+</div>
+<!-- SECCIÓ 1: PERSONATGES -->
+<div class="cat-section">
+<div class="cat-header">
+<span class="cat-title" data-i18n="t107">1. Cartes de Personatges</span>
+<a class="pdf-link-btn" data-i18n="t108" href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Bloc-cartes-personatges.pdf" rel="noopener" target="_blank">
+          📄 Descarregar PDF Personatges
+        </a>
+</div>
+<p data-i18n="t109" style="font-size:0.85rem; color:#596473; margin-bottom:10px;">Perfils de persones en situació de vulnerabilitat sociocultural.</p>
+<div class="cat-tools" id="toolsPersonatge"></div>
+<div class="cards-grid" id="gridPersonatges"></div>
+</div>
+<!-- SECCIÓ 2: VULNERABILITATS -->
+<div class="cat-section">
+<div class="cat-header">
+<span class="cat-title" data-i18n="t110">2. Cartes de Vulnerabilitats</span>
+<a class="pdf-link-btn" data-i18n="t111" href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Bloc-cartes-vulnerabilitat.pdf" rel="noopener" target="_blank">
+          📄 Descarregar PDF Vulnerabilitats
+        </a>
+</div>
+<p data-i18n="t112" style="font-size:0.85rem; color:#596473; margin-bottom:10px;">Situacions de risc, precarietat o dificultat vital i estructural.</p>
+<div class="cat-tools" id="toolsVulnerabilitat"></div>
+<div class="cards-grid" id="gridVulnerabilitats"></div>
+</div>
+<!-- SECCIÓ 3: RECURSOS -->
+<div class="cat-section">
+<div class="cat-header">
+<span class="cat-title" data-i18n="t113">3. Cartes de Recursos d'Afrontament</span>
+<a class="pdf-link-btn" data-i18n="t114" href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Bloc-cartes-recursos-afrontament.pdf" rel="noopener" target="_blank">
+          📄 Descarregar PDF Recursos
+        </a>
+</div>
+<p data-i18n="t115" style="font-size:0.85rem; color:#596473; margin-bottom:10px;">Serveis, ajuts públics i xarxes comunitàries de suport.</p>
+<div class="cat-tools" id="toolsRecurs"></div>
+<div class="cards-grid" id="gridRecursos"></div>
+</div>
+<!-- SECCIÓ 4: DIFICULTATS -->
+<div class="cat-section">
+<div class="cat-header">
+<span class="cat-title" data-i18n="t116">4. Cartes de Dificultats Especials</span>
+<a class="pdf-link-btn" data-i18n="t117" href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Bloc-cartes-dificultat-especial.pdf" rel="noopener" target="_blank">
+          📄 Descarregar PDF Dificultats
+        </a>
+</div>
+<p data-i18n="t118" style="font-size:0.85rem; color:#596473; margin-bottom:10px;">Obstacles administratius, actitudinals o socials que compliquen el cas.</p>
+<div class="cat-tools" id="toolsDificultat"></div>
+<div class="cards-grid" id="gridDificultats"></div>
+</div>
+</div>
+<!-- PANTALLA 4a: MODALITAT COOPERATIVA -->
+<div class="screen" id="scCoop">
+<h2 data-i18n="t119">Funcionament de la Modalitat cooperativa</h2>
+<p data-i18n="t120">Sense competició ni puntuació. L'objectiu és la reflexió compartida i la resolució conjunta dels casos de manera horitzontal.</p>
+<div class="tool-box">
+<h3 data-i18n="t121">Fases de Desenvolupament (<a href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf" rel="noopener" target="_blank">Pàgines 5 i 6 del PDF d'estructura</a>)</h3>
+<ol>
+<li data-i18n="t122"><strong>Fase 1:</strong> Assignació de cartes als equips (grups de 3-4 persones).</li>
+<li data-i18n="t123"><strong>Fase 2:</strong> Consens i diagnosi de les circumstàncies del cas.</li>
+<li data-i18n="t124"><strong>Fase 3:</strong> Petició de recursos al Govern. Si es denega un recurs públic, altres equips poden oferir suport comunitari directament.</li>
+<li data-i18n="t125"><strong>Fase 4:</strong> Resolució de les dificultats especials: amb recursos, cooperació o estratègies alternatives.</li>
+<li data-i18n="t126"><strong>Fase 5:</strong> Reflexió final compartida, sense puntuació.</li>
+</ol>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t127">Plantilla de Guió d'Argumentació (Petició de Recursos)</h3>
+<p data-i18n="t128">Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:</p>
+<blockquote data-i18n="t129" style="background-color: var(--color-blanc); padding: 12px; border-left: 4px solid var(--color-marca-primari); margin-bottom: 0;">
+<em>"Com a equip del personatge <strong>[Nom]</strong>, demanem el recurs <strong>[Nom del recurs]</strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]</strong> mitjançant l'acció concreta de <strong>[Acció proposta]</strong>, aprofitant la fortalesa de <strong>[Fortalesa]</strong>."</em>
+</blockquote>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t130">Rol del/de la Facilitador/a (<a href="https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf" rel="noopener" target="_blank">Pàgines 6 i 7 del PDF d'estructura</a>)</h3>
+<p data-i18n="t131" style="margin-bottom:0;">Actua com a dinamitzador/a i "Govern" obert, amb la facultat discrecional de concedir o denegar recursos i d'introduir preguntes reflexives per desbloquejar situacions i guiar el debat.</p>
+</div>
+<div class="highlight-box">
+<h3 data-i18n="t132">Rol suggerit (opcional): Comissionat/da de Suport Mutu</h3>
+<p data-i18n="t133" style="margin-bottom:0;">Per afavorir la cooperació, es pot proposar que cada equip designi un/a <strong>Comissionat/da de Suport Mutu</strong>. La seva funció és negociar directament amb els altres equips per intercanviar o compartir recursos sense haver de passar pel "Govern", promovent l'autogestió comunitària.</p>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t134">Tauler de Seguiment Comunitari (Sense puntuació)</h3>
+<p data-i18n="t135" style="font-size:0.85rem; color:#596473;">Espai en blanc per anar enregistrant dinàmicament durant la sessió els acords, xarxes de suport mutu i compromisos entre equips:</p>
+<div id="coopTrackerContainer">
+<div data-i18n="t136" id="emptyCoopMsg" style="color:#7e8a9a; font-style:italic; font-size:0.85rem; padding:10px 0;">
+          Encara no s'ha registrat cap acord. Premeu el botó de sota per anar introduint les situacions a mesura que es produeixin a l'aula.
+        </div>
+</div>
+<button class="btn-action" data-i18n="t137" onclick="addCoopNote()" style="margin-top: 10px;">+ Afegir Acord de Suport Mutu</button>
+</div>
+<div class="tool-box req-box">
+<h3 data-i18n="t206">Tauler de Peticions de Recursos</h3>
+<p data-i18n="t207" style="font-size:0.85rem; color:#596473;">Registreu cada petició de recursos feta al Govern amb la plantilla de guió d'argumentació. La persona facilitadora ("Govern") indica si ha estat atesa o no.</p>
+<div class="req-summary" aria-live="polite"></div>
+<div class="req-list"></div>
+<button class="btn-action" data-i18n="t209" onclick="openReqDlg()" style="margin-top: 10px;">+ Afegir petició de recursos</button>
+</div>
+<button class="btn-action" data-i18n="t138" onclick="switchScreen('scForm')">Anar al Formulari de Reflexió Final →</button>
+</div>
+<!-- PANTALLA 4b: MODALITAT COMPETITIVA -->
+<div class="screen" id="scComp">
+<h2 data-i18n="t139">Funcionament de la Modalitat competitiva</h2>
+<p data-i18n="t140">Aquesta modalitat introdueix un sistema de repte basat en la consecució del benestar col·lectiu i l'avaluació de criteris d'anàlisi.</p>
+<div class="stepper">
+<div class="step-card">
+<div class="step-number">A</div>
+<div class="step-content">
+<h4 data-i18n="t141">1. Consens, Diagnosi i Arguments</h4>
+<p data-i18n="t142">Els equips consensuen la història del seu cas, l'exposen i argumenten la petició de recursos davant el Govern (0-2 pts per criteri).</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">B</div>
+<div class="step-content">
+<h4 data-i18n="t143">2. Llançament del Dau d'atzar</h4>
+<p data-i18n="t144">El Govern llança el Dau d'atzar per introduir un esdeveniment imprevist que altera les condicions inicials i la concessió de recursos.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">C</div>
+<div class="step-content">
+<h4 data-i18n="t145">3. Adaptació i Re-puntuació del Govern</h4>
+<p data-i18n="t146">Els equips reajusten la seva resposta davant l'obstacle o oportunitat i el Govern avalua la capacitat d'adaptació.</p>
+</div>
+</div>
+<div class="step-card">
+<div class="step-number">D</div>
+<div class="step-content">
+<h4 data-i18n="t147">4. Assoliment del Llindar (75%)</h4>
+<p data-i18n="t148">Es sumen els punts a la calculadora. La comunitat guanya conjuntament si supera el 75% del benestar total possible.</p>
+</div>
+</div>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t149">Plantilla de Guió d'Argumentació (Petició de Recursos)</h3>
+<p data-i18n="t150">Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:</p>
+<blockquote data-i18n="t151" style="background-color: var(--color-blanc); padding: 12px; border-left: 4px solid var(--color-marca-primari); margin-bottom: 0;">
+<em>"Com a equip del personatge <strong>[Nom]</strong>, demanem el recurs <strong>[Nom del recurs]</strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]</strong> mitjançant l'acció concreta de <strong>[Acció proposta]</strong>, aprofitant la fortalesa de <strong>[Fortalesa]</strong>."</em>
+</blockquote>
+</div>
+<div class="tool-box req-box">
+<h3 data-i18n="t206">Tauler de Peticions de Recursos</h3>
+<p data-i18n="t207" style="font-size:0.85rem; color:#596473;">Registreu cada petició de recursos feta al Govern amb la plantilla de guió d'argumentació. La persona facilitadora ("Govern") indica si ha estat atesa o no.</p>
+<div class="req-summary" aria-live="polite"></div>
+<div class="req-list"></div>
+<button class="btn-action" data-i18n="t209" onclick="openReqDlg()" style="margin-top: 10px;">+ Afegir petició de recursos</button>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t152">Dau d'atzar</h3>
+<p data-i18n="t153"><strong>Funció en el joc:</strong> Permet simular la incertesa del món real. Llançar-lo abans de la suma final permet al Govern avaluar la flexibilitat dels equips.</p>
+<button class="btn-action" data-i18n="t154" onclick="rollDice()">Llançar Dau d'atzar</button>
+<div aria-live="polite" id="diceResult" style="margin-top: 12px; font-weight: bold; background: var(--color-blanc); padding: 10px; border-left: 4px solid var(--color-marca-primari);"></div>
+</div>
+<div class="tool-box">
+<h3 data-i18n="t155">Calculadora de Benestar Col·lectiu</h3>
+<p data-i18n="t156">Cada equip pot obtenir fins a 10 punts (0-2 per cadascun dels 5 criteris). Els punts no són automàtics: cal argumentar cada acció i el Govern la valora. Només compten si el col·lectiu arriba al llindar que fixi prèviament el Govern (exemple habitual: <strong>75% del total possible</strong>). L'equip amb més punts pot rebre una distinció simbòlica.</p>
+<label data-i18n="t157" for="numEquips">Nombre d'equips participants:</label>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 6px">
+<select id="numEquips" onchange="onTeamsSelect()" style="flex:1;min-width:220px;padding:8px"></select>
+<span id="customTeamsWrap" style="display:none"><input data-i18n-aria="customTeamsAria" id="customTeams" max="20" min="2" onchange="onCustomTeams()" style="width:90px;padding:8px" type="number" value="9"/></span>
+</div>
+<p id="teamsInfo" style="font-size:.85rem;color:#4a5a51;margin-bottom:10px"></p>
+<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px"><div><label data-i18n="t158" for="thr">Llindar de benestar (%) fixat pel Govern</label><br/><input id="thr" max="100" min="1" onchange="calculateWellbeing();saveData()" style="width:110px;padding:8px" type="number" value="75"/></div><div><label data-i18n="t159" for="adj">Ajust global de punts (p. ex. +1 dau, −1 crisi informativa)</label><br/><input id="adj" onchange="calculateWellbeing();saveData()" style="width:110px;padding:8px" type="number" value="0"/></div></div>
+<div id="teamsContainer"></div>
+<h4 data-i18n="t160" style="margin-top:15px; font-size:0.95rem;">Barra de benestar col·lectiu (la ratlla blanca marca el llindar fixat pel Govern):</h4>
+<div class="thermometer-container">
+<div class="thermometer-pointer" id="thermoPointer" style="left: 0%;"></div><div class="thermo-mark"></div>
+</div>
+<div class="progress-outer">
+<div class="progress-inner" id="progressBar">0%</div>
+</div>
+<div id="statusMessage" role="status"></div>
+<div style="margin-top: 15px; font-size: 0.85rem; background-color: var(--color-blanc); padding: 10px; border-radius: 4px; border: 1px solid var(--color-gris-15);">
+<strong data-i18n="t161">Criteris d'Avaluació del Govern (0 a 2 punts cadascun):</strong>
+<table class="tbl"><tr><th data-i18n="t162">Criteri</th><th data-i18n="t163">0 punts</th><th data-i18n="t164">1 punt</th><th data-i18n="t165">2 punts</th></tr>
+<tr><td data-i18n="t166">Diagnosi de la situació</td><td data-i18n="t167">Superficial o incoherent</td><td data-i18n="t168">Parcial</td><td data-i18n="t169">Clara, realista i contextualitzada</td></tr>
+<tr><td data-i18n="t170">Identificació de recursos adequats</td><td data-i18n="t171">Cap recurs</td><td data-i18n="t172">Un recurs poc justificat</td><td data-i18n="t173">Ben triat, justificat i viable</td></tr>
+<tr><td data-i18n="t174">Creativitat i viabilitat de propostes</td><td data-i18n="t175">Inexistent o poc viable</td><td data-i18n="t176">Funcional però poc innovadora</td><td data-i18n="t177">Original, realista i adaptable</td></tr>
+<tr><td data-i18n="t178">Col·laboració amb altres equips</td><td data-i18n="t179">No cooperen</td><td data-i18n="t180">Contacte limitat</td><td data-i18n="t181">Activa i propositiva</td></tr>
+<tr><td data-i18n="t182">Gestió de dificultats especials</td><td data-i18n="t183">No fan front a la dificultat</td><td data-i18n="t184">Afrontament parcial</td><td data-i18n="t185">Solució ben pensada</td></tr></table>
+</div>
+</div>
+<button class="btn-action" data-i18n="t186" onclick="switchScreen('scForm')">Anar al Formulari de Reflexió Final →</button>
+</div>
+<!-- PANTALLA 5: FORMULARI -->
+<div class="screen" id="scForm">
+<h2 data-i18n="t187">Formulari de Reflexió i Debat Final</h2>
+<p data-i18n="t188" style="font-size:.85rem;color:#4a5a51">💾 Les respostes es desen automàticament només en aquest navegador i dispositiu.</p>
+<p data-i18n="t189">Completeu les preguntes finals de la sessió. En acabar, podeu descarregar l'informe en format PDF o en fitxer de text (.txt).</p>
+<div id="printScores" style="display:none;white-space:pre-wrap;margin-bottom:16px"></div>
+<div id="printCoopSummary" style="display:none;">
+<h3 data-i18n="t190" style="color: var(--color-marca-primari-b);">Acords de Suport Mutu Enregistrats durant la Sessió:</h3>
+<div id="printCoopSummaryContent"></div>
+</div>
+<div id="printReqSummary" style="display:none;margin-bottom:20px">
+<h3 data-i18n="t219" style="color: var(--color-marca-primari-b);">Peticions de recursos i resposta del Govern:</h3>
+<div id="printReqSummaryContent"></div>
+</div>
+<div class="tool-box">
+<label data-i18n="t191" for="q1">1. Quines han estat les causes principals de la vulnerabilitat analitzada?</label>
+<textarea data-i18n-ph="phAnswer" id="q1" oninput="saveData()" placeholder="Escriviu la resposta aquí..."></textarea>
+<label data-i18n="t192" for="q2">2. Quines fortaleses individuals i comunitàries hem identificat?</label>
+<textarea data-i18n-ph="phAnswer" id="q2" oninput="saveData()" placeholder="Escriviu la resposta aquí..."></textarea>
+<label data-i18n="t193" for="q3">3. Com ha funcionat la cooperació i negociació entre equips? Ha estat fàcil cooperar? Per què?</label>
+<textarea data-i18n-ph="phAnswer" id="q3" oninput="saveData()" placeholder="Escriviu la resposta aquí..."></textarea>
+<label data-i18n="t194" for="q4">4. Com es poden optimitzar els recursos públics i comunitaris? Quines propostes es podrien aplicar a la vida real?</label>
+<textarea data-i18n-ph="phAnswer" id="q4" oninput="saveData()" placeholder="Escriviu la resposta aquí..."></textarea>
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+<button class="btn-action" data-i18n="t195" onclick="prepareAndPrint()" style="background-color: var(--color-marca-primari-b);">🖨️ Imprimir / Guardar Informe en PDF</button>
+<button class="btn-action" data-i18n="t196" onclick="downloadSummary()" style="background-color: var(--color-gris-5); color: var(--color-negre); border: 1px solid var(--color-gris-15);">📄 Descarregar Fitxer (.txt)</button>
+<button class="btn-action" data-i18n="t197" onclick="resetEntireSession()" style="background-color: #c93700;">🔄 Reiniciar Activitat</button>
+</div>
+</div>
+</div>
+<div aria-label="Mode projector" aria-modal="true" data-i18n-aria="projAria" id="projector" role="dialog"><button class="btn-action" data-i18n="t198" onclick="toggleProjector()">✕ Tancar (Esc)</button><div id="pjTimer">10:00</div><div aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-outer" id="pjOuter" role="progressbar"><div aria-hidden="true" class="progress-inner" id="pjBar"></div></div><div id="pjPct"></div><div id="pjDice"></div></div>
+<dialog id="reqDlg" aria-labelledby="reqDlgTitle"><form method="dialog" onsubmit="event.preventDefault();submitReq()">
+<h3 id="reqDlgTitle" data-i18n="t210">Nova petició de recursos</h3>
+<p data-i18n="t211" style="font-size:.88rem">Ompliu els camps de la plantilla de guió d'argumentació:</p>
+<div class="req-form">
+<label><span data-i18n="t212">Equip</span><input id="rq_team" type="text" maxlength="60"/></label>
+<label><span data-i18n="t213">Personatge</span><input id="rq_char" type="text" maxlength="120"/></label>
+<label><span data-i18n="t214">Recurs sol·licitat</span><input id="rq_res" type="text" maxlength="160"/></label>
+<label><span data-i18n="t215">Vulnerabilitat</span><input id="rq_vuln" type="text" maxlength="160"/></label>
+<label><span data-i18n="t216">Acció concreta proposada</span><input id="rq_act" type="text" maxlength="200"/></label>
+<label><span data-i18n="t217">Fortalesa aprofitada</span><input id="rq_str" type="text" maxlength="160"/></label>
+</div>
+<p id="rq_err" role="alert" style="color:#c93700;font-weight:700;font-size:.85rem;min-height:1.2em"></p>
+<div><button class="btn-action" type="button" data-i18n="t218" onclick="submitReq()">Afegir petició</button> <button class="btn-action" type="button" data-i18n="t200" onclick="document.getElementById('reqDlg').close()" style="background:#596473">Cancel·la</button></div>
+</form></dialog>
+<dialog id="dlg"><form method="dialog"><p id="dlgMsg"></p><input id="dlgIn" type="text"/><div><button class="btn-action" data-i18n="t199" value="ok">D'acord</button> <button class="btn-action" data-i18n="t200" id="dlgNo" style="background:#596473" value="no">Cancel·la</button></div></form></dialog>
+<!-- MODAL ZOOM DE CARTES -->
+<div class="modal-overlay" id="cardModal" onclick="closeModal(event)">
+<div class="modal-content" onclick="event.stopPropagation()">
+<button class="modal-close" data-i18n-aria="close" onclick="closeModal()" style="background:none;border:none" type="button">×</button>
+<span class="badge" data-noi18n="" id="modalBadge">Categoria</span>
+<img id="modalImg" alt="" onerror="imgErr(this)"/>
+<h3 data-noi18n="" id="modalTitle" style="margin-top:10px;">Títol de la Carta</h3>
+<p data-noi18n="" id="modalDesc" style="margin-top:10px; font-size:0.95rem; color:#434b56;">Descripció detallada de la carta...</p>
+<div data-i18n="t201" style="margin-top:15px; font-size:0.8rem; color:#7e8a9a; border-top:1px solid #d4d8de; padding-top:8px;">
+        Projecte AFRONTA - Universitat Autònoma de Barcelona
+      </div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="cc">
+<a data-deed="" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca" rel="noopener license" target="_blank"><img alt="Llicència Creative Commons Reconeixement – No Comercial – Sense Obres Derivades 4.0" data-i18n-alt="ccAlt" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyAgUFVCTElDICctLy9XM0MvL0RURCBTVkcgMS4xLy9FTicgICdodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQnPgo8c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDU3MCAyMDAiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDU3MCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPi5zdDB7ZmlsbDojQUJCMUFBO30gLnN0MXtmaWxsOiNGRkZGRkY7fSAuc3Qye2ZpbGw6I0ZGRkZGRjtzdHJva2U6IzAwMDAwMDtzdHJva2Utd2lkdGg6MTQ7c3Ryb2tlLW1pdGVybGltaXQ6MTA7fTwvc3R5bGU+CiA8cGF0aCBjbGFzcz0ic3QwIiBkPSJtNTYwIDE5Ny41aC01NTBjLTQuMiAwLTcuNS0zLjQtNy41LTcuNXYtMTgwYzAtNC4yIDMuNC03LjUgNy41LTcuNWg1NTBjNC4yIDAgNy41IDMuNCA3LjUgNy41djE4MGMwIDQuMS0zLjQgNy41LTcuNSA3LjV6Ii8+CiA8cGF0aCBkPSJNNTYwLDBIMTBDNC41LDAsMCw0LjUsMCwxMHYxODBjMCw1LjUsNC41LDEwLDEwLDEwaDU1MGM1LjUsMCwxMC00LjUsMTAtMTBWMTBDNTcwLDQuNSw1NjUuNSwwLDU2MCwweiBNMTAsNmg1NTAgYzIuMiwwLDQsMS44LDQsNHYxMzBINlYxMEM2LDcuOCw3LjgsNiwxMCw2eiIvPgogPGNpcmNsZSBjbGFzcz0ic3QwIiBjeD0iOTgiIGN5PSI5MyIgcj0iODYuNSIvPgogPHBhdGggY2xhc3M9InN0MSIgZD0ibTIzOC44IDE2Ny4yYzMuMy0xLjYgNS0zLjggNS02LjdzLTEuMi01LjItMy41LTYuN2MtMi4zLTEuNi01LjUtMi40LTkuNi0yLjQtMi4xIDAtNS45IDAuMS0xMS4yIDAuM3YzNS40aDEyLjFjNC4zIDAgNy44LTAuOSAxMC41LTIuOHM0LjEtNC41IDQuMS03LjdjLTAuMS00LjctMi41LTcuOC03LjQtOS40em0tMTIuMy0xMC4zYzEuNi0wLjEgMi45LTAuMSA0LTAuMSA0LjEgMCA2LjIgMS40IDYuMiA0LjEgMCAzLjEtMi4zIDQuNi02LjggNC42LTEuMiAwLTIuMyAwLTMuNC0wLjF2LTguNXptMTAuMiAyMy44Yy0xLjQgMS0zLjcgMS40LTYuOCAxLjQtMC45IDAtMi0wLjEtMy40LTAuMnYtMTEuN2MxLjcgMCAyLjgtMC4xIDMuNS0wLjEgMy4zIDAgNS42IDAuNSA2LjkgMS40czIgMi40IDIgNC40Yy0wLjEgMi4zLTAuOCAzLjktMi4yIDQuOHoiLz4KIDxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMjcyLjEgMTUxLjggMjYyLjcgMTY2LjkgMjUzLjQgMTUxLjggMjQ1LjkgMTUxLjggMjU5LjIgMTcyLjcgMjU5LjIgMTg3LjMgMjY2LjIgMTg3LjMgMjY2LjIgMTcyLjcgMjc5LjUgMTUxLjgiLz4KIDxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMzYwLjEgMTczIDM0MS44IDE1MiAzMzguNSAxNTIgMzM4LjUgMTg2LjggMzQ1LjEgMTg2LjggMzQ1LjEgMTY1LjIgMzYzLjkgMTg3LjIgMzY2LjcgMTg3LjIgMzY2LjcgMTUyIDM2MC4xIDE1MiIvPgogPHBhdGggY2xhc3M9InN0MSIgZD0ibTM5OC4zIDE3OC40Yy0yLjEgMi4zLTQuOSAzLjUtOC42IDMuNS0zLjIgMC01LjctMS4xLTcuNi0zLjNzLTIuOS01LjEtMi45LTguOSAxLTYuOCAzLjEtOS4yIDQuNy0zLjYgNy45LTMuNmMzLjQgMCA1LjkgMC43IDcuNCAyLjFsMi44LTUuMWMtMi43LTEuNi02LjItMi40LTEwLjYtMi40LTUuMiAwLTkuNCAxLjctMTIuNyA1LjJzLTUgNy44LTUgMTIuOWMwIDUuNSAxLjUgOS45IDQuNSAxMy4xczcuMiA0LjggMTIuNiA0LjggOS41LTEuMyAxMi4zLTRsLTMuMi01LjF6Ii8+CiA8cG9seWdvbiBjbGFzcz0ic3QxIiBwb2ludHM9IjQ4MS40IDE3Mi45IDQ2Mi45IDE1MS42IDQ1OS41IDE1MS42IDQ1OS41IDE4Ni44IDQ2Ni4yIDE4Ni44IDQ2Ni4yIDE2NSA0ODUuMiAxODcuMyA0ODguMSAxODcuMyA0ODguMSAxNTEuNiA0ODEuNCAxNTEuNiIvPgogPHBhdGggY2xhc3M9InN0MSIgZD0ibTUxOS41IDE1NS45Yy0zLjMtMy03LjktNC41LTEzLjYtNC41LTEuNCAwLTQuOSAwLjEtMTAuNSAwLjN2MzUuMmg4LjdjMTMuNiAwIDIwLjQtNi4zIDIwLjQtMTkgMC01LTEuNy05LTUtMTJ6bS01LjIgMjEuOWMtMiAyLjMtNC43IDMuNC04LjMgMy40LTEuMyAwLTIuNSAwLTMuNi0wLjF2LTI0YzEuNC0wLjEgMi40LTAuMiAzLjItMC4yIDcuOCAwIDExLjcgMy44IDExLjcgMTEuMyAwIDQuMS0xIDcuMy0zIDkuNnoiLz4KIDxjaXJjbGUgY2xhc3M9InN0MSIgY3g9IjI0OCIgY3k9IjcwLjYiIHI9IjUwIi8+CiA8cGF0aCBkPSJtMjQ4IDI1LjZjMjQuOCAwIDQ1IDIwLjIgNDUgNDVzLTIwLjIgNDUtNDUgNDUtNDUtMjAuMi00NS00NSAyMC4yLTQ1IDQ1LTQ1bTAtMTBjLTMwLjQgMC01NSAyNC42LTU1IDU1czI0LjYgNTUgNTUgNTUgNTUtMjQuNiA1NS01NS0yNC42LTU1LTU1LTU1eiIvPgogPGNpcmNsZSBjeD0iMjQ4IiBjeT0iNDMiIHI9IjcuOSIvPgogPHBhdGggZD0ibTI2MS4yIDU3LjljMC0wLjggMC4xLTIuMy0xLjEtMy41LTEuMS0xLjEtMi43LTEuMS0zLjUtMS4xaC0xNy4zYy0wLjggMC0yLjMtMC4xLTMuNSAxLjEtMS4xIDEuMS0xLjEgMi43LTEuMSAzLjV2MjEuOWg1djI2LjRoMTYuNHYtMjYuNGg1YzAuMSAwIDAuMS0xOC45IDAuMS0yMS45eiIvPgogPGNpcmNsZSBjbGFzcz0ic3QyIiBjeD0iOTgiIGN5PSI5MyIgcj0iNjguNSIvPgogPHBhdGggZD0ibTc4LjggMTA2LjNjLTYuOSAwLTEwLjEtNS43LTEwLjEtMTMuM3MyLjctMTMuMyAxMC4xLTEzLjNjMiAwIDYgMS4xIDguMyA2LjFsMTAtNS4yYy00LjItNy43LTExLjUtMTAuOC0xOS45LTEwLjgtMTIuMiAwLTIyIDguNi0yMiAyMy4zIDAgMTQuOSA5LjIgMjMuMyAyMi40IDIzLjMgOC41IDAgMTUuNy00LjcgMTkuNy0xMS43bC05LjMtNC43Yy0yIDQuOC01LjIgNi4zLTkuMiA2LjN6Ii8+CiA8cGF0aCBkPSJtMTMxLjQgOTkuOGMtMi4xIDUtNS4yIDYuNS05LjIgNi41LTYuOSAwLTEwLjEtNS43LTEwLjEtMTMuM3MyLjctMTMuMyAxMC4xLTEzLjNjMiAwIDYgMS4xIDguMyA2LjFsMTAtNS4yYy00LjItNy43LTExLjUtMTAuOC0xOS45LTEwLjgtMTIuMiAwLTIyIDguNi0yMiAyMy4zIDAgMTQuOSA5LjIgMjMuMyAyMi40IDIzLjMgOC41IDAgMTUuNy00LjcgMTkuNy0xMS43bC05LjMtNC45eiIvPgogPGNpcmNsZSBjbGFzcz0ic3QxIiBjeD0iNDkyIiBjeT0iNzAuNiIgcj0iNTAiLz4KIDxwYXRoIGQ9Im00OTIgMjUuNmMyNC44IDAgNDUgMjAuMiA0NSA0NXMtMjAuMiA0NS00NSA0NS00NS0yMC4yLTQ1LTQ1IDIwLjItNDUgNDUtNDVtMC0xMGMtMzAuNCAwLTU1IDI0LjYtNTUgNTVzMjQuNiA1NSA1NSA1NSA1NS0yNC42IDU1LTU1LTI0LjYtNTUtNTUtNTV6Ii8+CiA8cmVjdCB4PSI0NzEuNCIgeT0iNzQuMyIgd2lkdGg9IjQxLjIiIGhlaWdodD0iMTAuMyIvPgogPHJlY3QgeD0iNDcxLjQiIHk9IjU1LjQiIHdpZHRoPSI0MS4yIiBoZWlnaHQ9IjEwLjMiLz4KIDxjaXJjbGUgY2xhc3M9InN0MSIgY3g9IjM3MCIgY3k9IjcwLjYiIHI9IjUwIi8+CiA8cGF0aCBkPSJtMzcwIDI1LjZjMjQuOCAwIDQ1IDIwLjIgNDUgNDVzLTIwLjIgNDUtNDUgNDUtNDUtMjAuMi00NS00NSAyMC4yLTQ1IDQ1LTQ1bTAtMTBjLTMwLjQgMC01NSAyNC42LTU1IDU1czI0LjYgNTUgNTUgNTUgNTUtMjQuNiA1NS01NS0yNC42LTU1LTU1LTU1eiIvPgogPHBhdGggZD0ibTQyMCA4Ni42LTQuNSA5LjktOTUuNS00MyA0LjUtOS45IDk1LjUgNDN6Ii8+CiA8cGF0aCBkPSJtMzU4LjMgODEuOGMzLjUgNSAxNC40IDUuMyAxOC4xIDMuMiAxLjQtMC44IDEuNy0zIDEuNy00LjUgMC0xLTAuMy0xLjktMC44LTIuNS0wLjYtMC42LTItMi4xLTMuNy0yLjUtOC42LTIuMi0xNC42LTUtMTYuOS03LTIuOS0yLjUtMy40LTQuMi0zLjQtOC42czEuMy04LjEgNC4xLTEwLjdjMi45LTIuNiA3LTQgMTIuNC00IDUuMiAwIDEyLjUgMS40IDE2LjEgNS42bC01LjkgNi41Yy0zLjQtMi44LTUuOC0zLjEtOS45LTMuMS0yLjYgMC0zLjkgMC40LTUgMS4xcy0xLjYgMS42LTEuNiAyLjhjMCAxIDAuNSAxLjkgMS41IDIuNnMzLjYgMS44IDguOCAzLjJjNS45IDEuNiA5LjggMy41IDExLjkgNS44czMuMSA1LjMgMy4xIDkuMWMwIDQuNi0xLjYgOC4zLTQuOCAxMS4zcy03LjEgNS4zLTEyLjggNS4zYy03LjMgMC0xNy0yLjYtMTkuNy03LjMiLz4KIDxwYXRoIGQ9Im0zNjYuNCAzNi41djEyaDUuMnYtMTJoLTUuMnptMCA1Ni43djEwLjNoNS4ydi0xMC4zaC01LjJ6Ii8+Cjwvc3ZnPgo="/></a>
+<span class="cc-text" data-i18n="t202"><strong>Construïm Comunitat</strong> es distribueix sota la llicència <a data-deed="" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca" rel="noopener license" target="_blank">CC BY-NC-ND 4.0</a>.</span>
+</div>
+<p data-i18n="t203">Podeu compartir-la lliurement amb finalitats no comercials, citant-ne l'autoria i sense modificar-ne el contingut original.</p>
+<p data-i18n="t204">© Jorge Grau Rebollo, Projecte AFRONTA (PID2022-139502OB-I00), Grup GRAFO, Universitat Autònoma de Barcelona, 2025. Alguns continguts han estat generats parcialment amb assistència d'IA.</p>
+<p data-i18n="t205" style="margin-bottom:0">Materials i regles: <a href="https://webs.uab.cat/afronta/recursos/materiales-formativos/activitat-ludica-formativa/" rel="noopener" target="_blank">webs.uab.cat/afronta</a> · Contacte: <a href="mailto:proyectoafronta@gmail.com">proyectoafronta@gmail.com</a></p>
+</footer>
+</div>
+<script src="cartas/cards-manifest.js"></script>
+<script>
+const I18N={"ca": {"t001": "⏱️ Cronòmetre de l'Activitat", "t002": "💾 Guardat", "t003": "Fase actual (10 min)", "t004": "Fase breu (5 min)", "t005": "Activitat Total (45 min)", "t006": "Activitat Total (60 min)", "t007": "Personalitzat...", "t008": "📺 Mode projector", "t009": "Inicia/Pausa", "t010": "Reinicia Temps", "t011": "Construïm Comunitat®", "t012": "Eina web interactiva sobre vulnerabilitat social, recursos d'afrontament i suport mutu", "t013": "Català", "t014": "Castellano", "t015": "English", "t016": "1. Estructura", "t017": "2. Exemple pràctic", "t018": "3. Modalitats", "t019": "4. Galeria de cartes", "t020": "5a. Modalitat cooperativa", "t021": "5b. Modalitat competitiva", "t022": "6. Reflexió i resum", "t023": "Presentació de la Proposta", "t024": "<strong>Construïm Comunitat<\/strong>® és una proposta formativa que convida a reflexionar, de manera col·laborativa, sobre la vulnerabilitat social, els recursos d’afrontament i la importància del suport mutu.", "t025": "Mitjançant la cooperació i la reflexió compartida, les persones participants s’endinsen en diverses situacions de vulnerabilitat sociocultural, posant en pràctica el pensament crític, la capacitat d’anàlisi i el treball en equip per trobar solucions creatives, viables i sostenibles.", "t026": "Flexible i adaptable, <strong>Construïm Comunitat<\/strong>® pot viure’s com una dinàmica gamificada —amb un toc de joc i repte— o com una experiència plenament cooperativa, on allò més valuós és el procés compartit i l’aprenentatge conjunt.", "t027": "🎭 Rols interns suggerits (opcional)", "t028": "Suggeriment opcional (no forma part de les regles oficials) per organitzar l'equip i afavorir la participació de tothom:", "t029": "<strong>🗣️ Portaveu:<\/strong> Presenta la diagnosi del cas i defensa la petició argumentada de recursos davant la facilitació (\"Govern\").", "t030": "<strong>🤝 Comissionat/da de Suport Mutu:<\/strong> Negocia directament amb els altres equips la cessió, intercanvi o gestió compartida de recursos comunitaris.", "t031": "<strong>✍️ Secretari/a:<\/strong> Enregistra les circumstàncies consensuades, anota els acords al tauler i redigeix el formulari de reflexió final.", "t032": "Així es juga, d'un cop d'ull", "t033": "<b>👥 Equips<\/b>Grups de preferiblement 3 persones, més un/a docent o facilitador/a que fa de «Govern».", "t034": "<b>🎭 Format<\/b>Joc de rol amb dues variants: cooperativa (sense punts) o competitiva (amb punts).", "t035": "<b>🃏 Materials<\/b>Cartes impreses o digitals i una barra de benestar col·lectiu (física o projectada).", "t036": "<b>🎯 Objectiu<\/b>Assolir entre tots un nivell òptim de benestar col·lectiu: empatia, pensament crític i acció comunitària.", "t037": "🃏 Els 4 tipus de carta i com es combinen", "t038": "<strong>Personatge<\/strong> (una persona que podria ser vulnerable: cal deduir el perquè) + <strong>Vulnerabilitat<\/strong> (dificultat social, vital o estructural) → l'equip demana <strong>Recursos d'afrontament<\/strong> (serveis, suports o estratègies) → el Govern hi afegeix <strong>Dificultats especials<\/strong> (prejudicis, estigma, manca d'informació…).", "t039": "Com funciona l'activitat? Instruccions generals", "t040": "Fase 1: Presentació i distribució", "t041": "Es formen equips de preferiblement 3 persones, s'expliquen l'objectiu i els rols, i s'assignen els rols interns. La persona que assumeix el rol de <strong>facilitador/a (\"Govern\")<\/strong> lliura a cada grup una carta de <em>Personatge<\/em> i cartes de <em>Vulnerabilitat<\/em>.", "t042": "Fase 2: Diagnosi i construcció de la situació", "t043": "L'equip no rep una història tancada: <strong>consensua activament les circumstàncies vitals i socials concretes<\/strong> que envolten el personatge triat o assignat. Aquesta construcció compartida permet treballar directament a l'aula els processos i mecanismes socials de generació de la vulnerabilitat, identificant causes estructurals, necessitats urgents i fortaleses individuals.", "t044": "Fase 3: Petició argumentada de recursos", "t045": "Els equips sol·liciten <em>Recursos d'afrontament<\/em> al \"Govern\". Cal justificar la petició amb rigor. <strong>El/la facilitador/a (\"Govern\") té la potestat discrecional de decidir què concedeix o denega<\/strong>, així com d'establir condicions, facilitats o requisits addicionals segons la qualitat de l'argumentació.", "t046": "Fase 4: Resolució de dificultats", "t047": "S'introdueixen cartes de <em>Dificultat especial<\/em>. <strong>El/la facilitador/a (\"Govern\") decideix quines dificultats específiques o barreres administratives imposa en cada cas<\/strong>. L'equip ha de redissenyar la seva estratègia o negociar ajut amb altres equips.", "t048": "Fase 5: Reflexió i puntuació", "t049": "Valoració col·lectiva: es posen en comú les solucions, s'omple la barra de benestar (i, en la variant competitiva, es reparteixen punts) i es reflexiona sobre la vida real.", "t050": "Plantilla de Guió d'Argumentació (Petició de Recursos)", "t051": "Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:", "t052": "<em>\"Com a equip del personatge <strong>[Nom]<\/strong>, demanem el recurs <strong>[Nom del recurs]<\/strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]<\/strong> mitjançant l'acció concreta de <strong>[Acció proposta]<\/strong>, aprofitant la fortalesa de <strong>[Fortalesa]<\/strong>.\"<\/em>", "t053": "🏛️ El/la facilitador/a («Govern») fa quatre coses", "t054": "Gestiona els recursos i en controla la disponibilitat (accepta, denega o posa condicions).", "t055": "Avalua les propostes i fa preguntes o posa reptes.", "t056": "Pot afegir, en qualsevol moment, cartes de dificultat sobrevinguda.", "t057": "Dinamitza la reflexió final.", "t058": "<strong>Esdeveniments col·lectius opcionals<\/strong> (el Govern en pot activar algun, o inventar-ne d'altres):", "t059": "Esdeveniment", "t060": "Conseqüència", "t061": "Retallada pressupostària", "t062": "Es redueixen o es retarden els recursos disponibles.", "t063": "Congelació d'ajuts públics", "t064": "Cap equip pot obtenir nous recursos durant una ronda.", "t065": "Atac informàtic", "t066": "La comunicació entre equips queda suspesa durant una ronda.", "t067": "Crisi informativa", "t068": "Augmenten les fake news: tots els equips perden un punt.", "t069": "🎲 També pot fer llançar un dau (p. ex. després de la fase 3): trobareu la taula d'efectes a la modalitat competitiva.", "t070": "Anar a l'Exemple Pràctic →", "t071": "Exemple Pràctic de Joc Pas a Pas", "t072": "Aquest exemple il·lustra el desenvolupament d'una partida real per entendre clarament el funcionament i les diferències entre les dues modalitats:", "t073": "💡 Premissa Clau: Construcció del Personatge i Rol del Govern", "t074": "<strong>• La història no està prefixada:<\/strong> Les cartes de personatge donen només un marc general. Les característiques concretes, el context familiar, la trajectòria i el detall de les vulnerabilitats <strong>s'han de negociar i consensuar per l'equip<\/strong> a la Fase 2.", "t075": "<strong>• Potestat del/de la Facilitador/a (\"Govern\"):<\/strong> La persona dinamitzadora té el control exclusiu per decidir quins recursos concedeix o denega, així com quines facilitats o obstacles afegits posa a cada grup segons la coherència del seu discurs.", "t076": "Cas Base de l'Exemple: Maria (72 anys)", "t077": "<strong>Cartes inicials assignades:<\/strong> Personatge \"Maria\" + Vulnerabilitat \"Pobresa energètica\" + Dificultat \"Escletxa digital\".", "t078": "Desenvolupament en Modalitat cooperativa", "t079": "<strong>Pas 1: Consens del cas i diagnosi (Fase 2)<\/strong><br/>\n L'Equip 1 rep la carta \"Maria\". L'equip consensua les seves circumstàncies: decideixen que la Maria té una pensió de 480€, viu en un pis de lloguer antic sense aïllament i pateix artrosi. Analitzen la construcció de la seva vulnerabilitat: no és només manca de diners, sinó la pèrdua de la xarxa veïnal tradicional del barri. Identifiquen com a fortalesa la seva voluntat d'ajudar en el casal d'avis.", "t080": "<strong>Pas 2: Petició al Govern i Resolució del Facilitador/a (Fase 3)<\/strong><br/>\n L'Equip 1 demana un ajut d'urgència social per a la calefacció. El/la <strong>facilitador/a (\"Govern\")<\/strong> avalua la petició i decideix <em>denegar temporalment el recurs econòmic directe<\/em> per simular el col·lapse de l'administració, però els ofereix la possibilitat de cercar alternatives comunitàries.", "t081": "<strong>Pas 3: Negociació de Suport Mutu (Fase 4)<\/strong><br/>\n Afrontant la dificultat de l'escletxa digital, el/la <em>Comissionat/da de Suport Mutu<\/em> de l'Equip 1 contacta amb l'Equip 2 (que gestiona un personatge jove, l'Ahmed). Acorden que l'Ahmed tramitarà per internet la tarifa social de la Maria, i a canvi la Maria li farà d'enllaç amb el teixit associatiu del barri.", "t082": "<strong>Pas 4: Impacte Col·lectiu (Fase 5)<\/strong><br/>\n Sense dependre exclusivament de la concessió del Govern, els equips autogestionen la solució i debaten a l'aula sobre com el suport mutu redueix la vulnerabilitat real.", "t083": "Desenvolupament en Modalitat competitiva", "t084": "<strong>Pas 1: Consens del cas i Argumentació (Fases 2 i 3)<\/strong><br/>\n L'Equip 1 consensua la història de la Maria i presenta una sol·licitud formal davant el Govern utilitzant la plantilla d'argumentació. Sol·liciten el recurs <em>Serveis Socials d'Atenció Primària<\/em>.", "t085": "<strong>Pas 2: Decisió del Govern i Llançament del Dau d'atzar<\/strong><br/>\n El/la <strong>facilitador/a (\"Govern\")<\/strong> valora la diagnosi amb 2 punts i la identificació de recursos amb 1 punt. Després de la fase 3 llança el Dau d'atzar i surt un <strong>\"1: Retallada pressupostària\"<\/strong>: el recurs sol·licitat es reduirà o es retardarà.", "t086": "<strong>Pas 3: Reajustament davant l'obstacle<\/strong><br/>\n L'Equip 1 ha de reaccionar ràpidament davant la dificultat imposada: demanen un recurs complementari (<em>Banc del Temps Veïnal<\/em>) per cobrir l'escletxa digital mentre s'eixuga la retallada. El Govern valora la creativitat de la proposta amb 1 punt, la col·laboració amb 2 i la gestió de la dificultat amb 2 (Total: 2+1+1+2+2 = 8/10 punts).", "t087": "<strong>Pas 4: Suma a la Calculadora i Llindar del 75%<\/strong><br/>\n La puntuació de l'Equip 1 (8 pts) s'introdueix a la <em>Calculadora de Benestar Col·lectiu<\/em> juntament amb la dels altres equips. La suma total arriba al 80% (superant el llindar del 75%), demostrant que la comunitat se n'ha sortit malgrat els imprevistos del Govern.", "t088": "Anar a la Selecció de Modalitat →", "t089": "Trieu la Modalitat de Joc", "t090": "Totes dues modalitats exploren la mateixa realitat social, però adapten la mecànica a l'objectiu pedagògic del grup:", "t091": "Modalitat cooperativa", "t092": "<strong>Sense puntuació.<\/strong> Enfocada en l'anàlisi de casos, el suport mutu i el diàleg col·lectiu entre tots els equips.", "t093": "Triar Modalitat cooperativa", "t094": "Modalitat competitiva", "t095": "<strong>Amb puntuació.<\/strong> Incorpora avaluació de criteris, el llindar del 75% de benestar col·lectiu i esdeveniments d'atzar.", "t096": "Triar Modalitat competitiva", "t097": "Galeria de cartes i Descàrrega de PDF", "t098": "Exploreu les cartes directament en pantalla, carregueu-ne més a l'atzar sense haver de descarregar res o baixeu els blocs complets en format PDF:", "t099": "🎲 Simulador de Robar Carta a l'Atzar", "t100": "Si esteu jugant en línia sense cartes físiques impreses, podeu robar personatges, vulnerabilitats, recursos o dificultats a l'atzar durant la partida:", "t101": "Totes les Categories (Vulnerabilitats, Recursos i Dificultats)", "t102": "Personatges (perfils)", "t103": "Vulnerabilitats", "t104": "Recursos d'Afrontament", "t105": "Dificultats Especials", "t106": "Robar Carta", "t107": "1. Cartes de Personatges", "t108": "📄 Descarregar PDF Personatges", "t109": "Perfils de persones en situació de vulnerabilitat sociocultural.", "t110": "2. Cartes de Vulnerabilitats", "t111": "📄 Descarregar PDF Vulnerabilitats", "t112": "Situacions de risc, precarietat o dificultat vital i estructural.", "t113": "3. Cartes de Recursos d'Afrontament", "t114": "📄 Descarregar PDF Recursos", "t115": "Serveis, ajuts públics i xarxes comunitàries de suport.", "t116": "4. Cartes de Dificultats Especials", "t117": "📄 Descarregar PDF Dificultats", "t118": "Obstacles administratius, actitudinals o socials que compliquen el cas.", "t119": "Funcionament de la Modalitat cooperativa", "t120": "Sense competició ni puntuació. L'objectiu és la reflexió compartida i la resolució conjunta dels casos de manera horitzontal.", "t121": "Fases de Desenvolupament (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">Pàgines 5 i 6 del PDF d'estructura<\/a>)", "t122": "<strong>Fase 1:<\/strong> Assignació de cartes als equips (grups de 3-4 persones).", "t123": "<strong>Fase 2:<\/strong> Consens i diagnosi de les circumstàncies del cas.", "t124": "<strong>Fase 3:<\/strong> Petició de recursos al Govern. Si es denega un recurs públic, altres equips poden oferir suport comunitari directament.", "t125": "<strong>Fase 4:<\/strong> Resolució de les dificultats especials: amb recursos, cooperació o estratègies alternatives.", "t126": "<strong>Fase 5:<\/strong> Reflexió final compartida, sense puntuació.", "t127": "Plantilla de Guió d'Argumentació (Petició de Recursos)", "t128": "Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:", "t129": "<em>\"Com a equip del personatge <strong>[Nom]<\/strong>, demanem el recurs <strong>[Nom del recurs]<\/strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]<\/strong> mitjançant l'acció concreta de <strong>[Acció proposta]<\/strong>, aprofitant la fortalesa de <strong>[Fortalesa]<\/strong>.\"<\/em>", "t130": "Rol del/de la Facilitador/a (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">Pàgines 6 i 7 del PDF d'estructura<\/a>)", "t131": "Actua com a dinamitzador/a i \"Govern\" obert, amb la facultat discrecional de concedir o denegar recursos i d'introduir preguntes reflexives per desbloquejar situacions i guiar el debat.", "t132": "Rol suggerit (opcional): Comissionat/da de Suport Mutu", "t133": "Per afavorir la cooperació, es pot proposar que cada equip designi un/a <strong>Comissionat/da de Suport Mutu<\/strong>. La seva funció és negociar directament amb els altres equips per intercanviar o compartir recursos sense haver de passar pel \"Govern\", promovent l'autogestió comunitària.", "t134": "Tauler de Seguiment Comunitari (Sense puntuació)", "t135": "Espai en blanc per anar enregistrant dinàmicament durant la sessió els acords, xarxes de suport mutu i compromisos entre equips:", "t136": "Encara no s'ha registrat cap acord. Premeu el botó de sota per anar introduint les situacions a mesura que es produeixin a l'aula.", "t137": "+ Afegir Acord de Suport Mutu", "t138": "Anar al Formulari de Reflexió Final →", "t139": "Funcionament de la Modalitat competitiva", "t140": "Aquesta modalitat introdueix un sistema de repte basat en la consecució del benestar col·lectiu i l'avaluació de criteris d'anàlisi.", "t141": "1. Consens, Diagnosi i Arguments", "t142": "Els equips consensuen la història del seu cas, l'exposen i argumenten la petició de recursos davant el Govern (0-2 pts per criteri).", "t143": "2. Llançament del Dau d'atzar", "t144": "El Govern llança el Dau d'atzar per introduir un esdeveniment imprevist que altera les condicions inicials i la concessió de recursos.", "t145": "3. Adaptació i Re-puntuació del Govern", "t146": "Els equips reajusten la seva resposta davant l'obstacle o oportunitat i el Govern avalua la capacitat d'adaptació.", "t147": "4. Assoliment del Llindar (75%)", "t148": "Es sumen els punts a la calculadora. La comunitat guanya conjuntament si supera el 75% del benestar total possible.", "t149": "Plantilla de Guió d'Argumentació (Petició de Recursos)", "t150": "Utilitzeu aquesta estructura recomanada per presentar les sol·licituds al Govern:", "t151": "<em>\"Com a equip del personatge <strong>[Nom]<\/strong>, demanem el recurs <strong>[Nom del recurs]<\/strong> perquè ens permet afrontar la vulnerabilitat de <strong>[Vulnerabilitat]<\/strong> mitjançant l'acció concreta de <strong>[Acció proposta]<\/strong>, aprofitant la fortalesa de <strong>[Fortalesa]<\/strong>.\"<\/em>", "t152": "Dau d'atzar", "t153": "<strong>Funció en el joc:<\/strong> Permet simular la incertesa del món real. Llançar-lo abans de la suma final permet al Govern avaluar la flexibilitat dels equips.", "t154": "Llançar Dau d'atzar", "t155": "Calculadora de Benestar Col·lectiu", "t156": "Cada equip pot obtenir fins a 10 punts (0-2 per cadascun dels 5 criteris). Els punts no són automàtics: cal argumentar cada acció i el Govern la valora. Només compten si el col·lectiu arriba al llindar que fixi prèviament el Govern (exemple habitual: <strong>75% del total possible<\/strong>). L'equip amb més punts pot rebre una distinció simbòlica.", "t157": "Nombre d'equips participants:", "t158": "Llindar de benestar (%) fixat pel Govern", "t159": "Ajust global de punts (p. ex. +1 dau, −1 crisi informativa)", "t160": "Barra de benestar col·lectiu (la ratlla blanca marca el llindar fixat pel Govern):", "t161": "Criteris d'Avaluació del Govern (0 a 2 punts cadascun):", "t162": "Criteri", "t163": "0 punts", "t164": "1 punt", "t165": "2 punts", "t166": "Diagnosi de la situació", "t167": "Superficial o incoherent", "t168": "Parcial", "t169": "Clara, realista i contextualitzada", "t170": "Identificació de recursos adequats", "t171": "Cap recurs", "t172": "Un recurs poc justificat", "t173": "Ben triat, justificat i viable", "t174": "Creativitat i viabilitat de propostes", "t175": "Inexistent o poc viable", "t176": "Funcional però poc innovadora", "t177": "Original, realista i adaptable", "t178": "Col·laboració amb altres equips", "t179": "No cooperen", "t180": "Contacte limitat", "t181": "Activa i propositiva", "t182": "Gestió de dificultats especials", "t183": "No fan front a la dificultat", "t184": "Afrontament parcial", "t185": "Solució ben pensada", "t186": "Anar al Formulari de Reflexió Final →", "t187": "Formulari de Reflexió i Debat Final", "t188": "💾 Les respostes es desen automàticament només en aquest navegador i dispositiu.", "t189": "Completeu les preguntes finals de la sessió. En acabar, podeu descarregar l'informe en format PDF o en fitxer de text (.txt).", "t190": "Acords de Suport Mutu Enregistrats durant la Sessió:", "t191": "1. Quines han estat les causes principals de la vulnerabilitat analitzada?", "t192": "2. Quines fortaleses individuals i comunitàries hem identificat?", "t193": "3. Com ha funcionat la cooperació i negociació entre equips? Ha estat fàcil cooperar? Per què?", "t194": "4. Com es poden optimitzar els recursos públics i comunitaris? Quines propostes es podrien aplicar a la vida real?", "t195": "🖨️ Imprimir / Guardar Informe en PDF", "t196": "📄 Descarregar Fitxer (.txt)", "t197": "🔄 Reiniciar Activitat", "t198": "✕ Tancar (Esc)", "t199": "D'acord", "t200": "Cancel·la", "t201": "Projecte AFRONTA - Universitat Autònoma de Barcelona", "t202": "<strong>Construïm Comunitat<\/strong> es distribueix sota la llicència <a data-deed=\"\" href=\"https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca\" rel=\"noopener license\" target=\"_blank\">CC BY-NC-ND 4.0<\/a>.", "t203": "Podeu compartir-la lliurement amb finalitats no comercials, citant-ne l'autoria i sense modificar-ne el contingut original.", "t204": "© Jorge Grau Rebollo, Projecte AFRONTA (PID2022-139502OB-I00), Grup GRAFO, Universitat Autònoma de Barcelona, 2025. Alguns continguts han estat generats parcialment amb assistència d'IA.", "t205": "Materials i regles: <a href=\"https://webs.uab.cat/afronta/recursos/materiales-formativos/activitat-ludica-formativa/\" rel=\"noopener\" target=\"_blank\">webs.uab.cat/afronta<\/a> · Contacte: <a href=\"mailto:proyectoafronta@gmail.com\">proyectoafronta@gmail.com<\/a>"}, "es": {"t001": "⏱️ Cronómetro de la actividad", "t002": "💾 Guardado", "t003": "Fase actual (10 min)", "t004": "Fase breve (5 min)", "t005": "Actividad total (45 min)", "t006": "Actividad total (60 min)", "t007": "Personalizado...", "t008": "📺 Modo proyector", "t009": "Iniciar/Pausar", "t010": "Reiniciar tiempo", "t012": "Herramienta web interactiva sobre vulnerabilidad social, recursos de afrontamiento y apoyo mutuo", "t016": "1. Estructura", "t017": "2. Ejemplo práctico", "t018": "3. Modalidades", "t019": "4. Galería de cartas", "t020": "5a. Modalidad cooperativa", "t021": "5b. Modalidad competitiva", "t022": "6. Reflexión y resumen", "t023": "Presentación de la propuesta", "t024": "<strong>Construïm Comunitat<\/strong>® es una propuesta formativa que invita a reflexionar, de manera colaborativa, sobre la vulnerabilidad social, los recursos de afrontamiento y la importancia del apoyo mutuo.", "t025": "Mediante la cooperación y la reflexión compartida, las personas participantes se adentran en diversas situaciones de vulnerabilidad sociocultural y ponen en práctica el pensamiento crítico, la capacidad de análisis y el trabajo en equipo para encontrar soluciones creativas, viables y sostenibles.", "t026": "Flexible y adaptable, <strong>Construïm Comunitat<\/strong>® puede vivirse como una dinámica gamificada —con un toque de juego y reto— o como una experiencia plenamente cooperativa, en la que lo más valioso es el proceso compartido y el aprendizaje conjunto.", "t027": "🎭 Roles internos sugeridos (opcional)", "t028": "Sugerencia opcional (no forma parte de las reglas oficiales) para organizar el equipo y favorecer la participación de todas las personas:", "t029": "<strong>🗣️ Portavoz:<\/strong> Presenta el diagnóstico del caso y defiende la petición argumentada de recursos ante la facilitación (\"Gobierno\").", "t030": "<strong>🤝 Comisionado/a de Apoyo Mutuo:<\/strong> Negocia directamente con los demás equipos la cesión, el intercambio o la gestión compartida de recursos comunitarios.", "t031": "<strong>✍️ Secretario/a:<\/strong> Registra las circunstancias consensuadas, anota los acuerdos en el tablero y redacta el formulario de reflexión final.", "t032": "Así se juega, de un vistazo", "t033": "<b>👥 Equipos<\/b>Grupos de preferiblemente 3 personas, más un/a docente o facilitador/a que hace de «Gobierno».", "t034": "<b>🎭 Formato<\/b>Juego de rol con dos variantes: cooperativa (sin puntos) o competitiva (con puntos).", "t035": "<b>🃏 Materiales<\/b>Cartas impresas o digitales y una barra de bienestar colectivo (física o proyectada).", "t036": "<b>🎯 Objetivo<\/b>Alcanzar entre todas las personas un nivel óptimo de bienestar colectivo: empatía, pensamiento crítico y acción comunitaria.", "t037": "🃏 Los 4 tipos de carta y cómo se combinan", "t038": "<strong>Personaje<\/strong> (una persona que podría ser vulnerable: hay que deducir por qué) + <strong>Vulnerabilidad<\/strong> (dificultad social, vital o estructural) → el equipo pide <strong>Recursos de afrontamiento<\/strong> (servicios, apoyos o estrategias) → el Gobierno añade <strong>Dificultades especiales<\/strong> (prejuicios, estigma, falta de información…).", "t039": "¿Cómo funciona la actividad? Instrucciones generales", "t040": "Fase 1: Presentación y distribución", "t041": "Se forman equipos de preferiblemente 3 personas, se explican el objetivo y los roles, y se asignan los roles internos. La persona que asume el rol de <strong>facilitador/a (\"Gobierno\")<\/strong> entrega a cada grupo una carta de <em>Personaje<\/em> y cartas de <em>Vulnerabilidad<\/em>.", "t042": "Fase 2: Diagnóstico y construcción de la situación", "t043": "El equipo no recibe una historia cerrada: <strong>consensúa activamente las circunstancias vitales y sociales concretas<\/strong> que rodean al personaje elegido o asignado. Esta construcción compartida permite trabajar directamente en el aula los procesos y mecanismos sociales que generan la vulnerabilidad, e identificar causas estructurales, necesidades urgentes y fortalezas individuales.", "t044": "Fase 3: Petición argumentada de recursos", "t045": "Los equipos solicitan <em>Recursos de afrontamiento<\/em> al \"Gobierno\". Hay que justificar la petición con rigor. <strong>El/la facilitador/a (\"Gobierno\") tiene la potestad discrecional de decidir qué concede o deniega<\/strong>, así como de establecer condiciones, facilidades o requisitos adicionales según la calidad de la argumentación.", "t046": "Fase 4: Resolución de dificultades", "t047": "Se introducen cartas de <em>Dificultad especial<\/em>. <strong>El/la facilitador/a (\"Gobierno\") decide qué dificultades específicas o barreras administrativas impone en cada caso<\/strong>. El equipo debe rediseñar su estrategia o negociar ayuda con otros equipos.", "t048": "Fase 5: Reflexión y puntuación", "t049": "Valoración colectiva: se ponen en común las soluciones, se llena la barra de bienestar (y, en la variante competitiva, se reparten puntos) y se reflexiona sobre la vida real.", "t050": "Plantilla de guion de argumentación (petición de recursos)", "t051": "Utilizad esta estructura recomendada para presentar las solicitudes al Gobierno:", "t052": "<em>\"Como equipo del personaje <strong>[Nombre]<\/strong>, pedimos el recurso <strong>[Nombre del recurso]<\/strong> porque nos permite afrontar la vulnerabilidad de <strong>[Vulnerabilidad]<\/strong> mediante la acción concreta de <strong>[Acción propuesta]<\/strong>, aprovechando la fortaleza de <strong>[Fortaleza]<\/strong>.\"<\/em>", "t053": "🏛️ El/la facilitador/a («Gobierno») hace cuatro cosas", "t054": "Gestiona los recursos y controla su disponibilidad (acepta, deniega o impone condiciones).", "t055": "Evalúa las propuestas y hace preguntas o plantea retos.", "t056": "Puede añadir, en cualquier momento, cartas de dificultad sobrevenida.", "t057": "Dinamiza la reflexión final.", "t058": "<strong>Eventos colectivos opcionales<\/strong> (el Gobierno puede activar alguno o inventar otros):", "t059": "Evento", "t060": "Consecuencia", "t061": "Recorte presupuestario", "t062": "Se reducen o se retrasan los recursos disponibles.", "t063": "Congelación de ayudas públicas", "t064": "Ningún equipo puede obtener nuevos recursos durante una ronda.", "t065": "Ciberataque", "t066": "La comunicación entre equipos queda suspendida durante una ronda.", "t067": "Crisis informativa", "t068": "Aumentan las noticias falsas: todos los equipos pierden un punto.", "t069": "🎲 También puede hacer lanzar un dado (p. ej., después de la fase 3): encontraréis la tabla de efectos en la modalidad competitiva.", "t070": "Ir al ejemplo práctico →", "t071": "Ejemplo práctico de juego paso a paso", "t072": "Este ejemplo ilustra el desarrollo de una partida real para entender con claridad el funcionamiento y las diferencias entre las dos modalidades:", "t073": "💡 Premisa clave: construcción del personaje y rol del Gobierno", "t074": "<strong>• La historia no está prefijada:<\/strong> Las cartas de personaje ofrecen solo un marco general. Las características concretas, el contexto familiar, la trayectoria y el detalle de las vulnerabilidades <strong>deben ser negociados y consensuados por el equipo<\/strong> en la Fase 2.", "t075": "<strong>• Potestad del/de la facilitador/a (\"Gobierno\"):<\/strong> La persona dinamizadora tiene el control exclusivo para decidir qué recursos concede o deniega, así como qué facilidades u obstáculos añadidos impone a cada grupo según la coherencia de su discurso.", "t076": "Caso base del ejemplo: Maria (72 años)", "t077": "<strong>Cartas iniciales asignadas:<\/strong> Personaje \"Maria\" + Vulnerabilidad \"Pobreza energética\" + Dificultad \"Brecha digital\".", "t078": "Desarrollo en la modalidad cooperativa", "t079": "<strong>Paso 1: Consenso del caso y diagnóstico (Fase 2)<\/strong><br/> El Equipo 1 recibe la carta \"Maria\". El equipo consensúa sus circunstancias: deciden que Maria tiene una pensión de 480 €, vive en un piso de alquiler antiguo sin aislamiento y padece artrosis. Analizan la construcción de su vulnerabilidad: no es solo falta de dinero, sino la pérdida de la red vecinal tradicional del barrio. Identifican como fortaleza su voluntad de ayudar en el centro de mayores.", "t080": "<strong>Paso 2: Petición al Gobierno y resolución del facilitador/a (Fase 3)<\/strong><br/> El Equipo 1 solicita una ayuda de urgencia social para la calefacción. El/la <strong>facilitador/a (\"Gobierno\")<\/strong> evalúa la petición y decide <em>denegar temporalmente el recurso económico directo<\/em> para simular el colapso de la administración, pero les ofrece la posibilidad de buscar alternativas comunitarias.", "t081": "<strong>Paso 3: Negociación de apoyo mutuo (Fase 4)<\/strong><br/> Ante la dificultad de la brecha digital, el/la <em>Comisionado/a de Apoyo Mutuo<\/em> del Equipo 1 contacta con el Equipo 2 (que gestiona un personaje joven, Ahmed). Acuerdan que Ahmed tramitará por internet la tarifa social de Maria y, a cambio, Maria hará de enlace con el tejido asociativo del barrio.", "t082": "<strong>Paso 4: Impacto colectivo (Fase 5)<\/strong><br/> Sin depender exclusivamente de la concesión del Gobierno, los equipos autogestionan la solución y debaten en el aula sobre cómo el apoyo mutuo reduce la vulnerabilidad real.", "t083": "Desarrollo en la modalidad competitiva", "t084": "<strong>Paso 1: Consenso del caso y argumentación (Fases 2 y 3)<\/strong><br/> El Equipo 1 consensúa la historia de Maria y presenta una solicitud formal ante el Gobierno utilizando la plantilla de argumentación. Solicitan el recurso <em>Servicios Sociales de Atención Primaria<\/em>.", "t085": "<strong>Paso 2: Decisión del Gobierno y lanzamiento del dado de azar<\/strong><br/> El/la <strong>facilitador/a (\"Gobierno\")<\/strong> valora el diagnóstico con 2 puntos y la identificación de recursos con 1 punto. Tras la fase 3 lanza el dado de azar y sale un <strong>\"1: Recorte presupuestario\"<\/strong>: el recurso solicitado se reducirá o se retrasará.", "t086": "<strong>Paso 3: Reajuste ante el obstáculo<\/strong><br/> El Equipo 1 debe reaccionar con rapidez ante la dificultad impuesta: piden un recurso complementario (<em>Banco del Tiempo Vecinal<\/em>) para cubrir la brecha digital mientras se absorbe el recorte. El Gobierno valora la creatividad de la propuesta con 1 punto, la colaboración con 2 y la gestión de la dificultad con 2 (Total: 2+1+1+2+2 = 8/10 puntos).", "t087": "<strong>Paso 4: Suma en la calculadora y umbral del 75 %<\/strong><br/> La puntuación del Equipo 1 (8 pts) se introduce en la <em>Calculadora de Bienestar Colectivo<\/em> junto con la de los demás equipos. La suma total alcanza el 80 % (superando el umbral del 75 %), lo que demuestra que la comunidad ha salido adelante a pesar de los imprevistos del Gobierno.", "t088": "Ir a la selección de modalidad →", "t089": "Elegid la modalidad de juego", "t090": "Las dos modalidades exploran la misma realidad social, pero adaptan la mecánica al objetivo pedagógico del grupo:", "t091": "Modalidad cooperativa", "t092": "<strong>Sin puntuación.<\/strong> Centrada en el análisis de casos, el apoyo mutuo y el diálogo colectivo entre todos los equipos.", "t093": "Elegir modalidad cooperativa", "t094": "Modalidad competitiva", "t095": "<strong>Con puntuación.<\/strong> Incorpora evaluación por criterios, el umbral del 75 % de bienestar colectivo y eventos de azar.", "t096": "Elegir modalidad competitiva", "t097": "Galería de cartas y descarga de PDF", "t098": "Explorad las cartas directamente en pantalla, cargad más al azar sin necesidad de descargar nada o bajad los bloques completos en formato PDF:", "t099": "🎲 Simulador de robar carta al azar", "t100": "Si estáis jugando en línea sin cartas físicas impresas, podéis robar personajes, vulnerabilidades, recursos o dificultades al azar durante la partida:", "t101": "Todas las categorías (vulnerabilidades, recursos y dificultades)", "t102": "Personajes (perfiles)", "t103": "Vulnerabilidades", "t104": "Recursos de afrontamiento", "t105": "Dificultades especiales", "t106": "Robar carta", "t107": "1. Cartas de personajes", "t108": "📄 Descargar PDF de personajes", "t109": "Perfiles de personas en situación de vulnerabilidad sociocultural.", "t110": "2. Cartas de vulnerabilidades", "t111": "📄 Descargar PDF de vulnerabilidades", "t112": "Situaciones de riesgo, precariedad o dificultad vital y estructural.", "t113": "3. Cartas de recursos de afrontamiento", "t114": "📄 Descargar PDF de recursos", "t115": "Servicios, ayudas públicas y redes comunitarias de apoyo.", "t116": "4. Cartas de dificultades especiales", "t117": "📄 Descargar PDF de dificultades", "t118": "Obstáculos administrativos, actitudinales o sociales que complican el caso.", "t119": "Funcionamiento de la modalidad cooperativa", "t120": "Sin competición ni puntuación. El objetivo es la reflexión compartida y la resolución conjunta de los casos de manera horizontal.", "t121": "Fases de desarrollo (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">páginas 5 y 6 del PDF de estructura<\/a>)", "t122": "<strong>Fase 1:<\/strong> Asignación de cartas a los equipos (grupos de 3-4 personas).", "t123": "<strong>Fase 2:<\/strong> Consenso y diagnóstico de las circunstancias del caso.", "t124": "<strong>Fase 3:<\/strong> Petición de recursos al Gobierno. Si se deniega un recurso público, otros equipos pueden ofrecer apoyo comunitario directamente.", "t125": "<strong>Fase 4:<\/strong> Resolución de las dificultades especiales: con recursos, cooperación o estrategias alternativas.", "t126": "<strong>Fase 5:<\/strong> Reflexión final compartida, sin puntuación.", "t130": "Rol del/de la facilitador/a (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">páginas 6 y 7 del PDF de estructura<\/a>)", "t131": "Actúa como dinamizador/a y \"Gobierno\" abierto, con la facultad discrecional de conceder o denegar recursos y de plantear preguntas reflexivas para desbloquear situaciones y guiar el debate.", "t132": "Rol sugerido (opcional): Comisionado/a de Apoyo Mutuo", "t133": "Para favorecer la cooperación, se puede proponer que cada equipo designe a un/a <strong>Comisionado/a de Apoyo Mutuo<\/strong>. Su función es negociar directamente con los demás equipos para intercambiar o compartir recursos sin tener que pasar por el \"Gobierno\", fomentando la autogestión comunitaria.", "t134": "Tablero de seguimiento comunitario (sin puntuación)", "t135": "Espacio en blanco para ir registrando dinámicamente durante la sesión los acuerdos, las redes de apoyo mutuo y los compromisos entre equipos:", "t136": "Todavía no se ha registrado ningún acuerdo. Pulsad el botón de abajo para ir introduciendo las situaciones a medida que se produzcan en el aula.", "t137": "+ Añadir acuerdo de apoyo mutuo", "t138": "Ir al formulario de reflexión final →", "t139": "Funcionamiento de la modalidad competitiva", "t140": "Esta modalidad introduce un sistema de reto basado en la consecución del bienestar colectivo y en la evaluación de criterios de análisis.", "t141": "1. Consenso, diagnóstico y argumentos", "t142": "Los equipos consensúan la historia de su caso, la exponen y argumentan la petición de recursos ante el Gobierno (0-2 pts por criterio).", "t143": "2. Lanzamiento del dado de azar", "t144": "El Gobierno lanza el dado de azar para introducir un evento imprevisto que altera las condiciones iniciales y la concesión de recursos.", "t145": "3. Adaptación y nueva puntuación del Gobierno", "t146": "Los equipos reajustan su respuesta ante el obstáculo o la oportunidad y el Gobierno evalúa la capacidad de adaptación.", "t147": "4. Consecución del umbral (75 %)", "t148": "Se suman los puntos en la calculadora. La comunidad gana conjuntamente si supera el 75 % del bienestar total posible.", "t152": "Dado de azar", "t153": "<strong>Función en el juego:<\/strong> Permite simular la incertidumbre del mundo real. Lanzarlo antes de la suma final permite al Gobierno evaluar la flexibilidad de los equipos.", "t154": "Lanzar dado de azar", "t155": "Calculadora de bienestar colectivo", "t156": "Cada equipo puede obtener hasta 10 puntos (0-2 por cada uno de los 5 criterios). Los puntos no son automáticos: hay que argumentar cada acción y el Gobierno la valora. Solo cuentan si el colectivo alcanza el umbral que fije previamente el Gobierno (ejemplo habitual: <strong>75 % del total posible<\/strong>). El equipo con más puntos puede recibir una distinción simbólica.", "t157": "Número de equipos participantes:", "t158": "Umbral de bienestar (%) fijado por el Gobierno", "t159": "Ajuste global de puntos (p. ej., +1 dado, −1 crisis informativa)", "t160": "Barra de bienestar colectivo (la raya blanca marca el umbral fijado por el Gobierno):", "t161": "Criterios de evaluación del Gobierno (de 0 a 2 puntos cada uno):", "t162": "Criterio", "t163": "0 puntos", "t164": "1 punto", "t165": "2 puntos", "t166": "Diagnóstico de la situación", "t167": "Superficial o incoherente", "t168": "Parcial", "t169": "Clara, realista y contextualizada", "t170": "Identificación de recursos adecuados", "t171": "Ningún recurso", "t172": "Un recurso poco justificado", "t173": "Bien elegido, justificado y viable", "t174": "Creatividad y viabilidad de las propuestas", "t175": "Inexistente o poco viable", "t176": "Funcional, pero poco innovadora", "t177": "Original, realista y adaptable", "t178": "Colaboración con otros equipos", "t179": "No cooperan", "t180": "Contacto limitado", "t181": "Activa y propositiva", "t182": "Gestión de dificultades especiales", "t183": "No hacen frente a la dificultad", "t184": "Afrontamiento parcial", "t185": "Solución bien pensada", "t187": "Formulario de reflexión y debate final", "t188": "💾 Las respuestas se guardan automáticamente solo en este navegador y dispositivo.", "t189": "Completad las preguntas finales de la sesión. Al terminar, podéis descargar el informe en formato PDF o en un archivo de texto (.txt).", "t190": "Acuerdos de apoyo mutuo registrados durante la sesión:", "t191": "1. ¿Cuáles han sido las causas principales de la vulnerabilidad analizada?", "t192": "2. ¿Qué fortalezas individuales y comunitarias hemos identificado?", "t193": "3. ¿Cómo han funcionado la cooperación y la negociación entre equipos? ¿Ha sido fácil cooperar? ¿Por qué?", "t194": "4. ¿Cómo se pueden optimizar los recursos públicos y comunitarios? ¿Qué propuestas se podrían aplicar en la vida real?", "t195": "🖨️ Imprimir / guardar informe en PDF", "t196": "📄 Descargar archivo (.txt)", "t197": "🔄 Reiniciar actividad", "t198": "✕ Cerrar (Esc)", "t199": "De acuerdo", "t200": "Cancelar", "t201": "Proyecto AFRONTA - Universitat Autònoma de Barcelona", "t202": "<strong>Construïm Comunitat<\/strong> se distribuye bajo la licencia <a data-deed=\"\" href=\"https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca\" rel=\"noopener license\" target=\"_blank\">CC BY-NC-ND 4.0<\/a>.", "t203": "Podéis compartirla libremente con fines no comerciales, citando su autoría y sin modificar su contenido original.", "t204": "© Jorge Grau Rebollo, Proyecto AFRONTA (PID2022-139502OB-I00), Grupo GRAFO, Universitat Autònoma de Barcelona, 2025. Algunos contenidos han sido generados parcialmente con asistencia de IA.", "t205": "Materiales y reglas: <a href=\"https://webs.uab.cat/afronta/recursos/materiales-formativos/activitat-ludica-formativa/\" rel=\"noopener\" target=\"_blank\">webs.uab.cat/afronta<\/a> · Contacto: <a href=\"mailto:proyectoafronta@gmail.com\">proyectoafronta@gmail.com<\/a>", "t011": "Construïm Comunitat®", "t013": "Català", "t014": "Castellano", "t015": "English", "t127": "Plantilla de guion de argumentación (petición de recursos)", "t128": "Utilizad esta estructura recomendada para presentar las solicitudes al Gobierno:", "t129": "<em>\"Como equipo del personaje <strong>[Nombre]<\/strong>, pedimos el recurso <strong>[Nombre del recurso]<\/strong> porque nos permite afrontar la vulnerabilidad de <strong>[Vulnerabilidad]<\/strong> mediante la acción concreta de <strong>[Acción propuesta]<\/strong>, aprovechando la fortaleza de <strong>[Fortaleza]<\/strong>.\"<\/em>", "t149": "Plantilla de guion de argumentación (petición de recursos)", "t150": "Utilizad esta estructura recomendada para presentar las solicitudes al Gobierno:", "t151": "<em>\"Como equipo del personaje <strong>[Nombre]<\/strong>, pedimos el recurso <strong>[Nombre del recurso]<\/strong> porque nos permite afrontar la vulnerabilidad de <strong>[Vulnerabilidad]<\/strong> mediante la acción concreta de <strong>[Acción propuesta]<\/strong>, aprovechando la fortaleza de <strong>[Fortaleza]<\/strong>.\"<\/em>", "t186": "Ir al formulario de reflexión final →"}, "en": {"t001": "⏱️ Activity timer", "t002": "💾 Saved", "t003": "Current phase (10 min)", "t004": "Short phase (5 min)", "t005": "Whole activity (45 min)", "t006": "Whole activity (60 min)", "t007": "Custom...", "t008": "📺 Projector mode", "t009": "Start/Pause", "t010": "Reset timer", "t012": "Interactive web tool on social vulnerability, coping resources and mutual support", "t016": "1. Structure", "t017": "2. Worked example", "t018": "3. Game modes", "t019": "4. Card gallery", "t020": "5a. Cooperative mode", "t021": "5b. Competitive mode", "t022": "6. Reflection and summary", "t023": "About the activity", "t024": "<strong>Construïm Comunitat<\/strong>® is a training activity that invites participants to reflect together on social vulnerability, coping resources and the importance of mutual support.", "t025": "Through cooperation and shared reflection, participants delve into a range of situations of sociocultural vulnerability, putting critical thinking, analytical skills and teamwork into practice to find creative, viable and sustainable solutions.", "t026": "Flexible and adaptable, <strong>Construïm Comunitat<\/strong>® can be played as a gamified activity —with a touch of play and challenge— or as a fully cooperative experience in which the most valuable part is the shared process and joint learning.", "t027": "🎭 Suggested internal roles (optional)", "t028": "An optional suggestion (not part of the official rules) for organising the team and encouraging everyone to take part:", "t029": "<strong>🗣️ Spokesperson:<\/strong> Presents the diagnosis of the case and defends the reasoned request for resources before the facilitator (\"Government\").", "t030": "<strong>🤝 Mutual Support Commissioner:<\/strong> Negotiates directly with the other teams over the transfer, exchange or shared management of community resources.", "t031": "<strong>✍️ Secretary:<\/strong> Records the circumstances agreed on, notes the agreements on the board and writes up the final reflection form.", "t032": "The game at a glance", "t033": "<b>👥 Teams<\/b>Groups of preferably 3 people, plus a teacher or facilitator who acts as the \"Government\".", "t034": "<b>🎭 Format<\/b>Role-play with two variants: cooperative (no points) or competitive (with points).", "t035": "<b>🃏 Materials<\/b>Printed or digital cards and a collective wellbeing bar (physical or projected).", "t036": "<b>🎯 Aim<\/b>Together, reach an optimal level of collective wellbeing: empathy, critical thinking and community action.", "t037": "🃏 The 4 types of card and how they combine", "t038": "<strong>Character<\/strong> (a person who could be vulnerable: you have to work out why) + <strong>Vulnerability<\/strong> (a social, life or structural difficulty) → the team asks for <strong>Coping resources<\/strong> (services, supports or strategies) → the Government adds <strong>Special difficulties<\/strong> (prejudice, stigma, lack of information…).", "t039": "How does the activity work? General instructions", "t040": "Phase 1: Introduction and distribution", "t041": "Teams of preferably 3 people are formed, the aim and the roles are explained, and the internal roles are assigned. The person taking the role of <strong>facilitator (\"Government\")<\/strong> hands each group a <em>Character<\/em> card and <em>Vulnerability<\/em> cards.", "t042": "Phase 2: Diagnosis and building the situation", "t043": "The team is not given a closed story: it <strong>actively agrees on the specific life and social circumstances<\/strong> surrounding the chosen or assigned character. This shared construction makes it possible to work directly in the classroom on the social processes and mechanisms that generate vulnerability, identifying structural causes, urgent needs and individual strengths.", "t044": "Phase 3: Reasoned request for resources", "t045": "Teams request <em>Coping resources<\/em> from the \"Government\". The request must be justified rigorously. <strong>The facilitator (\"Government\") has the discretionary power to decide what to grant or deny<\/strong>, as well as to set additional conditions, facilities or requirements depending on the quality of the argument.", "t046": "Phase 4: Resolving difficulties", "t047": "<em>Special difficulty<\/em> cards are introduced. <strong>The facilitator (\"Government\") decides which specific difficulties or administrative barriers to impose in each case<\/strong>. The team must redesign its strategy or negotiate help with other teams.", "t048": "Phase 5: Reflection and scoring", "t049": "Collective assessment: solutions are shared, the wellbeing bar is filled (and, in the competitive variant, points are awarded) and the group reflects on real life.", "t050": "Argument script template (request for resources)", "t051": "Use this recommended structure to present requests to the Government:", "t052": "<em>\"As the team of the character <strong>[Name]<\/strong>, we request the resource <strong>[Name of resource]<\/strong> because it allows us to tackle the vulnerability of <strong>[Vulnerability]<\/strong> through the specific action of <strong>[Proposed action]<\/strong>, building on the strength of <strong>[Strength]<\/strong>.\"<\/em>", "t053": "🏛️ The facilitator (\"Government\") does four things", "t054": "Manages the resources and controls their availability (accepts, denies or sets conditions).", "t055": "Assesses the proposals and asks questions or sets challenges.", "t056": "Can add cards for unexpected difficulties at any time.", "t057": "Leads the final reflection.", "t058": "<strong>Optional collective events<\/strong> (the Government may trigger one or make up others):", "t059": "Event", "t060": "Consequence", "t061": "Budget cuts", "t062": "The available resources are reduced or delayed.", "t063": "Freeze on public aid", "t064": "No team can obtain new resources for one round.", "t065": "Cyberattack", "t066": "Communication between teams is suspended for one round.", "t067": "Information crisis", "t068": "Fake news spreads: all teams lose one point.", "t069": "🎲 The facilitator can also have a die rolled (e.g. after phase 3): the table of effects is in the competitive mode.", "t070": "Go to the worked example →", "t071": "Step-by-step worked example", "t072": "This example illustrates how a real game unfolds, so that the way it works and the differences between the two modes are clear:", "t073": "💡 Key premise: building the character and the role of the Government", "t074": "<strong>• The story is not preset:<\/strong> Character cards give only a general framework. The specific features, family context, life trajectory and detail of the vulnerabilities <strong>must be negotiated and agreed on by the team<\/strong> in Phase 2.", "t075": "<strong>• Power of the facilitator (\"Government\"):<\/strong> The person leading the activity has sole control over which resources to grant or deny, and over which additional facilities or obstacles to give each group, depending on how coherent its argument is.", "t076": "Base case for the example: Maria (aged 72)", "t077": "<strong>Initial cards assigned:<\/strong> Character \"Maria\" + Vulnerability \"Energy poverty\" + Difficulty \"Digital divide\".", "t078": "How it unfolds in the cooperative mode", "t079": "<strong>Step 1: Agreeing on the case and diagnosis (Phase 2)<\/strong><br/> Team 1 receives the \"Maria\" card. The team agrees on her circumstances: they decide that Maria has a pension of €480, lives in an old rented flat with no insulation and has osteoarthritis. They analyse how her vulnerability has been constructed: it is not just a lack of money but the loss of the traditional neighbourhood network. They identify her willingness to help at the senior citizens' centre as a strength.", "t080": "<strong>Step 2: Request to the Government and the facilitator's decision (Phase 3)<\/strong><br/> Team 1 requests emergency social aid for heating. The <strong>facilitator (\"Government\")<\/strong> assesses the request and decides to <em>temporarily deny the direct financial resource<\/em> in order to simulate the collapse of the administration, but offers them the chance to look for community alternatives.", "t081": "<strong>Step 3: Mutual support negotiation (Phase 4)<\/strong><br/> Faced with the difficulty of the digital divide, Team 1's <em>Mutual Support Commissioner<\/em> contacts Team 2 (which manages a young character, Ahmed). They agree that Ahmed will apply online for Maria's social tariff and, in return, Maria will act as a link with the neighbourhood's network of associations.", "t082": "<strong>Step 4: Collective impact (Phase 5)<\/strong><br/> Without relying solely on what the Government grants, the teams manage the solution themselves and discuss in class how mutual support reduces real vulnerability.", "t083": "How it unfolds in the competitive mode", "t084": "<strong>Step 1: Agreeing on the case and argumentation (Phases 2 and 3)<\/strong><br/> Team 1 agrees on Maria's story and submits a formal request to the Government using the argument template. They request the resource <em>Primary Care Social Services<\/em>.", "t085": "<strong>Step 2: The Government's decision and the roll of the chance die<\/strong><br/> The <strong>facilitator (\"Government\")<\/strong> awards 2 points for the diagnosis and 1 point for the identification of resources. After phase 3 the chance die is rolled and the result is <strong>\"1: Budget cuts\"<\/strong>: the requested resource will be reduced or delayed.", "t086": "<strong>Step 3: Readjusting in the face of the obstacle<\/strong><br/> Team 1 must react quickly to the difficulty imposed: they ask for a complementary resource (<em>Neighbourhood Time Bank<\/em>) to cover the digital divide while the cut is absorbed. The Government awards 1 point for the creativity of the proposal, 2 for collaboration and 2 for management of the difficulty (Total: 2+1+1+2+2 = 8/10 points).", "t087": "<strong>Step 4: Adding up in the calculator and the 75% threshold<\/strong><br/> Team 1's score (8 pts) is entered in the <em>Collective Wellbeing Calculator<\/em> together with those of the other teams. The overall total reaches 80% (exceeding the 75% threshold), showing that the community pulled through despite the Government's unforeseen events.", "t088": "Go to mode selection →", "t089": "Choose the game mode", "t090": "Both modes explore the same social reality but adapt the mechanics to the group's educational aim:", "t091": "Cooperative mode", "t092": "<strong>No scoring.<\/strong> Focused on case analysis, mutual support and collective dialogue among all the teams.", "t093": "Choose cooperative mode", "t094": "Competitive mode", "t095": "<strong>With scoring.<\/strong> Includes assessment by criteria, the 75% collective wellbeing threshold and chance events.", "t096": "Choose competitive mode", "t097": "Card gallery and PDF download", "t098": "Browse the cards on screen, load more at random without downloading anything, or download the complete card sets as PDFs:", "t099": "🎲 Random card draw simulator", "t100": "If you are playing online without physical cards, you can draw characters, vulnerabilities, resources or difficulties at random during the game:", "t101": "All categories (vulnerabilities, resources and difficulties)", "t102": "Characters (profiles)", "t103": "Vulnerabilities", "t104": "Coping resources", "t105": "Special difficulties", "t106": "Draw a card", "t107": "1. Character cards", "t108": "📄 Download characters PDF", "t109": "Profiles of people in situations of sociocultural vulnerability.", "t110": "2. Character Vulnerability Cards", "t111": "📄 Download vulnerabilities PDF", "t112": "Situations of risk, precariousness or life-course and structural difficulty.", "t113": "3. Coping resource cards", "t114": "📄 Download resources PDF", "t115": "Services, public aid and community support networks.", "t116": "4. Special difficulty cards", "t117": "📄 Download difficulties PDF", "t118": "Administrative, attitudinal or social obstacles that complicate the case.", "t119": "How the cooperative mode works", "t120": "No competition and no scoring. The aim is shared reflection and the joint resolution of cases on an equal footing.", "t121": "Phases (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">pages 5 and 6 of the structure PDF<\/a>)", "t122": "<strong>Phase 1:<\/strong> Allocation of cards to the teams (groups of 3–4 people).", "t123": "<strong>Phase 2:<\/strong> Agreeing on and diagnosing the circumstances of the case.", "t124": "<strong>Phase 3:<\/strong> Request for resources from the Government. If a public resource is denied, other teams can offer community support directly.", "t125": "<strong>Phase 4:<\/strong> Resolving the special difficulties: with resources, cooperation or alternative strategies.", "t126": "<strong>Phase 5:<\/strong> Shared final reflection, with no scoring.", "t130": "Role of the facilitator (<a href=\"https://webs.uab.cat/afronta/wp-content/uploads/sites/472/2025/11/Estructura-activitat-CAT.pdf\" rel=\"noopener\" target=\"_blank\">pages 6 and 7 of the structure PDF<\/a>)", "t131": "Acts as a leader and an open \"Government\", with the discretionary power to grant or deny resources and to pose reflective questions to unblock situations and guide the discussion.", "t132": "Suggested role (optional): Mutual Support Commissioner", "t133": "To encourage cooperation, each team can be asked to appoint a <strong>Mutual Support Commissioner<\/strong>. Their job is to negotiate directly with the other teams to exchange or share resources without going through the \"Government\", promoting community self-management.", "t134": "Community follow-up board (no scoring)", "t135": "A blank space for recording, as the session goes on, the agreements, mutual support networks and commitments between teams:", "t136": "No agreement has been recorded yet. Press the button below to enter situations as they arise in the classroom.", "t137": "+ Add mutual support agreement", "t138": "Go to the final reflection form →", "t139": "How the competitive mode works", "t140": "This mode introduces a challenge system based on achieving collective wellbeing and on assessment by analysis criteria.", "t141": "1. Agreement, diagnosis and arguments", "t142": "Teams agree on the story of their case, present it and argue their request for resources before the Government (0–2 pts per criterion).", "t143": "2. Rolling the chance die", "t144": "The Government rolls the chance die to introduce an unforeseen event that alters the initial conditions and the granting of resources.", "t145": "3. Adaptation and re-scoring by the Government", "t146": "Teams readjust their response to the obstacle or opportunity, and the Government assesses their ability to adapt.", "t147": "4. Reaching the threshold (75%)", "t148": "The points are added up in the calculator. The community wins together if it exceeds 75% of the total possible wellbeing.", "t152": "Chance die", "t153": "<strong>Role in the game:<\/strong> It simulates real-world uncertainty. Rolling it before the final tally lets the Government assess how flexible the teams are.", "t154": "Roll the chance die", "t155": "Collective Wellbeing Calculator", "t156": "Each team can earn up to 10 points (0–2 for each of the 5 criteria). Points are not automatic: each action must be argued and the Government assesses it. They only count if the group reaches the threshold set beforehand by the Government (typical example: <strong>75% of the total possible<\/strong>). The team with the most points may receive a symbolic distinction.", "t157": "Number of participating teams:", "t158": "Wellbeing threshold (%) set by the Government", "t159": "Overall points adjustment (e.g. +1 die, −1 information crisis)", "t160": "Collective wellbeing bar (the white line marks the threshold set by the Government):", "t161": "Government's assessment criteria (0 to 2 points each):", "t162": "Criterion", "t163": "0 points", "t164": "1 point", "t165": "2 points", "t166": "Diagnosis of the situation", "t167": "Superficial or incoherent", "t168": "Partial", "t169": "Clear, realistic and contextualised", "t170": "Identification of suitable resources", "t171": "No resources", "t172": "One poorly justified resource", "t173": "Well chosen, justified and viable", "t174": "Creativity and viability of proposals", "t175": "Non-existent or hardly viable", "t176": "Functional but not very innovative", "t177": "Original, realistic and adaptable", "t178": "Collaboration with other teams", "t179": "Do not cooperate", "t180": "Limited contact", "t181": "Active and proactive", "t182": "Management of special difficulties", "t183": "Do not tackle the difficulty", "t184": "Partial coping", "t185": "Well-thought-out solution", "t187": "Final reflection and discussion form", "t188": "💾 Answers are saved automatically in this browser and device only.", "t189": "Complete the final questions of the session. When you finish, you can download the report as a PDF or as a text file (.txt).", "t190": "Mutual support agreements recorded during the session:", "t191": "1. What were the main causes of the vulnerability analysed?", "t192": "2. What individual and community strengths have we identified?", "t193": "3. How did cooperation and negotiation between teams work? Was it easy to cooperate? Why?", "t194": "4. How can public and community resources be optimised? Which proposals could be applied in real life?", "t195": "🖨️ Print / save report as PDF", "t196": "📄 Download file (.txt)", "t197": "🔄 Restart activity", "t198": "✕ Close (Esc)", "t199": "OK", "t200": "Cancel", "t201": "AFRONTA Project - Universitat Autònoma de Barcelona", "t202": "<strong>Construïm Comunitat<\/strong> is distributed under the <a data-deed=\"\" href=\"https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ca\" rel=\"noopener license\" target=\"_blank\">CC BY-NC-ND 4.0<\/a> licence.", "t203": "You may share it freely for non-commercial purposes, crediting the authorship and without modifying the original content.", "t204": "© Jorge Grau Rebollo, AFRONTA Project (PID2022-139502OB-I00), GRAFO Group, Universitat Autònoma de Barcelona, 2025. Some content was partly generated with the assistance of AI.", "t205": "Materials and rules: <a href=\"https://webs.uab.cat/afronta/recursos/materiales-formativos/activitat-ludica-formativa/\" rel=\"noopener\" target=\"_blank\">webs.uab.cat/afronta<\/a> · Contact: <a href=\"mailto:proyectoafronta@gmail.com\">proyectoafronta@gmail.com<\/a>", "t011": "Construïm Comunitat®", "t013": "Català", "t014": "Castellano", "t015": "English", "t127": "Argument script template (request for resources)", "t128": "Use this recommended structure to present requests to the Government:", "t129": "<em>\"As the team of the character <strong>[Name]<\/strong>, we request the resource <strong>[Name of resource]<\/strong> because it allows us to tackle the vulnerability of <strong>[Vulnerability]<\/strong> through the specific action of <strong>[Proposed action]<\/strong>, building on the strength of <strong>[Strength]<\/strong>.\"<\/em>", "t149": "Argument script template (request for resources)", "t150": "Use this recommended structure to present requests to the Government:", "t151": "<em>\"As the team of the character <strong>[Name]<\/strong>, we request the resource <strong>[Name of resource]<\/strong> because it allows us to tackle the vulnerability of <strong>[Vulnerability]<\/strong> through the specific action of <strong>[Proposed action]<\/strong>, building on the strength of <strong>[Strength]<\/strong>.\"<\/em>", "t186": "Go to the final reflection form →"}};
+
+Object.assign(I18N.ca,{"t206": "Tauler de Peticions de Recursos", "t207": "Registreu cada petició de recursos feta al Govern amb la plantilla de guió d'argumentació. La persona facilitadora («Govern») indica si ha estat atesa o no.", "t209": "+ Afegir petició de recursos", "t210": "Nova petició de recursos", "t211": "Ompliu els camps de la plantilla de guió d'argumentació:", "t212": "Equip", "t213": "Personatge", "t214": "Recurs sol·licitat", "t215": "Vulnerabilitat", "t216": "Acció concreta proposada", "t217": "Fortalesa aprofitada", "t218": "Afegir petició", "t219": "Peticions de recursos i resposta del Govern:"});
+Object.assign(I18N.es,{"t206": "Tablero de peticiones de recursos", "t207": "Registrad cada petición de recursos hecha al Gobierno con la plantilla de guion de argumentación. La persona facilitadora («Gobierno») indica si ha sido atendida o no.", "t209": "+ Añadir petición de recursos", "t210": "Nueva petición de recursos", "t211": "Rellenad los campos de la plantilla de guion de argumentación:", "t212": "Equipo", "t213": "Personaje", "t214": "Recurso solicitado", "t215": "Vulnerabilidad", "t216": "Acción concreta propuesta", "t217": "Fortaleza aprovechada", "t218": "Añadir petición", "t219": "Peticiones de recursos y respuesta del Gobierno:"});
+Object.assign(I18N.en,{"t206": "Resource request board", "t207": "Record each request for resources made to the Government using the argument script template. The facilitator (\"Government\") marks whether it has been dealt with or not.", "t209": "+ Add resource request", "t210": "New resource request", "t211": "Fill in the fields of the argument script template:", "t212": "Team", "t213": "Character", "t214": "Resource requested", "t215": "Vulnerability", "t216": "Specific action proposed", "t217": "Strength built on", "t218": "Add request", "t219": "Resource requests and the Government's response:"});
+
+// ===== CARTES I TIPOLOGIES =====
+const TYPES={
+ Vulnerabilitat:{econ:['Econòmica','Económica','Economic'],hab:['Residencial i energètica','Residencial y energética','Housing and energy'],rel:['Relacional i social','Relacional y social','Relational and social'],digi:['Digital i informativa','Digital e informativa','Digital and informational'],lab:['Laboral','Laboral','Employment'],sal:['Salut i cures','Salud y cuidados','Health and care'],clim:['Climàtica i ambiental','Climática y ambiental','Climate and environmental'],cult:['Sociocultural i migratòria','Sociocultural y migratoria','Sociocultural and migration'],edu:['Educativa','Educativa','Educational']},
+ Recurs:{inst:['Institucional','Institucional','Institutional'],comu:['Comunitari','Comunitario','Community'],econ:['Econòmic i material','Económico y material','Economic and material'],form:['Formatiu i digital','Formativo y digital','Educational and digital'],psic:['Psicosocial i emocional','Psicosocial y emocional','Psychosocial and emotional'],info:["Informatiu i d'orientació",'Informativo y de orientación','Information and guidance']},
+ Dificultat:{adm:['Administrativa','Administrativa','Administrative'],act:['Actitudinal i estigma','Actitudinal y estigma','Attitudinal and stigma'],tec:['Tecnològica','Tecnológica','Technological'],eco:['Econòmica sobrevinguda','Económica sobrevenida','Unexpected economic'],amb:['Climàtica i ambiental','Climática y ambiental','Climate and environmental'],info:['Desinformació','Desinformación','Misinformation'],soc:['Social i familiar','Social y familiar','Social and family']}
+};
+const K=(cat,type,base,ca,es,en)=>({cat,type,base,tx:{ca,es,en}});
+const P='Personatge',V='Vulnerabilitat',R='Recurs',D='Dificultat';
+const CARDS=[];
+
+// ===== IDIOMES I TEXTOS DE BOTÓ =====
+const LS_STATE='construim_comunitat_state',LS_LANG='construim_lang',LI={ca:0,es:1,en:2};
+let LANG='ca';
+const M={
+ca:{title:'Construïm Comunitat® - Simulador Interactiu',projAria:'Mode projector',navAria:'Menú principal',langGroup:'Idioma',customTeamsAria:"Nombre d'equips (de 2 a 20)",phSearch:'🔍 Cerca cartes per nom o paraula clau (ex: digital, pensió, veïnal...)...',searchAria:'Cerca de cartes',phAnswer:'Escriviu la resposta aquí...',phMin:'Min',minAria:'Minuts del cronòmetre personalitzat',close:'Tanca',
+ ccAlt:'Llicència Creative Commons Reconeixement – No Comercial – Sense Obres Derivades 4.0',logoAlt:'Logotip de la Universitat Autònoma de Barcelona, Projecte AFRONTA i GRAFO',
+ timeUp:'⏱️ Temps finalitzat!',invalidMin:'Si us plau, introduïu un nombre de minuts vàlid.',coopPrompt:"Escriviu l'acord o acció de suport mutu (ex: Equip 1 ofereix acompanyament a l'Equip 2):",resetConfirm:"Segur que voleu reiniciar tota l'activitat? S'esborraran notes, puntuacions i respostes.",
+ teamName:i=>`Equip ${i}`,crit:['Diagnosi','Recursos','Creativitat','Col·laboració','Dificultats'],teamsOpt:n=>`${n} equips (màxim: ${n*10} pts)`,otherTeams:'Un altre nombre d\'equips (n)…',
+ teamsInfo:(max,thr,tp)=>`Total possible: ${max} pts · Llindar del ${tp}%: ${thr} pts.`,
+ thermoTitle:tp=>`Llindar ${tp}%`,progress:(t,mx,p)=>`${t} / ${mx} pts (${p}%)`,
+ ok:(thr,tp)=>`Objectiu assolit! S'han superat els ${thr} punts col·lectius (${tp}%). Els punts compten.`,low:(t,thr,tp)=>`Encara calen punts: ${t} / ${thr} pts (mínim ${tp}%). Fomenteu la cooperació!`,best:(ids,b)=>` 🏅 Més punts: ${ids.length>1?'Equips':'Equip'} ${ids.join(', ')} (${b}/10).`,
+ dice:["Retallada pressupostària: cal reduir o retardar la implementació d'un recurs.","Nova vulnerabilitat a la situació del personatge.","Oportunitat de col·laborar amb un altre equip.","Dificultat especial addicional (p. ex. crisi climàtica, pujada del cost de la vida).","Es descobreix un nou recurs comunitari o solidari (el dissenya l'equip).","Millora del benestar col·lectiu: +1 punt global."],diceTxt:(f,r,e)=>`${f} Ha sortit ${r}: ${e}`,
+ noteLabel:'Acord:',noteDel:'Eliminar aquesta nota',statuses:['🔴 Pendent','🟡 En negociació','🟢 Resolt'],
+ rTitle:'RESUM DE LA SESSIÓ - CONSTRUÏM COMUNITAT (UAB)',rSec:['1. Causes de la vulnerabilitat:','2. Fortaleses identificades:','3. Avaluació de la cooperació:','4. Propostes de millora:'],rNone:'Sense resposta',rCoop:'ACORDS DE SUPORT MUTU REGISTRATS AL TAULER:',rState:'Estat',rScores:'PUNTUACIONS (modalitat competitiva):',rWell:'Benestar col·lectiu: ',rDice:"DAU D'ATZAR:",rTeam:(i,v)=>`Equip ${i}: ${v}/10`,rFile:'resum-reflexio-construim-comunitat.txt',
+ loadMore:{Personatge:'➕ Carregar més perfils',Vulnerabilitat:'➕ Carregar més vulnerabilitats',Recurs:'➕ Carregar més recursos',Dificultat:'➕ Carregar més dificultats'},allTypes:'Tots els tipus',typeAria:'Tipus de carta a carregar',resetCards:'↺ Tornar a les cartes inicials',count:(s,t)=>`${s} de ${t} cartes mostrades`,exhausted:"Ja s'han mostrat totes les cartes d'aquest tipus.",noMatch:'Cap carta coincideix amb la cerca o la tipologia seleccionada.',expand:'Ampliar carta 🔍',typeWord:'Tipus',
+ catName:{Personatge:'Personatge',Vulnerabilitat:'Vulnerabilitat',Recurs:'Recurs',Dificultat:'Dificultat'}},
+es:{title:'Construïm Comunitat® - Simulador interactivo',projAria:'Modo proyector',navAria:'Menú principal',langGroup:'Idioma',customTeamsAria:'Número de equipos (de 2 a 20)',phSearch:'🔍 Busca cartas por nombre o palabra clave (p. ej.: digital, pensión, vecinal...)...',searchAria:'Búsqueda de cartas',phAnswer:'Escribid la respuesta aquí...',phMin:'Min',minAria:'Minutos del cronómetro personalizado',close:'Cerrar',
+ ccAlt:'Licencia Creative Commons Reconocimiento – No Comercial – Sin Obra Derivada 4.0',logoAlt:'Logotipo de la Universitat Autònoma de Barcelona, Proyecto AFRONTA y GRAFO',
+ timeUp:'⏱️ ¡Tiempo finalizado!',invalidMin:'Por favor, introducid un número de minutos válido.',coopPrompt:'Escribid el acuerdo o la acción de apoyo mutuo (p. ej.: el Equipo 1 ofrece acompañamiento al Equipo 2):',resetConfirm:'¿Seguro que queréis reiniciar toda la actividad? Se borrarán las notas, las puntuaciones y las respuestas.',
+ teamName:i=>`Equipo ${i}`,crit:['Diagnóstico','Recursos','Creatividad','Colaboración','Dificultades'],teamsOpt:n=>`${n} equipos (máximo: ${n*10} pts)`,otherTeams:'Otro número de equipos (n)…',
+ teamsInfo:(max,thr,tp)=>`Total posible: ${max} pts · Umbral del ${tp} %: ${thr} pts.`,
+ thermoTitle:tp=>`Umbral ${tp} %`,progress:(t,mx,p)=>`${t} / ${mx} pts (${p} %)`,
+ ok:(thr,tp)=>`¡Objetivo alcanzado! Se han superado los ${thr} puntos colectivos (${tp} %). Los puntos cuentan.`,low:(t,thr,tp)=>`Aún faltan puntos: ${t} / ${thr} pts (mínimo ${tp} %). ¡Fomentad la cooperación!`,best:(ids,b)=>` 🏅 Más puntos: ${ids.length>1?'Equipos':'Equipo'} ${ids.join(', ')} (${b}/10).`,
+ dice:['Recorte presupuestario: hay que reducir o retrasar la implementación de un recurso.','Nueva vulnerabilidad en la situación del personaje.','Oportunidad de colaborar con otro equipo.','Dificultad especial adicional (p. ej., crisis climática, subida del coste de la vida).','Se descubre un nuevo recurso comunitario o solidario (lo diseña el equipo).','Mejora del bienestar colectivo: +1 punto global.'],diceTxt:(f,r,e)=>`${f} Ha salido ${r}: ${e}`,
+ noteLabel:'Acuerdo:',noteDel:'Eliminar esta nota',statuses:['🔴 Pendiente','🟡 En negociación','🟢 Resuelto'],
+ rTitle:'RESUMEN DE LA SESIÓN - CONSTRUÏM COMUNITAT (UAB)',rSec:['1. Causas de la vulnerabilidad:','2. Fortalezas identificadas:','3. Evaluación de la cooperación:','4. Propuestas de mejora:'],rNone:'Sin respuesta',rCoop:'ACUERDOS DE APOYO MUTUO REGISTRADOS EN EL TABLERO:',rState:'Estado',rScores:'PUNTUACIONES (modalidad competitiva):',rWell:'Bienestar colectivo: ',rDice:'DADO DE AZAR:',rTeam:(i,v)=>`Equipo ${i}: ${v}/10`,rFile:'resumen-reflexion-construim-comunitat.txt',
+ loadMore:{Personatge:'➕ Cargar más perfiles',Vulnerabilitat:'➕ Cargar más vulnerabilidades',Recurs:'➕ Cargar más recursos',Dificultat:'➕ Cargar más dificultades'},allTypes:'Todos los tipos',typeAria:'Tipo de carta que se va a cargar',resetCards:'↺ Volver a las cartas iniciales',count:(s,t)=>`${s} de ${t} cartas mostradas`,exhausted:'Ya se han mostrado todas las cartas de este tipo.',noMatch:'Ninguna carta coincide con la búsqueda o la tipología seleccionada.',expand:'Ampliar carta 🔍',typeWord:'Tipo',
+ catName:{Personatge:'Personaje',Vulnerabilitat:'Vulnerabilidad',Recurs:'Recurso',Dificultat:'Dificultad'}},
+en:{title:'Construïm Comunitat® - Interactive Simulator',projAria:'Projector mode',navAria:'Main menu',langGroup:'Language',customTeamsAria:'Number of teams (2 to 20)',phSearch:'🔍 Search cards by name or keyword (e.g. digital, pension, neighbourhood...)...',searchAria:'Card search',phAnswer:'Write your answer here...',phMin:'Min',minAria:'Minutes for the custom timer',close:'Close',
+ ccAlt:'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 licence',logoAlt:'Logo of the Universitat Autònoma de Barcelona, the AFRONTA Project and GRAFO',
+ timeUp:"⏱️ Time's up!",invalidMin:'Please enter a valid number of minutes.',coopPrompt:'Write the mutual support agreement or action (e.g. Team 1 offers companionship to Team 2):',resetConfirm:'Are you sure you want to restart the whole activity? Notes, scores and answers will be deleted.',
+ teamName:i=>`Team ${i}`,crit:['Diagnosis','Resources','Creativity','Collaboration','Difficulties'],teamsOpt:n=>`${n} teams (maximum: ${n*10} pts)`,otherTeams:'Another number of teams (n)…',
+ teamsInfo:(max,thr,tp)=>`Total possible: ${max} pts · ${tp}% threshold: ${thr} pts.`,
+ thermoTitle:tp=>`${tp}% threshold`,progress:(t,mx,p)=>`${t} / ${mx} pts (${p}%)`,
+ ok:(thr,tp)=>`Goal reached! The collective total of ${thr} points (${tp}%) has been exceeded. The points count.`,low:(t,thr,tp)=>`More points are needed: ${t} / ${thr} pts (minimum ${tp}%). Encourage cooperation!`,best:(ids,b)=>` 🏅 Most points: ${ids.length>1?'Teams':'Team'} ${ids.join(', ')} (${b}/10).`,
+ dice:['Budget cuts: the implementation of one resource must be reduced or delayed.',"A new vulnerability affects the character's situation.",'Opportunity to collaborate with another team.','An additional special difficulty (e.g. climate crisis, rising cost of living).','A new community or solidarity resource is discovered (designed by the team).','Improvement in collective wellbeing: +1 global point.'],diceTxt:(f,r,e)=>`${f} Rolled ${r}: ${e}`,
+ noteLabel:'Agreement:',noteDel:'Delete this note',statuses:['🔴 Pending','🟡 Under negotiation','🟢 Resolved'],
+ rTitle:'SESSION SUMMARY - CONSTRUÏM COMUNITAT (UAB)',rSec:['1. Causes of the vulnerability:','2. Strengths identified:','3. Assessment of cooperation:','4. Proposals for improvement:'],rNone:'No answer',rCoop:'MUTUAL SUPPORT AGREEMENTS RECORDED ON THE BOARD:',rState:'Status',rScores:'SCORES (competitive mode):',rWell:'Collective wellbeing: ',rDice:'CHANCE DIE:',rTeam:(i,v)=>`Team ${i}: ${v}/10`,rFile:'summary-reflection-construim-comunitat.txt',
+ loadMore:{Personatge:'➕ Load more profiles',Vulnerabilitat:'➕ Load more vulnerabilities',Recurs:'➕ Load more resources',Dificultat:'➕ Load more difficulties'},allTypes:'All types',typeAria:'Type of card to load',resetCards:'↺ Back to the initial cards',count:(s,t)=>`${s} of ${t} cards shown`,exhausted:'All the cards of this type are already shown.',noMatch:'No cards match the search or the selected type.',expand:'Enlarge card 🔍',typeWord:'Type',
+ catName:{Personatge:'Character',Vulnerabilitat:'Vulnerability',Recurs:'Resource',Dificultat:'Difficulty'}}
+};
+Object.assign(M.ca,{reqEmpty:"Encara no s'ha registrat cap petició. Premeu el botó de sota per anotar-ne una a mesura que els equips la facin.",reqNum:n=>`Petició ${n}`,reqStatuses:['⏳ Pendent de resposta','✅ Concedit','🟠 Concedit amb condicions','⛔ Denegat'],reqGov:'Resposta del Govern:',reqCondPh:'Condicions o comentari del Govern…',reqDel:'Eliminar aquesta petició',reqCount:(a,t)=>`${a} de ${t} peticions ateses pel Govern.`,reqNeed:'Indiqueu com a mínim el recurs sol·licitat.',rReqs:'PETICIONS DE RECURSOS I RESPOSTA DEL GOVERN:',rGov:'Govern',
+ reqPhrase:(c,r,v,a,s)=>`«Com a equip del personatge <strong>${c}</strong>, demanem el recurs <strong>${r}</strong> perquè ens permet afrontar la vulnerabilitat de <strong>${v}</strong> mitjançant l'acció concreta de <strong>${a}</strong>, aprofitant la fortalesa de <strong>${s}</strong>.»`});
+Object.assign(M.es,{reqEmpty:'Todavía no se ha registrado ninguna petición. Pulsad el botón de abajo para anotar una a medida que los equipos la hagan.',reqNum:n=>`Petición ${n}`,reqStatuses:['⏳ Pendiente de respuesta','✅ Concedido','🟠 Concedido con condiciones','⛔ Denegado'],reqGov:'Respuesta del Gobierno:',reqCondPh:'Condiciones o comentario del Gobierno…',reqDel:'Eliminar esta petición',reqCount:(a,t)=>`${a} de ${t} peticiones atendidas por el Gobierno.`,reqNeed:'Indicad como mínimo el recurso solicitado.',rReqs:'PETICIONES DE RECURSOS Y RESPUESTA DEL GOBIERNO:',rGov:'Gobierno',
+ reqPhrase:(c,r,v,a,s)=>`«Como equipo del personaje <strong>${c}</strong>, pedimos el recurso <strong>${r}</strong> porque nos permite afrontar la vulnerabilidad de <strong>${v}</strong> mediante la acción concreta de <strong>${a}</strong>, aprovechando la fortaleza de <strong>${s}</strong>.»`});
+Object.assign(M.en,{reqEmpty:'No request has been recorded yet. Press the button below to note one down as the teams make them.',reqNum:n=>`Request ${n}`,reqStatuses:['⏳ Awaiting response','✅ Granted','🟠 Granted with conditions','⛔ Denied'],reqGov:'Government response:',reqCondPh:'Government conditions or comment…',reqDel:'Delete this request',reqCount:(a,t)=>`${a} of ${t} requests dealt with by the Government.`,reqNeed:'Please enter at least the resource requested.',rReqs:'RESOURCE REQUESTS AND GOVERNMENT RESPONSE:',rGov:'Government',
+ reqPhrase:(c,r,v,a,s)=>`“As the team of the character <strong>${c}</strong>, we request the resource <strong>${r}</strong> because it allows us to tackle the vulnerability of <strong>${v}</strong> through the specific action of <strong>${a}</strong>, building on the strength of <strong>${s}</strong>.”`});
+M.ca.imgMissing='Imatge no trobada:';M.es.imgMissing='Imagen no encontrada:';M.en.imgMissing='Image not found:';
+
+function m(k,...a){const v=(M[LANG]&&M[LANG][k]!==undefined?M[LANG]:M.ca)[k];return typeof v==='function'?v(...a):v;}
+function esc(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// ---- Carregador de fitxers i assignació automàtica de tipologies ----
+(function(){
+  const MF=window.CARD_MANIFEST;if(!MF)return;
+  const LB=window.CARD_LABELS||{},BASE=window.CARD_BASE||'cartas/';
+  const catOf=f=>{f=f.toLowerCase();return /^personat?g|^personaj/.test(f)?'Personatge':/^vulnerab/.test(f)?'Vulnerabilitat':/^recurs/.test(f)?'Recurs':/^dificult/.test(f)?'Dificultat':null;};
+
+  const autoType = (cat, key) => {
+    const k = key.toLowerCase();
+    if (cat === 'Vulnerabilitat') {
+      if (/deute|ingressos|credit|pobresa|economics|problemes-econ/.test(k)) return 'econ';
+      if (/habitatge|energetica|calor|aigua/.test(k)) return 'hab';
+      if (/aillament|crisis|soledat|solitud|invisibilitat/.test(k)) return 'rel';
+      if (/digital|infraestructura|tecnologica/.test(k)) return 'digi';
+      if (/atur|feina|laboral/.test(k)) return 'lab';
+      if (/addicions|ansietat|dependencia|discapacitat|malaltia|malalties|maltractament|salut|autopercepcio/.test(k)) return 'sal';
+      if (/contaminacio|ambiental/.test(k)) return 'clim';
+      if (/genere|estigma|situacio-irregular|migrat/.test(k)) return 'cult';
+      return 'econ';
+    }
+    if (cat === 'Recurs') {
+      if (/atencio-ciutadana|beques|refugis|serveis-publics|serveis-socials|municipals/.test(k)) return 'inst';
+      if (/banc-aliments|banc-temps|casals|criança|mercats|programes|tercer-sector|xarxes/.test(k)) return 'comu';
+      if (/capacitacio|formacio|orientacio/.test(k)) return 'form';
+      if (/atencio-discapacitat|atencio-salut|suport-autonomia|suport-benestar|suport-familiar/.test(k)) return 'psic';
+      if (/campanyes|canals|informacio/.test(k)) return 'info';
+      return 'comu';
+    }
+    if (cat === 'Dificultat') {
+      if (/absencia|complexitat|manca-cobertura|burocrat/.test(k)) return 'adm';
+      if (/desconfiança|estigma|etnocentrisme|ostracisme|prejudicis|xenofobia|normalitzacio|actitud/.test(k)) return 'act';
+      if (/desconeixement|desinformacio|manca-informacio|tecnol/.test(k)) return 'tec';
+      if (/blanca|sobreviguda|retallada|pujada/.test(k)) return 'eco';
+      if (/desarrelament|familiar|social/.test(k)) return 'soc';
+      return 'adm';
+    }
+    return null;
+  };
+
+  const imgs=[],done=new Set();
+  Object.keys(MF).forEach(folder=>{const cat=catOf(folder);if(!cat||!Array.isArray(MF[folder]))return;
+    const files=MF[folder].filter(n=>/\.(png|jpe?g|webp)$/i.test(n)&&!/\.(es|en)\.\w+$/i.test(n));
+    if(!files.length)return;done.add(cat);
+    files.forEach(n=>{
+      const key=n.replace(/\.[^.]+$/,''),ca=key.replace(/[-_]+/g,' ').trim(),l=LB[key]||{};
+      const type = autoType(cat, key);
+      const o=K(cat,type,true,[ca,''],[l.es||ca,''],[l.en||ca,'']);
+      o.img=encodeURI(BASE+folder+'/'+n);o.blank=/blanc[ao]?$/i.test(key);imgs.push(o);
+    });
+  });
+  if(!done.size)return;
+  CARDS.length=0;imgs.forEach(c=>CARDS.push(c));
+})();
+
+function cardSrc(c){return(window.CARD_LANG_SUFFIX&&LANG!=='ca')?c.img.replace(/(\.\w+)$/,'.'+LANG+'$1'):c.img;}
+function imgErr(el){const fb=el.dataset.fb;if(fb&&el.getAttribute('src')!==fb){el.src=fb;return;}
+  if(el.id==='modalImg'){el.style.display='none';return;}
+  const s=document.createElement('span');s.className='img-missing';s.textContent=m('imgMissing')+' '+decodeURI(fb||'');el.replaceWith(s);}
+function cardTx(c){return c.tx[LANG]||c.tx.ca;}
+function typeLabel(c){return (c.type && TYPES[c.cat] && TYPES[c.cat][c.type])?TYPES[c.cat][c.type][LI[LANG]]:'';}
+
+function setLang(l){if(!LI.hasOwnProperty(l))return;LANG=l;try{localStorage.setItem(LS_LANG,l);}catch(e){}applyLang();}
+function applyLang(){
+  document.documentElement.lang=LANG;document.title=m('title');
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const v=(I18N[LANG]||{})[e.dataset.i18n];if(v!==undefined)e.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.setAttribute('placeholder',m(e.dataset.i18nPh)));
+  document.querySelectorAll('[data-i18n-aria]').forEach(e=>e.setAttribute('aria-label',m(e.dataset.i18nAria)));
+  document.querySelectorAll('[data-i18n-alt]').forEach(e=>e.setAttribute('alt',m(e.dataset.i18nAlt)));
+  document.querySelectorAll('a[data-deed]').forEach(a=>a.setAttribute('href','https://creativecommons.org/licenses/by-nc-nd/4.0/deed.'+LANG));
+  document.querySelectorAll('.lang-btn').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===LANG?'true':'false'));
+  buildTeamOptions();relabelTeams();relabelNotes();renderReqs();renderGallery();calculateWellbeing();
+  const dm=document.getElementById('drawnCardResult');if(dm)dm.innerHTML='';
+}
+
+// ===== NAVEGACIÓ =====
+const SCREEN_BTN={sc1:0,scExemple:1,sc2:2,scCards:3,scCoop:4,scComp:5,scForm:6};
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('active');b.removeAttribute('aria-current');});
+  document.getElementById(id).classList.add('active');
+  if(SCREEN_BTN[id]!==undefined){const nb=document.querySelectorAll('.nav-btn')[SCREEN_BTN[id]];nb.classList.add('active');nb.setAttribute('aria-current','page');}
+  window.scrollTo(0,0);
+}
+
+// ===== GALERIA DE CARTES I FILTRES DE TIPOLOGIA =====
+const CAT=[['Personatge','gridPersonatges','personatge'],['Vulnerabilitat','gridVulnerabilitats','vulnerabilitat'],['Recurs','gridRecursos','recurs'],['Dificultat','gridDificultats','dificultat']];
+const shown={},typeSel={},fresh={};
+let drawn=new Set(),diceLog=[];
+
+function initShown(){
+  CAT.forEach(([c])=>{
+    const catIndices = CARDS.map((x,i)=>x.cat===c ? i : -1).filter(i=>i>=0);
+    shown[c] = catIndices.slice(0, 4); // 4 cartes inicials per defecte
+    typeSel[c] = '';
+    fresh[c] = [];
+  });
+}
+
+function poolLeft(cat){
+  return CARDS.map((c,i)=>i).filter(i=>CARDS[i].cat===cat && !shown[cat].includes(i) && (!typeSel[cat] || CARDS[i].type===typeSel[cat]));
+}
+
+function cardHTML(i){
+  const c=CARDS[i],t=cardTx(c),ty=typeLabel(c);
+  const media=c.img?`<button type="button" class="card-img" onclick="openCardModalIdx(${i})" aria-label="${esc(m('expand'))}: ${esc(t[0])}"><img loading="lazy" src="${esc(cardSrc(c))}" data-fb="${esc(c.img)}" alt="${esc(t[0])}" onerror="imgErr(this)"/></button>`:'';
+  return `<div><span class="badge">${esc(m('catName')[c.cat])}</span>${ty?`<span class="type-badge">${esc(m('typeWord'))}: ${esc(ty)}</span>`:''} ${media}<h4>${esc(t[0])}</h4>${t[1]?`<p>${esc(t[1])}</p>`:''}</div><button class="btn-action" style="font-size:.75rem;padding:6px 10px;margin-top:8px" onclick="openCardModalIdx(${i})">${esc(m('expand'))}</button>`;
+}
+
+function renderGrid(cat,filter){
+  const row=CAT.find(x=>x[0]===cat),grid=document.getElementById(row[1]);if(!grid)return;
+  const f=(filter||'').toLowerCase().trim();
+  let idx;
+  if(f){
+    idx=CARDS.map((c,i)=>i).filter(i=>{
+      const c=CARDS[i],t=cardTx(c);
+      return c.cat===cat && (t[0].toLowerCase().includes(f) || t[1].toLowerCase().includes(f) || typeLabel(c).toLowerCase().includes(f));
+    });
+  } else if(typeSel[cat]) {
+    idx=shown[cat].filter(i=>CARDS[i].type===typeSel[cat]);
+  } else {
+    idx=shown[cat];
+  }
+
+  grid.innerHTML='';
+  if(!idx.length){
+    grid.innerHTML=`<p style="font-size:.85rem;color:#596473;grid-column:1/-1">${esc(m('noMatch'))}</p>`;
+    return;
+  }
+  idx.forEach(i=>{
+    const b=document.createElement('div');
+    b.className=`card-box ${row[2]}${fresh[cat].includes(i)?' card-new':''}`;
+    b.innerHTML=cardHTML(i);
+    grid.appendChild(b);
+  });
+}
+
+function updateCount(cat){
+  const el=document.getElementById('count_'+cat),btn=document.getElementById('load_'+cat);if(!el)return;
+  const total = typeSel[cat] ? CARDS.filter(c=>c.cat===cat && c.type===typeSel[cat]).length : CARDS.filter(c=>c.cat===cat).length;
+  const shownCount = typeSel[cat] ? shown[cat].filter(i=>CARDS[i].type===typeSel[cat]).length : shown[cat].length;
+  const left=poolLeft(cat).length;
+  el.textContent=m('count', shownCount, total) + (left===0 ? ' · '+m('exhausted') : '');
+  if(btn) btn.disabled = left===0;
+}
+
+function onTypeChange(cat, val){
+  typeSel[cat] = val;
+  if(val){
+    // Auto-carrega cartes de la tipologia si no n'hi ha suficients a la vista
+    const matchingIndices = CARDS.map((c,i)=>(c.cat===cat && c.type===val)?i:-1).filter(i=>i>=0);
+    matchingIndices.forEach(idx=>{
+      if(!shown[cat].includes(idx)) shown[cat].push(idx);
+    });
+  }
+  renderGrid(cat);
+  updateCount(cat);
+}
+
+function renderToolbars(){
+  CAT.forEach(([cat])=>{
+    const box=document.getElementById('tools'+cat);if(!box)return;box.innerHTML='';
+    const types=TYPES[cat];
+    if(types){
+      const s=document.createElement('select');s.id='type_'+cat;s.setAttribute('aria-label',m('typeAria'));
+      s.innerHTML=`<option value="">${esc(m('allTypes'))}</option>`+Object.keys(types).map(k=>`<option value="${k}">${esc(types[k][LI[LANG]])}</option>`).join('');
+      s.value=typeSel[cat]||'';
+      s.onchange=()=>onTypeChange(cat, s.value);
+      box.appendChild(s);
+    }
+    const b=document.createElement('button');b.type='button';b.id='load_'+cat;b.className='btn-action';b.textContent=m('loadMore')[cat];b.onclick=()=>loadMore(cat);box.appendChild(b);
+    const r=document.createElement('button');r.type='button';r.className='btn-action btn-ghost';r.textContent=m('resetCards');r.onclick=()=>resetCards(cat);box.appendChild(r);
+    const c=document.createElement('span');c.className='count';c.id='count_'+cat;c.setAttribute('aria-live','polite');box.appendChild(c);
+    updateCount(cat);
+  });
+}
+
+function renderGrids(){const q=document.getElementById('cardSearchInput');CAT.forEach(([c])=>renderGrid(c,q?q.value:''));}
+function renderGallery(){renderToolbars();renderGrids();}
+
+function loadMore(cat, n=4){ // Carrega 4 cartes més
+  const pool=poolLeft(cat);
+  const pick=pool.slice(0,n);
+  fresh[cat]=pick;
+  shown[cat]=shown[cat].concat(pick);
+  const q=document.getElementById('cardSearchInput');if(q)q.value='';
+  renderGrid(cat);
+  updateCount(cat);
+}
+
+function resetCards(cat){
+  const catIndices = CARDS.map((x,i)=>x.cat===cat ? i : -1).filter(i=>i>=0);
+  shown[cat] = catIndices.slice(0, 4);
+  typeSel[cat]='';
+  fresh[cat]=[];
+  renderGallery();
+}
+
+function filterCards(){renderGrids();}
+
+function openCardModalIdx(i){const c=CARDS[i],t=cardTx(c),ty=typeLabel(c);openCardModal(m('catName')[c.cat]+(ty?' · '+ty:''),t[0],t[1],c);}
+function openCardModal(cat,title,desc,c){document.getElementById('modalBadge').innerText=cat;document.getElementById('modalTitle').innerText=title;
+  const d=document.getElementById('modalDesc');d.innerText=desc||'';d.style.display=desc?'':'none';
+  const mi=document.getElementById('modalImg');if(c&&c.img){mi.dataset.fb=c.img;mi.alt=title;mi.src=cardSrc(c);mi.style.display='block';}else{mi.style.display='none';mi.removeAttribute('src');}
+  document.getElementById('cardModal').style.display='flex';}
+function closeModal(){document.getElementById('cardModal').style.display='none';}
+
+function drawRandomCard(){
+  const cat=document.getElementById('drawCategory').value;
+  const pool=CARDS.map((c,i)=>i).filter(i=>cat==='all'?CARDS[i].cat!=='Personatge'&&!CARDS[i].blank:CARDS[i].cat===cat&&!CARDS[i].blank);
+  if(!pool.length)return;
+  let left=pool.filter(i=>!drawn.has(i));if(!left.length){pool.forEach(i=>drawn.delete(i));left=pool;}
+  const i=left[Math.floor(Math.random()*left.length)];drawn.add(i);
+  const row=CAT.find(x=>x[0]===CARDS[i].cat);
+  document.getElementById('drawnCardResult').innerHTML=`<div class="card-box ${row[2]}" style="background-color:var(--color-marca-primari-e)">${cardHTML(i)}</div>`;
+}
+
+// ===== DIÀLEGS =====
+function askDlg(msg,inp,cancel=true){return new Promise(res=>{const d=document.getElementById('dlg'),i=document.getElementById('dlgIn');document.getElementById('dlgMsg').innerText=msg;i.style.display=inp===true?'block':'none';i.value='';document.getElementById('dlgNo').style.display=cancel?'':'none';d.returnValue='';d.onclose=()=>res(d.returnValue==='ok'?(inp===true?i.value:true):(inp===true?null:false));d.showModal();if(inp===true)i.focus();});}
+function toggleProjector(){const p=document.getElementById('projector');p.classList.toggle('on');if(p.classList.contains('on'))p.querySelector('button').focus();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();document.getElementById('projector').classList.remove('on');}});
+
+// ===== CRONÒMETRE =====
+let timerInterval=null,timerSeconds=600;
+function timerDone(){try{const a=new AudioContext(),o=a.createOscillator();o.connect(a.destination);o.frequency.value=880;o.start();setTimeout(()=>{o.stop();a.close()},700);}catch(e){}
+  const t=document.getElementById('timerDisplay');t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),3200);askDlg(m('timeUp'),false,false);}
+function changeTimerMode(){const mode=document.getElementById('timerMode').value,wrap=document.getElementById('customTimerWrap');
+  if(mode==='custom'){wrap.style.display='inline-flex';}else{wrap.style.display='none';clearInterval(timerInterval);timerInterval=null;timerSeconds=parseInt(mode);updateTimerDisplay();}}
+function applyCustomTimer(){const mins=parseInt(document.getElementById('customMinutesInput').value);
+  if(mins&&mins>0){clearInterval(timerInterval);timerInterval=null;timerSeconds=mins*60;updateTimerDisplay();}else{askDlg(m('invalidMin'),false,false);}}
+function toggleTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}else{timerInterval=setInterval(()=>{if(timerSeconds>0){timerSeconds--;updateTimerDisplay();}else{clearInterval(timerInterval);timerInterval=null;timerDone();}},1000);}}
+function resetTimer(){clearInterval(timerInterval);timerInterval=null;changeTimerMode();}
+function updateTimerDisplay(){const t=`${String(Math.floor(timerSeconds/60)).padStart(2,'0')}:${String(timerSeconds%60).padStart(2,'0')}`;document.getElementById('timerDisplay').innerText=t;document.getElementById('pjTimer').innerText=t;}
+
+// ===== CALCULADORA DE BENESTAR =====
+function getN(){const s=document.getElementById('numEquips').value;if(s==='custom'){const v=parseInt(document.getElementById('customTeams').value);return Math.min(20,Math.max(2,isNaN(v)?9:v));}return +s||3;}
+function buildTeamOptions(){const s=document.getElementById('numEquips'),cur=s.value||'3';s.innerHTML='';
+  [3,4,5,6,7,8].forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=m('teamsOpt',n);s.appendChild(o);});
+  const o=document.createElement('option');o.value='custom';o.textContent=m('otherTeams');s.appendChild(o);s.value=cur;if(s.value!==cur)s.value='3';
+  document.getElementById('customTeamsWrap').style.display=s.value==='custom'?'inline-flex':'none';}
+function onTeamsSelect(){document.getElementById('customTeamsWrap').style.display=document.getElementById('numEquips').value==='custom'?'inline-flex':'none';setupTeams();saveData();}
+function onCustomTeams(){const e=document.getElementById('customTeams');e.value=Math.min(20,Math.max(2,parseInt(e.value)||9));setupTeams();saveData();}
+function setupTeams(){
+  const n=getN(),c=document.getElementById('teamsContainer'),old={};
+  document.querySelectorAll('.crit').forEach(e=>old[e.id]=e.value);c.innerHTML='';
+  for(let i=1;i<=n;i++){const d=document.createElement('div');d.className='team-row';
+    d.innerHTML=`<strong class="team-name" data-team="${i}"></strong><span class="team-tot" id="tt_${i}">0/10</span><div class="crit-grid">`+[0,1,2,3,4].map(j=>`<label><span class="crit-lbl" data-j="${j}"></span><select class="crit" id="c_${i}_${j}" onchange="calculateWellbeing();saveData()"><option>0</option><option>1</option><option>2</option></select></label>`).join('')+`</div><input type="hidden" id="t_${i}" value="0">`;c.appendChild(d);}
+  Object.keys(old).forEach(k=>{const e=document.getElementById(k);if(e)e.value=old[k];});
+  relabelTeams();calculateWellbeing();
+}
+function relabelTeams(){document.querySelectorAll('.team-name').forEach(e=>e.textContent=m('teamName',e.dataset.team));const L=m('crit');document.querySelectorAll('.crit-lbl').forEach(e=>e.textContent=L[+e.dataset.j]);}
+function calculateWellbeing(){
+  const n=getN();let total=0,best=-1,bi=[];
+  for(let i=1;i<=n;i++){let t=0;for(let j=0;j<5;j++){const e=document.getElementById(`c_${i}_${j}`);t+=e?+e.value:0;}
+    const h=document.getElementById(`t_${i}`),tt=document.getElementById(`tt_${i}`);if(!h||!tt)return;h.value=t;tt.innerText=`${t}/10`;total+=t;
+    if(t>best){best=t;bi=[i];}else if(t===best)bi.push(i);}
+  total=Math.max(0,total+(parseInt(document.getElementById('adj').value)||0));
+  const max=n*10,tp=Math.min(100,Math.max(1,parseInt(document.getElementById('thr').value)||75)),thr=Math.ceil(max*tp/100),pct=Math.min(100,Math.round(total/max*100));
+  const bar=document.getElementById('progressBar');bar.style.width=pct+'%';bar.innerText=m('progress',total,max,pct);
+  document.getElementById('pjBar').style.width=pct+'%';document.getElementById('pjPct').innerText=bar.innerText;document.getElementById('pjOuter').setAttribute('aria-valuenow',pct);
+  document.getElementById('thermoPointer').style.left=`${pct}%`;
+  const mk=document.querySelector('.thermo-mark');mk.style.left=tp+'%';mk.title=m('thermoTitle',tp);
+  document.getElementById('teamsInfo').innerText=m('teamsInfo',max,thr,tp);
+  const st=document.getElementById('statusMessage');
+  if(total>=thr){st.className='alert-box alert-success';st.innerText=m('ok',thr,tp);}else{st.className='alert-box alert-warning';st.innerText=m('low',total,thr,tp);}
+  if(best>0)st.innerText+=m('best',bi,best);
+}
+function rollDice(){
+  const r=Math.floor(Math.random()*6)+1,faces=['⚀','⚁','⚂','⚃','⚄','⚅'],txt=m('diceTxt',faces[r-1],r,m('dice')[r-1]);diceLog.push(txt);
+  document.getElementById('diceResult').innerHTML=esc(txt)+'<ol reversed style="font-weight:400;font-size:.82rem;margin:8px 0 0 20px">'+diceLog.slice(-6,-1).reverse().map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>';
+  document.getElementById('pjDice').innerText=txt;
+}
+
+// ===== TAULER COOPERATIU =====
+function addCoopNote(initialText='',initialStatus='pending'){
+  if(!initialText){askDlg(m('coopPrompt'),true).then(t=>{if(t&&t.trim())addCoopNote(t.trim(),initialStatus)});return;}
+  const em=document.getElementById('emptyCoopMsg');if(em)em.style.display='none';
+  const div=document.createElement('div');div.className='coop-note-item';
+  div.style.cssText='border-bottom:1px solid var(--color-gris-15);padding:10px 0;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px';
+  const S=m('statuses');
+  div.innerHTML=`<div class="note-text" style="flex:1;min-width:200px"><strong class="note-label">${esc(m('noteLabel'))}</strong> <span class="note-body">${esc(initialText)}</span></div><div style="display:flex;gap:8px;align-items:center"><select style="padding:4px 8px;border-radius:4px;font-weight:bold;border:1px solid var(--color-gris-15)" onchange="updateStatusColor(this);saveData()"><option value="pending" ${initialStatus==='pending'?'selected':''}>${S[0]}</option><option value="progress" ${initialStatus==='progress'?'selected':''}>${S[1]}</option><option value="resolved" ${initialStatus==='resolved'?'selected':''}>${S[2]}</option></select><button onclick="removeCoopNote(this)" style="background:none;border:none;cursor:pointer;font-size:1.1rem" title="${esc(m('noteDel'))}" aria-label="${esc(m('noteDel'))}">🗑️</button></div>`;
+  document.getElementById('coopTrackerContainer').appendChild(div);updateStatusColor(div.querySelector('select'));saveData();
+}
+function relabelNotes(){const S=m('statuses');document.querySelectorAll('.coop-note-item').forEach(it=>{it.querySelector('.note-label').textContent=m('noteLabel');[...it.querySelectorAll('option')].forEach((o,k)=>o.textContent=S[k]);const b=it.querySelector('button');b.title=m('noteDel');b.setAttribute('aria-label',m('noteDel'));});}
+function removeCoopNote(btn){btn.parentElement.parentElement.remove();if(!document.querySelectorAll('.coop-note-item').length){const e=document.getElementById('emptyCoopMsg');if(e)e.style.display='block';}saveData();}
+function updateStatusColor(s){s.style.color={pending:'#c93700',progress:'#a85d00',resolved:'#008037'}[s.value];}
+
+// ===== TAULER DE PETICIONS DE RECURSOS =====
+let REQS=[];
+const REQ_KEYS=['pending','granted','conditional','denied'];
+function teamLbl(t){t=String(t||'').trim();return /^\d+$/.test(t)?m('teamName',t):(t||'—');}
+function reqPhraseHTML(r){const f=x=>esc((r[x]||'').trim()||'…');return m('reqPhrase',f('char'),f('res'),f('vuln'),f('act'),f('str'));}
+function reqPlain(r){const d=document.createElement('div');d.innerHTML=reqPhraseHTML(r);return d.textContent;}
+function stLabel(r){return m('reqStatuses')[Math.max(0,REQ_KEYS.indexOf(r.status))];}
+function updateReqSummary(){const tot=REQS.length,att=REQS.filter(r=>r.status!=='pending').length;
+  document.querySelectorAll('.req-summary').forEach(e=>e.textContent=tot?m('reqCount',att,tot):'');}
+function renderReqs(){
+  const S=m('reqStatuses');
+  document.querySelectorAll('.req-list').forEach(box=>{
+    if(!REQS.length){box.innerHTML=`<div class="req-empty">${esc(m('reqEmpty'))}</div>`;return;}
+    box.innerHTML=REQS.map((r,i)=>`<div class="req-item req-${r.status}"><div class="req-head"><strong>${esc(m('reqNum',i+1))} · ${esc(teamLbl(r.team))}</strong><button type="button" class="req-del" onclick="removeReq(${i})" title="${esc(m('reqDel'))}" aria-label="${esc(m('reqDel'))}">🗑️</button></div><p class="req-phrase">${reqPhraseHTML(r)}</p><div class="req-ctrl"><div class="seg" role="group" aria-label="${esc(m('reqGov'))}">${REQ_KEYS.map((k,j)=>`<button type="button" data-k="${k}" aria-pressed="${r.status===k}" onclick="updateReq(${i},'status','${k}')">${esc(S[j])}</button>`).join('')}</div><input type="text" value="${esc(r.cond||'')}" placeholder="${esc(m('reqCondPh'))}" aria-label="${esc(m('reqCondPh'))}" onchange="updateReq(${i},'cond',this.value)"/></div></div>`).join('');
+  });
+  updateReqSummary();
+}
+function updateReq(i,k,v){if(!REQS[i])return;REQS[i][k]=v;
+  document.querySelectorAll('.req-list').forEach(b=>{const it=b.children[i];if(!it)return;
+    if(k==='status'){it.className='req-item req-'+v;it.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.k===v));it.classList.remove('flash');void it.offsetWidth;it.classList.add('flash');}
+    else{const inp=it.querySelector('input');if(inp)inp.value=v;}});
+  updateReqSummary();saveData();}
+function openReqDlg(){['team','char','res','vuln','act','str'].forEach(k=>document.getElementById('rq_'+k).value='');
+  document.getElementById('rq_err').textContent='';const d=document.getElementById('reqDlg');d.showModal();document.getElementById('rq_team').focus();}
+function submitReq(){const g=k=>document.getElementById('rq_'+k).value.trim();
+  if(!g('res')){document.getElementById('rq_err').textContent=m('reqNeed');document.getElementById('rq_res').focus();return;}
+  REQS.push({team:g('team'),char:g('char'),res:g('res'),vuln:g('vuln'),act:g('act'),str:g('str'),status:'pending',cond:''});
+  document.getElementById('reqDlg').close();renderReqs();saveData();}
+function removeReq(i){REQS.splice(i,1);renderReqs();saveData();}
+function reqText(){if(!REQS.length)return '';
+  return '\n\n'+m('rReqs')+'\n'+REQS.map((r,k)=>`${k+1}. ${teamLbl(r.team)}: ${reqPlain(r)} [${m('rState')}: ${stLabel(r)}]${r.cond?` (${m('rGov')}:${r.cond})`:''}`).join('\n')+'\n';}
+
+// ===== INFORME =====
+function scoreSummary(){const n=getN();let o='',any=false;
+  for(let i=1;i<=n;i++){const v=document.getElementById(`t_${i}`).value;if(+v>0)any=true;o+=m('rTeam',i,v)+'\n';}
+  if(!any&&!diceLog.length)return '';
+  let r='\n\n'+m('rScores')+'\n'+o+m('rWell')+document.getElementById('progressBar').innerText+'\n'+document.getElementById('statusMessage').innerText;
+  if(diceLog.length)r+='\n\n'+m('rDice')+'\n'+diceLog.join('\n');return r;}
+function prepareAndPrint(){
+  const pc=document.getElementById('printCoopSummaryContent'),items=document.querySelectorAll('.coop-note-item');
+  if(items.length){document.getElementById('printCoopSummary').style.display='block';let h='<ul style="margin-left:15px">';
+    items.forEach(it=>{h+=`<li style="margin-bottom:4px">${esc(it.querySelector('.note-text').innerText)} - <strong>[${esc(it.querySelector('select').selectedOptions[0].text)}]</strong></li>`;});pc.innerHTML=h+'</ul>';}
+  else document.getElementById('printCoopSummary').style.display='none';
+  const pr=document.getElementById('printReqSummary'),prc=document.getElementById('printReqSummaryContent');
+  if(REQS.length){pr.style.display='block';prc.innerHTML='<ul style="margin-left:15px">'+REQS.map(r=>`<li style="margin-bottom:4px"><strong>${esc(teamLbl(r.team))}</strong>: ${reqPhraseHTML(r)} - <strong>[${esc(stLabel(r))}]</strong>${r.cond?` (${esc(m('rGov'))}:${esc(r.cond)})`:''}</li>`).join('')+'</ul>';}else pr.style.display='none';
+  const ps=document.getElementById('printScores');ps.innerText=scoreSummary().trim();ps.style.display=ps.innerText?'block':'none';
+  window.print();}
+function downloadSummary(){
+  let coop='';const items=document.querySelectorAll('.coop-note-item');
+  if(items.length){coop='\n\n'+m('rCoop')+'\n';items.forEach((it,k)=>{coop+=`${k+1}. ${it.querySelector('.note-body').innerText} [${m('rState')}: ${it.querySelector('select').selectedOptions[0].text}]\n`;});}
+  const S=m('rSec'),A=q=>document.getElementById(q).value||m('rNone');
+  const text=`${m('rTitle')}\n--------------------------------------------------\n${S[0]}\n${A('q1')}\n\n${S[1]}\n${A('q2')}\n\n${S[2]}\n${A('q3')}\n\n${S[3]}\n${A('q4')}${coop}${reqText()}${scoreSummary()}\n`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=m('rFile');a.click();}
+
+// ===== PERSISTÈNCIA =====
+let saveTimer=null;
+function triggerSaveIndicator(){const el=document.getElementById('saveStatus');if(!el)return;el.style.opacity='1';if(saveTimer)clearTimeout(saveTimer);saveTimer=setTimeout(()=>{el.style.opacity='0';},1500);}
+function saveData(){
+  const st={q1:q1.value,q2:q2.value,q3:q3.value,q4:q4.value,numEquips:document.getElementById('numEquips').value,customTeams:document.getElementById('customTeams').value,scores:{},coopNotes:[],reqs:REQS,thr:document.getElementById('thr').value,adj:document.getElementById('adj').value};
+  document.querySelectorAll('.crit').forEach(e=>st.scores[e.id]=e.value);
+  document.querySelectorAll('.coop-note-item').forEach(it=>st.coopNotes.push({text:it.querySelector('.note-body').innerText,status:it.querySelector('select').value}));
+  try{localStorage.setItem(LS_STATE,JSON.stringify(st));}catch(e){}triggerSaveIndicator();}
+function loadData(){
+  let raw=null;try{raw=localStorage.getItem(LS_STATE);}catch(e){}if(!raw)return;
+  try{const st=JSON.parse(raw);
+    ['q1','q2','q3','q4'].forEach(k=>{if(st[k])document.getElementById(k).value=st[k];});
+    if(st.thr)document.getElementById('thr').value=st.thr;if(st.adj)document.getElementById('adj').value=st.adj;
+    if(st.customTeams)document.getElementById('customTeams').value=st.customTeams;
+    if(st.numEquips){const s=document.getElementById('numEquips');s.value=st.numEquips;if(s.value!==st.numEquips)s.value='3';document.getElementById('customTeamsWrap').style.display=s.value==='custom'?'inline-flex':'none';}
+    setupTeams();
+    if(st.scores)Object.keys(st.scores).forEach(k=>{const e=document.getElementById(k);if(e&&e.classList.contains('crit'))e.value=st.scores[k];});
+    calculateWellbeing();
+    (st.coopNotes||[]).forEach(n=>addCoopNote(n.text,n.status));
+    REQS=Array.isArray(st.reqs)?st.reqs.filter(r=>r&&r.res):[];renderReqs();
+  }catch(e){console.error('Error loading saved data',e);}
+}
+function resetEntireSession(){askDlg(m('resetConfirm')).then(ok=>{if(ok){try{localStorage.removeItem(LS_STATE);}catch(e){}location.reload();}});}
+
+window.onload=function(){
+  try{const l=localStorage.getItem(LS_LANG);if(l&&LI.hasOwnProperty(l))LANG=l;}catch(e){}
+  buildTeamOptions();setupTeams();initShown();applyLang();loadData();
+};
+</script>
+</body>
+</html>
