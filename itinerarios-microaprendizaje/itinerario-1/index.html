@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="ca" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,11 +123,11 @@
   </style>
 
   <!-- Fil d'Ariadna de 3 nivells -->
-  <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <nav id="bc-nav" aria-label="Fil d'Ariadna" class="breadcrumb-nav">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="../../index.html">Inici</a></li>
-      <li class="breadcrumb-item"><a href="../index.html">Itineraris de Microaprenentatge</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Itinerari 1</li>
+      <li class="breadcrumb-item"><a id="bc-home" href="../../index.html">Inici</a></li>
+      <li class="breadcrumb-item"><a id="bc-mid" href="../index.html">Itineraris de Microaprenentatge</a></li>
+      <li id="bc-current" class="breadcrumb-item active" aria-current="page">Itinerari 1</li>
     </ol>
   </nav>
 
@@ -665,8 +665,8 @@
                                 </div>
                                 <p class="text-xs text-slate-300 mb-3" data-i18n="c3_step1_q">¿Aparece alguna ordenanza, boletín oficial o enlace a la normativa nombrada?</p>
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <button onclick="stepC3(1, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-emerald-600 rounded-xl transition text-left" data-i18n="c3_step1_opt1">No indica ninguna fuente oficial ni enlace regulador.</button>
-                                    <button onclick="stepC3(1, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-rose-600 rounded-xl transition text-left" data-i18n="c3_step1_opt2">Es totalmente creíble porque lo envía un conocido.</button>
+                                    <button onclick="stepC3(1, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step1_opt1">No indica ninguna fuente oficial ni enlace regulador.</button>
+                                    <button onclick="stepC3(1, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step1_opt2">Es totalmente creíble porque lo envía un conocido.</button>
                                 </div>
                                 <div id="c3-res-1" class="text-xs mt-2 hidden" aria-live="polite"></div>
                             </div>
@@ -678,8 +678,8 @@
                                 </div>
                                 <p class="text-xs text-slate-300 mb-3" data-i18n="c3_step2_q">Buscas las palabras clave en desmentidos de Maldita.es / Newtral.</p>
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <button onclick="stepC3(2, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-emerald-600 rounded-xl transition text-left" data-i18n="c3_step2_opt1">Maldita.es tiene desmentidos de bulos idénticos recurrentes desde hace años.</button>
-                                    <button onclick="stepC3(2, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-rose-600 rounded-xl transition text-left" data-i18n="c3_step2_opt2">No hace falta buscar porque suena convincente.</button>
+                                    <button onclick="stepC3(2, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step2_opt1">Maldita.es tiene desmentidos de bulos idénticos recurrentes desde hace años.</button>
+                                    <button onclick="stepC3(2, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step2_opt2">No hace falta buscar porque suena convincente.</button>
                                 </div>
                                 <div id="c3-res-2" class="text-xs mt-2 hidden" aria-live="polite"></div>
                             </div>
@@ -691,8 +691,8 @@
                                 </div>
                                 <p class="text-xs text-slate-300 mb-3" data-i18n="c3_step3_q">Revisas los requisitos de asignación de ayudas sociales de los Servicios Sociales municipales.</p>
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <button onclick="stepC3(3, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-emerald-600 rounded-xl transition text-left" data-i18n="c3_step3_opt1">Confirmas que las becas se otorgan por nivel de renta estricto sin distinción de origen.</button>
-                                    <button onclick="stepC3(3, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-rose-600 rounded-xl transition text-left" data-i18n="c3_step3_opt2">Las fuentes oficiales siempre mienten, mejor ignorarlas.</button>
+                                    <button onclick="stepC3(3, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step3_opt1">Confirmas que las becas se otorgan por nivel de renta estricto sin distinción de origen.</button>
+                                    <button onclick="stepC3(3, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step3_opt2">Las fuentes oficiales siempre mienten, mejor ignorarlas.</button>
                                 </div>
                                 <div id="c3-res-3" class="text-xs mt-2 hidden" aria-live="polite"></div>
                             </div>
@@ -704,8 +704,8 @@
                                 </div>
                                 <p class="text-xs text-slate-300 mb-3" data-i18n="c3_step4_q">¿Qué haces finalmente con la cadena de WhatsApp?</p>
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <button onclick="stepC3(4, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-emerald-600 rounded-xl transition text-left" data-i18n="c3_step4_opt1">No difundir el mensaje y responder amablemente en el grupo adjuntando la verificación.</button>
-                                    <button onclick="stepC3(4, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:bg-rose-600 rounded-xl transition text-left" data-i18n="c3_step4_opt2">Reenviarlo "por si acaso es verdad".</button>
+                                    <button onclick="stepC3(4, true, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step4_opt1">No difundir el mensaje y responder amablemente en el grupo adjuntando la verificación.</button>
+                                    <button onclick="stepC3(4, false, this)" class="px-3 py-1.5 text-xs bg-slate-700 hover:brightness-125 rounded-xl transition text-left" data-i18n="c3_step4_opt2">Reenviarlo "por si acaso es verdad".</button>
                                 </div>
                                 <div id="c3-res-4" class="text-xs mt-2 hidden" aria-live="polite"></div>
                             </div>
@@ -1683,7 +1683,7 @@
         };
 
         // Estado del Curso
-        let currentLanguage = localStorage.getItem('afronta_lang') || 'es';
+        let currentLanguage = 'ca';
         let xpPoints = parseInt(localStorage.getItem('afronta_xp')) || 0;
         let soundEnabled = localStorage.getItem('afronta_sound') !== 'false';
         let completedCapsules = JSON.parse(localStorage.getItem('afronta_completed')) || [0];
@@ -1715,7 +1715,26 @@
             showToast(lang === 'es' ? 'Idioma cambiado a Español' : (lang === 'ca' ? 'Idioma canviat a Català' : 'Language changed to English'));
         }
 
+        /* Fil d'Ariadna segons l'idioma */
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+                ca: { label: "Fil d'Ariadna", home: "Inici", homeHref: "../../index.html", mid: "Itineraris de Microaprenentatge", midHref: "../index.html", cur: "Itinerari 1" },
+                es: { label: "Miga de pan", home: "Inicio", homeHref: "../../index-es.html", mid: "Itinerarios de Microaprendizaje", midHref: "../index-es.html", cur: "Itinerario 1" },
+                en: { label: "Breadcrumb", home: "Home", homeHref: "../../index-en.html", mid: "Microlearning Pathways", midHref: "../index-en.html", cur: "Pathway 1" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcMid = document.getElementById('bc-mid');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.homeHref); }
+            if (bcMid) { bcMid.textContent = bc.mid; bcMid.setAttribute('href', bc.midHref); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         function applyLanguage(lang) {
+            updateBreadcrumb(lang);
             const data = translations[lang] || translations['es'];
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1862,6 +1881,14 @@
         function stepC3(step, isCorrect, btn) {
             const res = document.getElementById(`c3-res-${step}`);
             res.classList.remove('hidden', 'text-emerald-400', 'text-rose-400');
+
+            // El color verde/rojo solo aparece en la opción pulsada (no al pasar el cursor)
+            btn.parentElement.querySelectorAll('button').forEach(b => {
+                b.classList.remove('bg-emerald-600', 'bg-rose-600');
+                b.classList.add('bg-slate-700');
+            });
+            btn.classList.remove('bg-slate-700');
+            btn.classList.add(isCorrect ? 'bg-emerald-600' : 'bg-rose-600');
 
             const isCa = currentLanguage === 'ca';
             const isEn = currentLanguage === 'en';
@@ -2026,7 +2053,7 @@
 
         // Modal y Utilidades UI
         function openVideoModal() {
-            document.getElementById('youtube-iframe').src = "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ";
+            document.getElementById('youtube-iframe').src = "https://www.youtube-nocookie.com/embed/VjJV2-6AJps";
             document.getElementById('video-modal').classList.remove('hidden');
         }
 

@@ -101,10 +101,10 @@
 </style>
 
 <!-- HTML del fil d'Ariadna -->
-<nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+<nav id="bc-nav" aria-label="Hilo de Ariadna" class="breadcrumb-nav">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="../index-es.html">Inicio</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Vulnerabilidad climática</li>
+    <li class="breadcrumb-item"><a id="bc-home" href="../index-es.html">Inicio</a></li>
+    <li id="bc-current" class="breadcrumb-item active" aria-current="page">Vulnerabilidad climática</li>
   </ol>
 </nav>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
@@ -520,9 +520,27 @@
             }
         }
 
+        /* Fil d'Ariadna segons l'idioma */
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+            ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", cur: "Vulnerabilitat climàtica" },
+            es: { label: "Hilo de Ariadna", home: "Inicio", href: "../index-es.html", cur: "Vulnerabilidad climática" },
+            en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", cur: "Climate vulnerability" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         function setLanguage(lang) {
             if (!i18n[lang]) return;
             currentLang = lang;
+            document.documentElement.lang = lang;
+            updateBreadcrumb(lang);
 
             // Actualizar botones de idioma en header
             document.querySelectorAll('.lang-btn').forEach(btn => {

@@ -100,10 +100,10 @@
   </style>
 
  <!-- Hilo de Ariadna -->
-  <nav aria-label="Hilo de Ariadna" class="breadcrumb-nav">
+  <nav id="bc-nav" aria-label="Hilo de Ariadna" class="breadcrumb-nav">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="../index-es.html">Inicio</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Desinformación y Fake News</li>
+      <li class="breadcrumb-item"><a id="bc-home" href="../index-es.html">Inicio</a></li>
+      <li id="bc-current" class="breadcrumb-item active" aria-current="page">Desinformación y Fake News</li>
     </ol>
   </nav>
 
@@ -897,9 +897,26 @@
             checkDeepLinkHash();
         }
 
+        /* Fil d'Ariadna segons l'idioma */
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+            ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", cur: "Desinformació i Fake News" },
+            es: { label: "Hilo de Ariadna", home: "Inicio", href: "../index-es.html", cur: "Desinformación y Fake News" },
+            en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", cur: "Disinformation and Fake News" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         // CAMBIO DE IDIOMA
         function changeLanguage(lang) {
             currentLang = lang;
+            updateBreadcrumb(lang);
             document.documentElement.lang = lang;
             renderCategoryFilters();
             renderResources();

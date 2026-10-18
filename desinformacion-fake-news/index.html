@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,10 +100,10 @@
   </style>
 
   <!-- Fil d'Ariadna -->
-  <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <nav id="bc-nav" aria-label="Fil d'Ariadna" class="breadcrumb-nav">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="../index.html">Inici</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Desinformació i Fake News</li>
+      <li class="breadcrumb-item"><a id="bc-home" href="../index.html">Inici</a></li>
+      <li id="bc-current" class="breadcrumb-item active" aria-current="page">Desinformació i Fake News</li>
     </ol>
   </nav>
 
@@ -139,8 +139,8 @@
                             <select id="lang-select" onchange="changeLanguage(this.value)" 
                                     aria-label="Seleccionar idioma de la página" 
                                     class="bg-transparent text-sm font-medium text-slate-800 py-1 pr-2 focus:outline-none cursor-pointer">
-                                <option value="es" selected>Español (ES)</option>
-                                <option value="ca">Català (CA)</option>
+                                <option value="es">Español (ES)</option>
+                                <option value="ca" selected>Català (CA)</option>
                                 <option value="en">English (EN)</option>
                             </select>
                         </div>
@@ -337,7 +337,7 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // Idioma actual
-        let currentLang = 'es';
+        let currentLang = 'ca';
         let currentCategory = 'all';
 
         // Traducciones UI Estáticas
@@ -897,9 +897,26 @@
             checkDeepLinkHash();
         }
 
+        /* Fil d'Ariadna segons l'idioma */
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+            ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", cur: "Desinformació i Fake News" },
+            es: { label: "Hilo de Ariadna", home: "Inicio", href: "../index-es.html", cur: "Desinformación y Fake News" },
+            en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", cur: "Disinformation and Fake News" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         // CAMBIO DE IDIOMA
         function changeLanguage(lang) {
             currentLang = lang;
+            updateBreadcrumb(lang);
             document.documentElement.lang = lang;
             renderCategoryFilters();
             renderResources();

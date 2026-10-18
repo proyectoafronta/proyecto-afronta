@@ -950,6 +950,13 @@
                             </select>
                         </div>
 
+                        <!-- Botó de reinici de l'avaluador -->
+                        <div class="flex justify-end">
+                            <button type="button" onclick="resetEvaluator()" class="inline-flex items-center px-4 py-2 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-100 focus:ring-2 focus:ring-uab-600 transition">
+                                <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i><span data-i18n="btn_reset_eval">Reinicia l'avaluador</span>
+                            </button>
+                        </div>
+
                     </div>
 
                     <!-- Panel de diagnòstic resultat -->
@@ -1430,6 +1437,7 @@
                 eval_badge: "Eina d'Avaluació Pràctica",
                 eval_title: "Avaluador de Vulnerabilitat en Contextos de Criança",
                 eval_desc: "Aquesta matriu interactiva tradueix la proposta analítica del grup GRAFO en una eina pràctica per diagnosticar el nivell de risc d'una llar amb menors.",
+                btn_reset_eval: "Reinicia l'avaluador",
                 q1_lbl: "1. Situació en el procés de gestació i perinatal",
                 q1_o0: "0 - Normo-típic, seguiment mèdic complet i xarxa familiar molt stable",
                 q1_o1: "1 - Dificultats de salut puntuals o embaràs no planificat amb bon suport",
@@ -1749,6 +1757,7 @@
                 eval_badge: "Herramienta de Evaluación Práctica",
                 eval_title: "Evaluador de Vulnerabilidad en Contextos de Crianza",
                 eval_desc: "Esta matriz interactiva traduce la propuesta analítica del grupo GRAFO en una herramienta práctica para diagnosticar el nivel de riesgo de un hogar con menores.",
+                btn_reset_eval: "Reiniciar evaluador",
                 q1_lbl: "1. Situación en el proceso de gestación y perinatal",
                 q1_o0: "0 - Normo-típico, seguimiento médico completo y red familiar muy estable",
                 q1_o1: "1 - Dificultades de salud puntuales o embarazo no planificado con buen apoyo",
@@ -2068,6 +2077,7 @@
                 eval_badge: "Practical Assessment Tool",
                 eval_title: "Childrearing Vulnerability Evaluator",
                 eval_desc: "This interactive matrix translates the GRAFO group analytical proposal into a practical tool to diagnose household risk levels with minors.",
+                btn_reset_eval: "Reset evaluator",
                 q1_lbl: "1. Gestation and perinatal process situation",
                 q1_o0: "0 - Normo-typical, full medical monitoring and stable family network",
                 q1_o1: "1 - Occasional health difficulties or unplanned pregnancy with good support",
@@ -2785,6 +2795,15 @@
             }
 
             lucide.createIcons();
+        }
+
+        // REINICI DE L'AVALUADOR: torna tots els valors a 0
+        function resetEvaluator() {
+            ['procreativo', 'vivienda', 'redes', 'urbano', 'salud', 'laboral', 'legal'].forEach(id => {
+                const el = document.getElementById('eval-' + id);
+                if (el) el.value = '0';
+            });
+            calcularVulnerabilidad(true);
         }
 
         function restoreSavedEvaluator() {
