@@ -1777,7 +1777,7 @@
             playSound('xp');
         }
 
-        function markCapsuleComplete(num) {
+        function markCapsuleComplete(num, autoAdvance = true) {
             if (!completedCapsules.includes(num)) {
                 completedCapsules.push(num);
                 localStorage.setItem('afronta_completed', JSON.stringify(completedCapsules));
@@ -1786,6 +1786,8 @@
             }
             updateProgress();
             
+            if (!autoAdvance) return;
+
             if (num < 5) {
                 switchCapsule('capsule-' + (num + 1));
             } else {
@@ -2008,7 +2010,7 @@
         }
 
         function goToFinalQuiz() {
-            markCapsuleComplete(5);
+            markCapsuleComplete(5, false);
             document.querySelectorAll('.capsule-section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById('quiz-final-section').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
