@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">IA i Vulnerabilitat | Projecte AFRONTA - UAB</title>
+  <link rel="alternate" hreflang="ca" href="./index.html">
+  <link rel="alternate" hreflang="es" href="./index-es.html">
+  <link rel="alternate" hreflang="en" href="./index-en.html">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Inter & Google Fonts -->
@@ -61,7 +64,7 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col">
 
   <!-- Estils del fil d'Ariadna -->
   <style>
@@ -101,15 +104,14 @@
   </style>
 
   <!-- Fil d'Ariadna -->
-  <nav aria-label="Fil d'Ariadna" class="breadcrumb-nav">
+  <nav id="bc-nav" aria-label="Fil d'Ariadna" class="breadcrumb-nav">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="../index.html">Inici</a></li>
-      <li class="breadcrumb-item active" aria-current="page">IA I vulnerabilitat</li>
+      <li class="breadcrumb-item"><a id="bc-home" href="../index.html">Inici</a></li>
+      <li id="bc-current" class="breadcrumb-item active" aria-current="page">IA I vulnerabilitat</li>
     </ol>
   </nav>
 
   <!-- Continua el contingut de la pàgina -->
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col">
 
     <!-- Top Accessibility Banner with Language Selector -->
     <div class="bg-uab-700 text-white text-xs py-1.5 px-4">
@@ -1344,9 +1346,26 @@
             ]
         };
 
+        // Fil d'Ariadna segons l'idioma
+        function updateBreadcrumb(lang) {
+            const bcTexts = {
+                ca: { label: "Fil d'Ariadna", home: "Inici", href: "../index.html", cur: "IA I vulnerabilitat" },
+                es: { label: "Hilo de Ariadna", home: "Inicio", href: "../index-es.html", cur: "IA y vulnerabilidad" },
+                en: { label: "Breadcrumb", home: "Home", href: "../index-en.html", cur: "AI and Vulnerability" }
+            };
+            const bc = bcTexts[lang] || bcTexts.ca;
+            const bcNav = document.getElementById('bc-nav');
+            const bcHome = document.getElementById('bc-home');
+            const bcCur = document.getElementById('bc-current');
+            if (bcNav) bcNav.setAttribute('aria-label', bc.label);
+            if (bcHome) { bcHome.textContent = bc.home; bcHome.setAttribute('href', bc.href); }
+            if (bcCur) bcCur.textContent = bc.cur;
+        }
+
         // Function to switch active language
         function switchLanguage(lang) {
             currentLang = lang;
+            updateBreadcrumb(lang);
             const btnCa = document.getElementById('langBtnCa');
             const btnEs = document.getElementById('langBtnEs');
             const btnEn = document.getElementById('langBtnEn');
