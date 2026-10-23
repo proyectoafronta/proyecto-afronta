@@ -4,9 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyecto Afronta - Portal Principal</title>
-  <link rel="alternate" hreflang="ca" href="./index.html">
-  <link rel="alternate" hreflang="es" href="./index-es.html">
-  <link rel="alternate" hreflang="en" href="./index-en.html">
+  <meta name="description" content="Recursos formativos del proyecto AFRONTA (UAB): itinerarios de microaprendizaje y materiales prácticos para comprender la vulnerabilidad de las familias.">
+  <meta name="theme-color" content="#12224a">
+  <link rel="canonical" href="https://proyectoafronta.github.io/proyecto-afronta/index-es.html">
+  <link rel="alternate" hreflang="ca" href="https://proyectoafronta.github.io/proyecto-afronta/index.html">
+  <link rel="alternate" hreflang="es" href="https://proyectoafronta.github.io/proyecto-afronta/index-es.html">
+  <link rel="alternate" hreflang="en" href="https://proyectoafronta.github.io/proyecto-afronta/index-en.html">
+  <link rel="alternate" hreflang="x-default" href="https://proyectoafronta.github.io/proyecto-afronta/index.html">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Proyecto AFRONTA">
+  <meta property="og:title" content="Proyecto AFRONTA · Recursos formativos">
+  <meta property="og:description" content="Recursos formativos del proyecto AFRONTA (UAB): itinerarios de microaprendizaje y materiales prácticos para comprender la vulnerabilidad de las familias.">
+  <meta property="og:url" content="https://proyectoafronta.github.io/proyecto-afronta/index-es.html">
+  <meta property="og:image" content="https://proyectoafronta.github.io/proyecto-afronta/img/og-afronta.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Proyecto AFRONTA: recursos formativos. AFRONTA · GRAFO · UAB">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale:alternate" content="ca_ES">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Proyecto AFRONTA · Recursos formativos">
+  <meta name="twitter:description" content="Recursos formativos del proyecto AFRONTA (UAB): itinerarios de microaprendizaje y materiales prácticos para comprender la vulnerabilidad de las familias.">
+  <meta name="twitter:image" content="https://proyectoafronta.github.io/proyecto-afronta/img/og-afronta.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
@@ -22,12 +45,12 @@
       --amber: #f2b441;
 
       /* Un color por módulo */
-      --c-comunitat: #0f8b8d;
+      --c-comunitat: #0a6f72;
       --c-fake: #c2410c;
       --c-ia: #5b4bc4;
       --c-indicadors: #1d6fb8;
-      --c-itineraris: #2f855a;
-      --c-clima: #b7791f;
+      --c-itineraris: #276749;
+      --c-clima: #9a6212;
 
       --font-head: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
       --font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -271,6 +294,99 @@
     .c-itineraris { --accent: var(--c-itineraris); }
     .c-clima      { --accent: var(--c-clima); }
 
+    /* ---------- Presentación del proyecto ---------- */
+    .intro {
+      margin: 0 0 1.5rem;
+      padding: 1.6rem 1.8rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--amber);
+      border-radius: 4px 18px 4px 18px;
+      box-shadow: 0 10px 24px -14px rgba(18, 34, 74, 0.35);
+    }
+
+    .intro p {
+      margin: 0;
+      max-width: 62rem;
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+
+    /* ---------- Recurso principal (itinerarios), a todo el ancho ---------- */
+    .card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        "icon badge go"
+        "icon title go"
+        "icon desc  go";
+      column-gap: 1.5rem;
+      row-gap: 0.2rem;
+      align-items: center;
+      padding: 1.9rem 2rem;
+      border-top-width: 8px;
+      background: color-mix(in srgb, var(--accent) 5%, white);
+    }
+
+    .card.featured .icon {
+      grid-area: icon;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 0;
+      border-radius: 18px;
+    }
+
+    .card.featured .icon svg { width: 38px; height: 38px; }
+
+    .badge {
+      grid-area: badge;
+      justify-self: start;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--accent);
+      padding: 0.15rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    .card.featured h2 {
+      grid-area: title;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .card.featured p {
+      grid-area: desc;
+      font-size: 1.1rem;
+    }
+
+    .card.featured .go {
+      grid-area: go;
+      margin-top: 0;
+      padding-top: 0;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 640px) {
+      .card.featured {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "icon"
+          "badge"
+          "title"
+          "desc"
+          "go";
+        row-gap: 0.35rem;
+        padding: 1.5rem;
+      }
+      .card.featured .icon { margin-bottom: 0.4rem; }
+      .card.featured .go { justify-self: start; padding-top: 0.8rem; }
+      .intro { padding: 1.3rem 1.3rem; }
+    }
+
     footer {
       text-align: center;
       padding: 2rem 1.5rem 2.2rem;
@@ -337,7 +453,22 @@
   </header>
 
   <main>
+    <section class="intro">
+      <p>El proyecto AFRONTA investiga cómo las crisis, las desigualdades y las barreras sociales afectan a la vida de las personas, especialmente de las familias en situación de vulnerabilidad, y qué estrategias pueden ayudar a afrontar estos retos. Aquí encontrarás recursos formativos y materiales prácticos para comprender mejor estas realidades y explorar formas de respuesta, dirigidos a todas las personas interesadas en construir una sociedad más cohesionada e inclusiva.</p>
+    </section>
+
     <div class="grid">
+
+      <!-- Recurs principal: itineraris de microaprenentatge -->
+      <a href="./itinerarios-microaprendizaje/index-es.html" class="card featured c-itineraris">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></svg>
+        </span>
+        <span class="badge">Recurso principal</span>
+        <h2>Itinerarios de Microaprendizaje</h2>
+        <p>Accede a los 3 itinerarios de formación estructurados paso a paso.</p>
+        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
 
       <!-- Enllaç corregit a Construïm Comunitat -->
       <a href="./construim-comunitat/index-es.html" class="card c-comunitat">
@@ -379,16 +510,6 @@
         <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </a>
 
-      <!-- Enllaç al subportal d'Itineraris -->
-      <a href="./itinerarios-microaprendizaje/index-es.html" class="card c-itineraris">
-        <span class="icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h5a3 3 0 0 0 0-6h-2a3 3 0 0 1 0-6h5"/></svg>
-        </span>
-        <h2>Itinerarios de Microaprendizaje</h2>
-        <p>Accede a los 3 itinerarios de formación estructurados paso a paso.</p>
-        <span class="go">Abrir <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-
       <!-- Vulnerabilitat Climàtica -->
       <a href="./vulnerabilidad-climatica/index-es.html" class="card c-clima">
         <span class="icon">
@@ -409,6 +530,7 @@
       </a>
     </div>
     <p>Proyecto Afronta · Contenido bajo licencia Creative Commons BY-NC-ND</p>
+    <p>Proyecto AFRONTA (PID2022-139502OB-I00)</p>
   </footer>
 
 </body>
