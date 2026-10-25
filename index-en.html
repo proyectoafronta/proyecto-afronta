@@ -184,6 +184,37 @@
     }
 
 
+    /* Botón de acceso directo a los itinerarios (recurso principal) */
+    .hero .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 1.6rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--amber);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      border-radius: 999px;
+      box-shadow: 0 12px 22px -14px rgba(0, 0, 0, 0.7);
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .hero .cta:hover { transform: translateY(-2px); background: #f7c565; }
+
+    .hero .cta:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+    .hero .cta svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     /* ---------- Módulos ---------- */
     main {
       max-width: 1040px;
@@ -327,7 +358,9 @@
       align-items: center;
       padding: 1.9rem 2rem;
       border-top-width: 8px;
-      background: color-mix(in srgb, var(--accent) 5%, white);
+      background: var(--accent);
+      color: #fff;
+      border-top-color: var(--amber);
     }
 
     .card.featured .icon {
@@ -369,6 +402,25 @@
       padding-top: 0;
       font-size: 1.05rem;
     }
+
+    /* Tarjeta destacada con fondo de color: rompe el estilo de las demás para que sea lo primero que se vea */
+    .card.featured .icon { background: rgba(255, 255, 255, 0.16); color: #fff; }
+
+    .card.featured h2 { color: #fff; }
+
+    .card.featured p { color: rgba(255, 255, 255, 0.92); }
+
+    .card.featured .badge { background: var(--amber); color: var(--navy); }
+
+    .card.featured .go {
+      padding: 0.7rem 1.4rem;
+      background: #fff;
+      color: var(--accent);
+      font-weight: 700;
+      border-radius: 999px;
+    }
+
+    .card.featured:focus-visible { outline-color: var(--amber); }
 
     @media (max-width: 640px) {
       .card.featured {
@@ -420,7 +472,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .card, .go svg { transition: none; }
+      .card, .go svg, .hero .cta { transition: none; }
     }
 
   </style>
@@ -439,6 +491,7 @@
           <div class="rule"></div>
           <h1>Proyecto Afronta</h1>
           <p class="subtitle">Direct access to content and modules from the project's microlearning resource repository</p>
+          <a class="cta" href="./itinerarios-microaprendizaje/index-en.html">Start with the pathways <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="brand">
           <a class="brand-main" href="https://webs.uab.cat/afronta/" target="_blank" rel="noopener" aria-label="Afronta · Grafo · UAB">
